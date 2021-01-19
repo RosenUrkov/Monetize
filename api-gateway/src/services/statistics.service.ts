@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { IDENTIFIERS } from 'src/common/identifiers';
+import { IDENTIFIERS } from 'src/config/identifiers';
 
 @Injectable()
 export class StatisticsService {

@@ -1,16 +1,16 @@
-import { BudgetService } from './core/budget.service';
-import { CoreModule } from './core/core.module';
+import { ConfigurationModule } from './config/configuarion.module';
+import { BudgetService } from './services/budget.service';
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
-import { BalanceService } from './core/balance.service';
-import { StatisticsService } from './core/statistics.service';
-import { IDENTIFIERS } from './common/identifiers';
+import { BalanceService } from './services/balance.service';
+import { StatisticsService } from './services/statistics.service';
+import { IDENTIFIERS } from './config/identifiers';
 
 @Module({
   imports: [
-    CoreModule,
+    ConfigurationModule,
     AuthModule,
     ClientsModule.register([
       {

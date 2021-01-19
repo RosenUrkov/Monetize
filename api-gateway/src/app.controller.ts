@@ -1,9 +1,9 @@
-import { BudgetService } from './core/budget.service';
+import { BudgetService } from './services/budget.service';
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { map, tap } from 'rxjs/operators';
 import { Observable, zip } from 'rxjs';
-import { BalanceService } from './core/balance.service';
-import { StatisticsService } from './core/statistics.service';
+import { BalanceService } from './services/balance.service';
+import { StatisticsService } from './services/statistics.service';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller()

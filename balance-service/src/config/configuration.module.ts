@@ -2,7 +2,6 @@ import { Module, Global } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from '@hapi/joi';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from 'src/auth/entities/user.entity';
 
 @Global()
 @Module({
@@ -16,8 +15,6 @@ import { User } from 'src/auth/entities/user.entity';
         DB_USERNAME: Joi.string().required(),
         DB_PASSWORD: Joi.string().required(),
         DB_DATABASE_NAME: Joi.string().required(),
-        JWT_SECRET: Joi.string().required(),
-        JWT_EXPIRE_TIME: Joi.number().default(3600),
       }),
     }),
     TypeOrmModule.forRootAsync({
@@ -29,11 +26,11 @@ import { User } from 'src/auth/entities/user.entity';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD').toString(),
         database: configService.get('DB_DATABASE_NAME').toString(),
-        entities: [User],
+        entities: [__dirname + './../entities/**/*.entity{.ts,.js}'],
         synchronize: true,
       }),
     }),
   ],
   exports: [ConfigModule],
 })
-export class CoreModule {}
+export class ConfigurationModule {}
