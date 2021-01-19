@@ -1,13 +1,20 @@
+import { BudgetService } from './core/budget.service';
+import { CoreModule } from './core/core.module';
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
+import { BalanceService } from './core/balance.service';
+import { StatisticsService } from './core/statistics.service';
+import { IDENTIFIERS } from './common/identifiers';
 
 @Module({
   imports: [
+    CoreModule,
+    AuthModule,
     ClientsModule.register([
       {
-        name: 'BalanceService',
+        name: IDENTIFIERS.balanceService,
         transport: Transport.TCP,
         options: {
           host: '127.0.0.1',
@@ -15,7 +22,7 @@ import { AppService } from './app.service';
         },
       },
       {
-        name: 'BudgetService',
+        name: IDENTIFIERS.budgetService,
         transport: Transport.TCP,
         options: {
           host: '127.0.0.1',
@@ -23,7 +30,7 @@ import { AppService } from './app.service';
         },
       },
       {
-        name: 'StatisticsService',
+        name: IDENTIFIERS.statisticsService,
         transport: Transport.TCP,
         options: {
           host: '127.0.0.1',
@@ -32,7 +39,7 @@ import { AppService } from './app.service';
       },
     ]),
   ],
+  providers: [BalanceService, StatisticsService, BudgetService],
   controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

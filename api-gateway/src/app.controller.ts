@@ -1,39 +1,47 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { BudgetService } from './core/budget.service';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { map, tap } from 'rxjs/operators';
 import { Observable, zip } from 'rxjs';
+import { BalanceService } from './core/balance.service';
+import { StatisticsService } from './core/statistics.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller()
+@UseGuards(AuthGuard('jwt'))
 export class AppController {
-  public constructor(private readonly appService: AppService) {}
+  public constructor(
+    private readonly balanceService: BalanceService,
+    private readonly budgetService: BudgetService,
+    private readonly statisticsService: StatisticsService,
+  ) {}
 
   @Get('/balance')
   public pingBalanceService(): Observable<string> {
-    return this.appService
-      .pingBalanceService()
+    return this.balanceService
+      .ping('hello')
       .pipe(tap((message: string) => console.log(message)));
   }
 
   @Get('/budget')
   public pingBudgetService(): Observable<string> {
-    return this.appService
-      .pingBudgetService()
+    return this.budgetService
+      .ping('hello')
       .pipe(tap((message: string) => console.log(message)));
   }
 
   @Get('/statistics')
   public pingStatisticsService(): Observable<string> {
-    return this.appService
-      .pingStatisticsService()
+    return this.statisticsService
+      .ping('hello')
       .pipe(tap((message: string) => console.log(message)));
   }
 
   @Get('/all')
   public pingAll() {
     return zip(
-      this.appService.pingBalanceService(),
-      this.appService.pingBudgetService(),
-      this.appService.pingStatisticsService(),
+      this.balanceService.ping('hello'),
+      this.budgetService.ping('hello'),
+      this.statisticsService.ping('hello'),
     ).pipe(
       tap(console.log),
       map(([res1, res2, res3]) => ({
