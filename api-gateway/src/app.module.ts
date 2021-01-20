@@ -1,10 +1,10 @@
+import { BalanceController } from './balance.controller';
 import { ConfigurationModule } from './config/configuarion.module';
 import { BudgetService } from './services/budget.service';
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
-import { BalanceService } from './services/balance.service';
 import { StatisticsService } from './services/statistics.service';
 import { IDENTIFIERS } from './config/identifiers';
 
@@ -39,7 +39,7 @@ import { IDENTIFIERS } from './config/identifiers';
       },
     ]),
   ],
-  providers: [BalanceService, StatisticsService, BudgetService],
-  controllers: [AppController],
+  providers: [StatisticsService, BudgetService],
+  controllers: [AppController, BalanceController],
 })
 export class AppModule {}

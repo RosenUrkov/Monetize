@@ -1,24 +1,30 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Account } from './account.entity';
-import { PaymentCategory } from './payment-category.entity';
+import { PaymentDetails } from './payment-details.entity';
 
 @Entity('payments')
 export class Payment {
   @PrimaryGeneratedColumn('increment')
-  public id: string;
+  public id: number;
 
   @Column({ nullable: false })
-  public userId: string;
+  public userId: number;
 
   @Column('decimal', { precision: 15, scale: 2, nullable: false, default: 0 })
-  public value: number;
+  public value: string;
 
-  @Column({ nullable: false })
-  public type: string;
+  @Column('date', { nullable: false })
+  public date: string;
 
-  @ManyToOne(() => PaymentCategory, (category) => category.payments)
-  public category: PaymentCategory;
+  @ManyToOne(() => PaymentDetails, (details) => details.payments, {
+    nullable: false,
+    eager: true,
+  })
+  public details: PaymentDetails;
 
-  @ManyToOne(() => Account, (account) => account.payments)
+  @ManyToOne(() => Account, (account) => account.payments, {
+    nullable: false,
+    eager: true,
+  })
   public account: Account;
 }

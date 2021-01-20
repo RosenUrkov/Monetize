@@ -1,42 +1,51 @@
+import { UpdatePaymentDTO } from './dto/update-payment.dto';
+import { map, tap } from 'rxjs/operators';
 import { Controller, Get, Inject } from '@nestjs/common';
 import { ClientProxy, MessagePattern } from '@nestjs/microservices';
 import { from, Observable } from 'rxjs';
 import { CreatePaymentDTO } from './dto/create-payment.dto';
 import { PaymentInfoDTO } from './dto/payment-info.dto';
 import { ShowPaymentDTO } from './dto/show-payment.dto';
+import { AppService } from './app.service';
+import { IDENTIFIERS } from './config/identifiers';
 import { UserInfoDTO } from './dto/user-info.dto';
-import { PaymentService } from './services/payment.service';
-import { StatisticsService } from './services/statistics.service';
 
 @Controller()
 export class AppController {
   public constructor(
-    private readonly statisticsService: StatisticsService,
-    private readonly paymentsService: PaymentService,
+    @Inject(IDENTIFIERS.statisticsService)
+    private readonly statisticsService: ClientProxy,
+    private readonly appService: AppService,
   ) {}
 
-  @MessagePattern('BalancePing')
-  public balancePing() {
-    this.statisticsService.emit('FromBalance');
-    return from([4, 5, 6]);
+  // @MessagePattern('BalancePing')
+  // public balancePing() {
+  //   this.statisticsService.emit('pattern', 'FromBalance');
+  //   return from([4, 5, 6]);
+  // }
+
+  @MessagePattern(IDENTIFIERS.getPayments)
+  public getPayments(info: UserInfoDTO): Observable<ShowPaymentDTO[]> {
+    return this.appService.getPayments(info);
   }
 
-  // @MessagePattern('getPayments')
-  // public getPayments(info: UserInfoDTO): Observable<ShowPaymentDTO[]> {}
+  @MessagePattern(IDENTIFIERS.getPayment)
+  public getPayment(info: PaymentInfoDTO): Observable<ShowPaymentDTO> {
+    return this.appService.getPayment(info);
+  }
 
-  // @MessagePattern('getPayment')
-  // public getPayment(
-  //   info: UserInfoDTO & PaymentInfoDTO,
-  // ): Observable<ShowPaymentDTO> {}
+  @MessagePattern(IDENTIFIERS.createPayment)
+  public createPayment(info: CreatePaymentDTO): Observable<ShowPaymentDTO> {
+    return this.appService.createPayment(info);
+  }
 
-  // @MessagePattern('createPayment')
-  // public createPayment(
-  //   info: UserInfoDTO & CreatePaymentDTO,
-  // ): Observable<ShowPaymentDTO> {}
+  @MessagePattern(IDENTIFIERS.updatePayment)
+  public updatePayment(info: UpdatePaymentDTO): Observable<ShowPaymentDTO> {
+    return this.appService.updatePayment(info);
+  }
 
-  // @MessagePattern('updatePayment')
-  // public updatePayment({ userId, Payment }) {}
-
-  // @MessagePattern('deletePayment')
-  // public deletePayment({ userId, PaymentId }) {}
+  @MessagePattern(IDENTIFIERS.deletePayment)
+  public deletePayment(info: PaymentInfoDTO): Observable<ShowPaymentDTO> {
+    return this.appService.deletePayment(info);
+  }
 }

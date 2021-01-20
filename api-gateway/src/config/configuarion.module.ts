@@ -2,7 +2,7 @@ import { Module, Global } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from '@hapi/joi';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from 'src/auth/entities/user.entity';
+import { User } from 'src/entities/user.entity';
 
 @Global()
 @Module({

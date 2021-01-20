@@ -4,11 +4,11 @@ import { Payment } from './payment.entity';
 @Entity('accounts')
 export class Account {
   @PrimaryGeneratedColumn('increment')
-  public id: string;
+  public id: number;
 
   @Column({ nullable: false })
   public type: string;
 
-  @OneToMany(() => Payment, (payment) => payment.account)
+  @OneToMany(() => Payment, (payment) => payment.account, { nullable: false })
   public payments: Payment[];
 }

@@ -1,7 +1,7 @@
 import { Token } from '../middleware/decorators/token.decorator';
 import { Controller, Post, Body, UseGuards, Delete } from '@nestjs/common';
 import { AuthService } from './services/auth.service';
-import { CreateUserDTO } from './dto/create-user.dto';
+import { CreateUserDTO } from '../dto/create-user.dto';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller()

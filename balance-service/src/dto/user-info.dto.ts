@@ -1,6 +1,6 @@
-import { IsDefined } from 'class-validator';
+import { IsNumber } from 'class-validator';
 
 export class UserInfoDTO {
-  @IsDefined()
-  public id: string;
+  @IsNumber()
+  public userId: number;
 }
