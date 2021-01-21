@@ -12,6 +12,10 @@ import { CreatePaymentDTO } from 'src/dto/create-payment.dto';
 export class HasDuplicatePaymentDetails
   implements ValidatorConstraintInterface {
   validate(value: CreatePaymentDTO[], args: ValidationArguments) {
+    if (!value) {
+      return false;
+    }
+
     const uniqueGroups = value.reduce((groupings, payment) => {
       const key = payment.type + payment.category;
       if (!groupings[key]) {

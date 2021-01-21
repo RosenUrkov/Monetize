@@ -8,4 +8,10 @@ export const IDENTIFIERS = {
   createPayment: 'createPayment',
   updatePayment: 'updatePayment',
   deletePayment: 'deletePayment',
+
+  getBudgets: 'getBudgets',
+  getBudget: 'getBudget',
+  createBudget: 'createBudget',
+  updateBudget: 'updateBudget',
+  deleteBudget: 'deleteBudget',
 };

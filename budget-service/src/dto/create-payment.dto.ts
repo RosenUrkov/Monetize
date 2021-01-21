@@ -1,4 +1,3 @@
-import { Expose, Transform } from 'class-transformer';
 import { IsCurrency, IsEnum, Validate } from 'class-validator';
 import { ExpenseCategory } from 'src/common/enums/expense-category';
 import { IncomeCategory } from 'src/common/enums/income-category.enum';

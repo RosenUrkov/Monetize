@@ -25,6 +25,7 @@ export class Budget {
   @OneToMany(() => Payment, (payment) => payment.budget, {
     nullable: false,
     eager: true,
+    cascade: true,
   })
   public payments: Payment[];
 }

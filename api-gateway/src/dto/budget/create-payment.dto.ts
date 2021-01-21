@@ -5,14 +5,8 @@ export class CreatePaymentDTO {
   public value: string;
 
   @IsDefined()
-  public date: string;
-
-  @IsDefined()
   public type: string;
 
   @IsDefined()
   public category: string;
-
-  @IsDefined()
-  public account: string;
 }

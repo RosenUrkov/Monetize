@@ -1,9 +1,6 @@
 import { IsDefined } from 'class-validator';
 
-export class PaymentInfoDTO {
-  @IsDefined()
-  public paymentId: number;
-
+export class UserInfoDTO {
   @IsDefined()
   public userId: number;
 }

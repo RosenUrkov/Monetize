@@ -12,6 +12,7 @@ export class Payment {
 
   @ManyToOne(() => Budget, (budget) => budget.payments, {
     nullable: false,
+    onDelete: 'CASCADE',
   })
   public budget: Budget;
 
