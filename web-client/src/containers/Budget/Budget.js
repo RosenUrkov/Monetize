@@ -1,51 +1,38 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import BudgetList from "../../components/Budget/BudgetList/BudgetList";
 import CreateBudget from "../../components/Budget/CreateBudget/CreateBudget";
-import httpProvider from "../../providers/http-provider";
+import Error from "../../components/UI/Error/Error";
+import Loader from "../../components/UI/Loader/Loader";
+import {
+  createBudget,
+  deleteBudget,
+  fetchBudgets,
+  updateBudget,
+} from "../../store/actions/budgets";
 
 const Budget = (props) => {
-  const [budgets, setBudgets] = useState([]);
+  const dispatch = useDispatch();
+  const budgetsState = useSelector((state) => state.budgets);
 
-  useEffect(() => {
-    httpProvider.get("budgets").then((data) => {
-      setBudgets(data);
-    });
-  }, []);
+  useEffect(() => dispatch(fetchBudgets()), [dispatch]);
 
-  const create = (budget) => {
-    httpProvider
-      .post("budgets", budget)
-      .then((budget) => setBudgets((prev) => [...prev, budget]))
-      .catch(console.log);
-  };
+  if (budgetsState.loading) return <Loader />;
+  if (budgetsState.error) return <Error />;
 
-  const update = (id, budget) => {
-    httpProvider
-      .put(`budgets/${id}`, budget)
-      .then((budget) => {
-        const index = budgets.findIndex((x) => x.id === budget.id);
-        const updatedBudgets = [...budgets];
-        updatedBudgets[index] = budget;
-
-        setBudgets(updatedBudgets);
-      })
-      .catch(console.log);
-  };
-
-  const remove = (id) => {
-    httpProvider
-      .delete(`budgets/${id}`)
-      .then((budget) =>
-        setBudgets((prev) => prev.filter((x) => x.id !== budget.id))
-      )
-      .catch(console.log);
-  };
+  const create = (budget) => dispatch(createBudget(budget));
+  const update = (id, budget) => dispatch(updateBudget(id, budget));
+  const remove = (budgetId) => dispatch(deleteBudget(budgetId));
 
   return (
     <div>
       <CreateBudget create={create} />
       <br />
-      <BudgetList budgets={budgets} remove={remove} update={update} />
+      <BudgetList
+        budgets={budgetsState.budgets}
+        remove={remove}
+        update={update}
+      />
     </div>
   );
 };

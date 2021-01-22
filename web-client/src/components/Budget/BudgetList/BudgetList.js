@@ -9,7 +9,11 @@ const BudgetList = (props) => {
       {budgets &&
         budgets.map((budget) => (
           <Fragment key={budget.id}>
-            <BudgetDetails {...budget} remove={() => remove(budget.id)} />
+            <BudgetDetails
+              {...budget}
+              remove={() => remove(budget.id)}
+              update={(data) => update(budget.id, data)}
+            />
             <br />
           </Fragment>
         ))}

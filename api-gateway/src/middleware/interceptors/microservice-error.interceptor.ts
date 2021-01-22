@@ -13,7 +13,14 @@ export class MicroserviceErrorInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       catchError((err) => {
-        return throwError(new HttpException(err.message, err.code));
+        console.log(err);
+
+        return throwError(
+          new HttpException(
+            err.response || err.message,
+            err.response?.statusCode || err.code,
+          ),
+        );
       }),
     );
   }

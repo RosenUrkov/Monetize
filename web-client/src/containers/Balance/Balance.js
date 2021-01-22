@@ -1,51 +1,38 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import CreatePayment from "../../components/Payments/CreatePayment/CreatePayment";
 import PaymentList from "../../components/Payments/PaymentList/PaymentList";
-import httpProvider from "../../providers/http-provider";
+import Error from "../../components/UI/Error/Error";
+import Loader from "../../components/UI/Loader/Loader";
+import {
+  createPayment,
+  deletePayment,
+  fetchPayments,
+  updatePayment,
+} from "../../store/actions/payments";
 
 const Balance = (props) => {
-  const [payments, setPayments] = useState([]);
+  const dispatch = useDispatch();
+  const paymentsState = useSelector((state) => state.payments);
 
-  useEffect(() => {
-    httpProvider.get("payments").then((data) => {
-      setPayments(data);
-    });
-  }, []);
+  useEffect(() => dispatch(fetchPayments()), [dispatch]);
 
-  const create = (payment) => {
-    httpProvider
-      .post("payments", payment)
-      .then((payment) => setPayments((prev) => [...prev, payment]))
-      .catch(console.log);
-  };
+  if (paymentsState.loading) return <Loader />;
+  if (paymentsState.error) return <Error />;
 
-  const update = (id, payment) => {
-    httpProvider
-      .put(`payments/${id}`, payment)
-      .then((payment) => {
-        const index = payments.findIndex((x) => x.id === payment.id);
-        const updatedPayments = [...payments];
-        updatedPayments[index] = payment;
-
-        setPayments(updatedPayments);
-      })
-      .catch(console.log);
-  };
-
-  const remove = (paymentId) => {
-    httpProvider
-      .delete(`payments/${paymentId}`)
-      .then((payment) =>
-        setPayments((prev) => prev.filter((x) => x.id !== payment.id))
-      )
-      .catch(console.log);
-  };
+  const create = (payment) => dispatch(createPayment(payment));
+  const update = (id, payment) => dispatch(updatePayment(id, payment));
+  const remove = (paymentId) => dispatch(deletePayment(paymentId));
 
   return (
     <div>
       <CreatePayment create={create} />
       <br />
-      <PaymentList payments={payments} remove={remove} update={update} />
+      <PaymentList
+        payments={paymentsState.payments}
+        remove={remove}
+        update={update}
+      />
     </div>
   );
 };
