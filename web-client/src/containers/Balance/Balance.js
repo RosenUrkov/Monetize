@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CreatePayment from "../../components/Payments/CreatePayment/CreatePayment";
 import PaymentList from "../../components/Payments/PaymentList/PaymentList";
-import Error from "../../components/UI/Error/Error";
+import Error from "../../components/Error/Error/Error";
 import Loader from "../../components/UI/Loader/Loader";
 import {
   createPayment,

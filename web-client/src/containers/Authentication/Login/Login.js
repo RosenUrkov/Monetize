@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { isInputValid } from "../../../common/validators";
 import Loader from "../../../components/UI/Loader/Loader";
-import Error from "../../../components/UI/Error/Error";
+import Error from "../../../components/Error/Error/Error";
 import { login } from "../../../store/actions/auth";
 import "./Login.css";
 

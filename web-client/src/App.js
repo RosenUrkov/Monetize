@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { BrowserRouter, Switch, Redirect, Route } from "react-router-dom";
-import NotFound from "./components/UI/NotFound/NotFound";
+import Navigation from "./components/Navigation/Navigation";
+import NotFound from "./components/Error/NotFound/NotFound";
 import Login from "./containers/Authentication/Login/Login";
 import Register from "./containers/Authentication/Register/Register";
 import Balance from "./containers/Balance/Balance";
@@ -17,6 +18,8 @@ const App = () => {
 
   return (
     <BrowserRouter>
+      <Navigation />
+
       <Switch>
         <Redirect from="/" to="/register" exact />
 

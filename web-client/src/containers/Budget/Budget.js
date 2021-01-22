@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import BudgetList from "../../components/Budget/BudgetList/BudgetList";
 import CreateBudget from "../../components/Budget/CreateBudget/CreateBudget";
-import Error from "../../components/UI/Error/Error";
+import Error from "../../components/Error/Error/Error";
 import Loader from "../../components/UI/Loader/Loader";
 import {
   createBudget,
