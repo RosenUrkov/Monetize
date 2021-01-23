@@ -98,7 +98,7 @@ export const authCheckState = () => {
     const token = localStorage.getItem("token");
 
     if (!token) {
-      dispatch(logout());
+      // dispatch(logout());
       return;
     }
 
