@@ -56,7 +56,6 @@ export const fetchPayments = () => {
     httpProvider
       .get("payments")
       .then((res) => {
-        console.log(res.data);
         dispatch(fetchPaymentsSuccess(res.data));
       })
       .catch((error) => {
@@ -73,11 +72,9 @@ export const createPayment = (paymentData) => {
     httpProvider
       .post("payments", paymentData)
       .then((res) => {
-        console.log(res.data);
         dispatch(createPaymentSuccess(res.data));
       })
       .catch((error) => {
-        console.log(error);
         dispatch(paymentsRequestFail(error.response.data));
       });
   };
@@ -90,11 +87,9 @@ export const updatePayment = (id, paymentData) => {
     httpProvider
       .put(`payments/${id}`, paymentData)
       .then((res) => {
-        console.log(res.data);
         dispatch(updatePaymentSuccess(res.data));
       })
       .catch((error) => {
-        console.log(error);
         dispatch(paymentsRequestFail(error.response.data));
       });
   };
@@ -107,11 +102,9 @@ export const deletePayment = (paymentId) => {
     httpProvider
       .delete(`payments/${paymentId}`)
       .then((res) => {
-        console.log(res.data);
         dispatch(deletePaymentSuccess(paymentId));
       })
       .catch((error) => {
-        console.log(error);
         dispatch(paymentsRequestFail(error.response.data));
       });
   };

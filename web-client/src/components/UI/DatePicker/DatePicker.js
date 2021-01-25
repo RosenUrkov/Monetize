@@ -7,13 +7,15 @@ import {
 } from "@material-ui/pickers";
 
 const DatePicker = (props) => {
+  const { label, date, changeDate } = props;
+
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <KeyboardDatePicker
         format="yyyy-MM-dd"
-        label={props.label}
-        value={props.date}
-        onChange={(date) => props.changeDate(date)}
+        label={label}
+        value={date}
+        onChange={(date) => changeDate(date)}
       />
     </MuiPickersUtilsProvider>
   );

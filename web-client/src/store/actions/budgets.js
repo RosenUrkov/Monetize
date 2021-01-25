@@ -56,7 +56,6 @@ export const fetchBudgets = () => {
     httpProvider
       .get("budgets")
       .then((res) => {
-        console.log(res.data);
         dispatch(fetchBudgetsSuccess(res.data));
       })
       .catch((error) => {
@@ -73,7 +72,6 @@ export const createBudget = (budgetData) => {
     httpProvider
       .post("budgets", budgetData)
       .then((res) => {
-        console.log(res.data);
         dispatch(createBudgetSuccess(res.data));
       })
       .catch((error) => {
@@ -90,7 +88,6 @@ export const updateBudget = (id, budgetData) => {
     httpProvider
       .put(`budgets/${id}`, budgetData)
       .then((res) => {
-        console.log(res.data);
         dispatch(updateBudgetSuccess(res.data));
       })
       .catch((error) => {
@@ -107,7 +104,6 @@ export const deleteBudget = (budgetId) => {
     httpProvider
       .delete(`budgets/${budgetId}`)
       .then((res) => {
-        console.log(res.data);
         dispatch(deleteBudgetSuccess(budgetId));
       })
       .catch((error) => {

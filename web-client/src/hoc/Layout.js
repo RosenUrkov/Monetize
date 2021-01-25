@@ -10,20 +10,17 @@ import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
 import MonetizationIcon from "@material-ui/icons/MonetizationOn";
-
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { logout } from "./../store/actions/auth";
@@ -93,12 +90,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Layout = (props) => {
-  const classes = useStyles();
-  const theme = useTheme();
-  const [open, setOpen] = useState(false);
-
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
+
+  const theme = useTheme();
+  const classes = useStyles();
+
+  const [open, setOpen] = useState(false);
 
   const logoutHandler = () => dispatch(logout());
 

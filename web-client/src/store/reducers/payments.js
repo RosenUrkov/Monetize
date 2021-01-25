@@ -34,7 +34,7 @@ const paymentsReducer = (state = initialState, action) => {
         loading: false,
       };
     case UPDATE_PAYMENT_SUCCESS:
-      const index = state.payments.find((x) => x.id === action.payment.id);
+      const index = state.payments.findIndex((x) => x.id === action.payment.id);
       const updatedPayments = [...state.payments];
       updatedPayments[index] = action.payment;
 

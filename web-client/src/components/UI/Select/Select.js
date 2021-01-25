@@ -17,20 +17,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SelectComponent = (props) => {
+  const { name, value, onChange, options } = props;
+
   const classes = useStyles();
 
   return (
     <FormControl className={classes.formControl}>
-      <InputLabel id={`select-${props.name}-label`}>{props.name}</InputLabel>
+      <InputLabel id={`select-${name}-label`}>{name}</InputLabel>
       <Select
-        style={{ minWidth: 500 }}
-        labelId={`select-${props.name}-label`}
-        id={`select-${props.name}`}
-        name={props.name}
-        value={props.value}
-        onChange={props.onChange}
+        // style={{ minWidth: 500 }}
+        labelId={`select-${name}-label`}
+        id={`select-${name}`}
+        name={name}
+        value={value}
+        onChange={onChange}
       >
-        {props.options.map((value) => (
+        {options.map((value) => (
           <MenuItem value={value} key={value}>
             {value}
           </MenuItem>

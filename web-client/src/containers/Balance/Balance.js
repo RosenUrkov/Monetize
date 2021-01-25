@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import CreatePayment from "../../components/Payments/CreatePayment/CreatePayment";
+import PaymentForm from "../../components/Payments/PaymentForm/PaymentForm";
 import PaymentList from "../../components/Payments/PaymentList/PaymentList";
 import Error from "../../components/Error/Error/Error";
 import Loader from "../../components/UI/Loader/Loader";
@@ -13,6 +13,7 @@ import {
 import DatePicker from "../../components/UI/DatePicker/DatePicker";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
+import { formatDate } from "../../common/formatDate";
 
 const Balance = (props) => {
   const dispatch = useDispatch();
@@ -20,20 +21,17 @@ const Balance = (props) => {
 
   const [paymentsDate, setPaymentsDate] = useState(new Date());
   const [displayPayments, setDisplayPayments] = useState([]);
-  const [createPaymentMode, setCreatePaymentMode] = useState(false);
+
+  const [paymentToUpdate, setPaymentToUpdate] = useState(null);
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
+  const [openPaymentForm, setOpenPaymentForm] = useState(false);
 
   useEffect(() => dispatch(fetchPayments()), [dispatch]);
 
   useEffect(() => {
-    const year = paymentsDate.getUTCFullYear().toString();
-    const month = (paymentsDate.getUTCMonth() + 1).toString();
-    const date = paymentsDate.getUTCDate().toString();
-    const todayDateFormatted = `${year}-${
-      "0".repeat(2 - month.length) + month
-    }-${"0".repeat(2 - date.length) + date}`;
-
+    const paymentsDateFormatted = formatDate(paymentsDate);
     const filteredPayments = paymentsState.payments.filter(
-      (payment) => payment.date === todayDateFormatted
+      (payment) => payment.date === paymentsDateFormatted
     );
 
     setDisplayPayments(filteredPayments);
@@ -46,6 +44,46 @@ const Balance = (props) => {
   const update = (id, payment) => dispatch(updatePayment(id, payment));
   const remove = (paymentId) => dispatch(deletePayment(paymentId));
 
+  const startCreate = () => {
+    setPaymentToUpdate(null);
+    setOpenPaymentForm(true);
+    setShowPaymentForm(true);
+  };
+
+  const finishCreate = (payment) => {
+    create(payment);
+    setOpenPaymentForm(false);
+
+    setTimeout(() => {
+      setShowPaymentForm(false);
+    }, 500);
+  };
+
+  const startUpdate = (payment) => {
+    setPaymentToUpdate(payment);
+    setOpenPaymentForm(true);
+    setShowPaymentForm(true);
+  };
+
+  const finishUpdate = (payment) => {
+    update(paymentToUpdate.id, payment);
+    setPaymentToUpdate(null);
+    setOpenPaymentForm(false);
+
+    setTimeout(() => {
+      setShowPaymentForm(false);
+    }, 500);
+  };
+
+  const cancelPaymentForm = () => {
+    setPaymentToUpdate(null);
+    setOpenPaymentForm(false);
+
+    setTimeout(() => {
+      setShowPaymentForm(false);
+    }, 500);
+  };
+
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -53,7 +91,7 @@ const Balance = (props) => {
           color="primary"
           aria-label="add"
           size="small"
-          onClick={() => setCreatePaymentMode(true)}
+          onClick={startCreate}
         >
           <AddIcon />
         </Fab>
@@ -65,15 +103,22 @@ const Balance = (props) => {
         />
       </div>
 
-      <CreatePayment
-        open={createPaymentMode}
-        create={create}
-        close={() => setCreatePaymentMode(false)}
-      />
+      {showPaymentForm && (
+        <PaymentForm
+          open={openPaymentForm}
+          basePayment={paymentToUpdate}
+          submit={paymentToUpdate ? finishUpdate : finishCreate}
+          close={cancelPaymentForm}
+        />
+      )}
 
       <br />
 
-      <PaymentList payments={displayPayments} remove={remove} update={update} />
+      <PaymentList
+        payments={displayPayments}
+        remove={remove}
+        startUpdate={startUpdate}
+      />
     </div>
   );
 };

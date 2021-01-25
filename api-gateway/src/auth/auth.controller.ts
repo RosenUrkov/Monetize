@@ -18,8 +18,7 @@ export class AuthController {
     return await this.authService.login(user);
   }
 
-  @Post('/logout')
-  @UseGuards(AuthGuard('jwt')) // blacklisting?
+  @Post('/logout') // blacklisting?
   public async logoutUser(@Token() token: string) {
     console.log(token);
 

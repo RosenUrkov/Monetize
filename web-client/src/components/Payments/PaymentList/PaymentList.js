@@ -25,16 +25,14 @@ const useStyles = makeStyles({
 });
 
 const PaymentList = (props) => {
-  const { payments, remove, update } = props;
+  const { payments, remove, startUpdate } = props;
 
   const classes = useStyles();
+
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
+  const handleChangePage = (event, newPage) => setPage(newPage);
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -63,7 +61,7 @@ const PaymentList = (props) => {
           <TableBody>
             {payments
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row, index) => {
+              .map((row) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
                     {paymentColumns.map((column) => {
@@ -86,7 +84,7 @@ const PaymentList = (props) => {
                     })}
 
                     <TableCell>
-                      <IconButton onClick={() => console.log("edited")}>
+                      <IconButton onClick={() => startUpdate(row)}>
                         <EditIcon color="primary" />
                       </IconButton>
 
@@ -101,9 +99,6 @@ const PaymentList = (props) => {
         </Table>
       </TableContainer>
 
-      {/* <div style={{ display: "flex", justifyContent: "space-between" }}>
-        {createIcon} */}
-
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
@@ -113,7 +108,6 @@ const PaymentList = (props) => {
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
       />
-      {/* </div> */}
     </Paper>
   );
 };

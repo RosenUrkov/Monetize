@@ -1,5 +1,4 @@
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
-import TodayIcon from "@material-ui/icons/Today";
 import { paymentTypes } from "./paymentTypes";
 import { accountTypes } from "./accountTypes";
 import { expenseCategories } from "./expenseCategories";

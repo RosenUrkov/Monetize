@@ -1,9 +1,9 @@
-import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
+import MoneyIcon from "@material-ui/icons/Money";
 
 export const incomeCategories = {
-  Salary: { icon: AttachMoneyIcon },
-  PocketMoney: { icon: AttachMoneyIcon },
-  Loan: { icon: AttachMoneyIcon },
-  Investment: { icon: AttachMoneyIcon },
-  SideHustle: { icon: AttachMoneyIcon },
+  Salary: { icon: MoneyIcon },
+  PocketMoney: { icon: MoneyIcon },
+  Loan: { icon: MoneyIcon },
+  Investment: { icon: MoneyIcon },
+  SideHustle: { icon: MoneyIcon },
 };
