@@ -26,9 +26,7 @@ export class IsCorrectPaymentCategoryOfType
   defaultMessage(args: ValidationArguments) {
     const value = args.value;
     const type = (args.object as any).type;
-    const currentType =
-      type === PaymentType.Expense ? PaymentType.Expense : PaymentType.Income;
 
-    return `The ${value} is not part of the ${currentType} type!`;
+    return `The ${value} is not part of the ${type} type!`;
   }
 }

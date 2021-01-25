@@ -13,16 +13,10 @@ export class IsCorrectPaymentCategoryOfType
   validate(value: any, args: ValidationArguments) {
     const type = (args.object as any).type;
 
-    if (
-      type === PaymentType.ChangingExpense ||
-      type === PaymentType.RegularExpense
-    ) {
+    if (type === PaymentType.Expense) {
       return Object.values(ExpenseCategory).includes(value);
     }
-    if (
-      type === PaymentType.ChangingIncome ||
-      type === PaymentType.RegularIncome
-    ) {
+    if (type === PaymentType.Income) {
       return Object.values(IncomeCategory).includes(value);
     }
 
@@ -32,12 +26,7 @@ export class IsCorrectPaymentCategoryOfType
   defaultMessage(args: ValidationArguments) {
     const value = args.value;
     const type = (args.object as any).type;
-    const currentType =
-      type === PaymentType.ChangingExpense ||
-      type === PaymentType.RegularExpense
-        ? 'Expense'
-        : 'Income';
 
-    return `The ${value} is not part of the ${currentType} types!`;
+    return `The ${value} is not part of the ${type} type!`;
   }
 }

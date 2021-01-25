@@ -19,27 +19,27 @@ export class AppController {
   ) {}
 
   @MessagePattern(IDENTIFIERS.getBudgets)
-  public getBudgets(info: UserInfoDTO): Observable<ShowBudgetDTO[]> {
+  public getBudgets(info: UserInfoDTO): Promise<ShowBudgetDTO[]> {
     return this.appService.getBudgets(info);
   }
 
   @MessagePattern(IDENTIFIERS.getBudget)
-  public getBudget(info: BudgetInfoDTO): Observable<ShowBudgetDTO> {
+  public getBudget(info: BudgetInfoDTO): Promise<ShowBudgetDTO> {
     return this.appService.getBudget(info);
   }
 
   @MessagePattern(IDENTIFIERS.createBudget)
-  public createBudget(info: CreateBudgetDTO): Observable<ShowBudgetDTO> {
+  public createBudget(info: CreateBudgetDTO): Promise<ShowBudgetDTO> {
     return this.appService.createBudget(info);
   }
 
   @MessagePattern(IDENTIFIERS.updateBudget)
-  public updateBudget(info: UpdateBudgetDTO): Observable<ShowBudgetDTO> {
+  public updateBudget(info: UpdateBudgetDTO): Promise<ShowBudgetDTO> {
     return this.appService.updateBudget(info);
   }
 
   @MessagePattern(IDENTIFIERS.deleteBudget)
-  public deleteBudget(info: BudgetInfoDTO): Observable<ShowBudgetDTO> {
+  public deleteBudget(info: BudgetInfoDTO): Promise<ShowBudgetDTO> {
     return this.appService.deleteBudget(info);
   }
 }

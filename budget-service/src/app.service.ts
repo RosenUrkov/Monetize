@@ -28,295 +28,227 @@ export class AppService {
     private readonly paymentDetailsRepository: Repository<PaymentDetails>,
   ) {}
 
-  public getBudgets(info: UserInfoDTO): Observable<ShowBudgetDTO[]> {
-    const budgetsPromise: Promise<Budget[]> = this.budgetsRepository.find({
+  public async getBudgets(info: UserInfoDTO): Promise<ShowBudgetDTO[]> {
+    const budgets: Budget[] = await this.budgetsRepository.find({
       where: {
         userId: info.userId,
       },
     });
 
-    return from(budgetsPromise).pipe(
-      map((entity) =>
-        plainToClass(ShowBudgetDTO, entity, { excludeExtraneousValues: true }),
-      ),
-    );
+    return plainToClass(ShowBudgetDTO, budgets, {
+      excludeExtraneousValues: true,
+    });
   }
 
-  public getBudget(info: BudgetInfoDTO): Observable<ShowBudgetDTO> {
-    const budgetsPromise: Promise<Budget> = this.budgetsRepository.findOneOrFail(
-      {
-        where: {
-          userId: info.userId,
-          id: info.budgetId,
-        },
+  public async getBudget(info: BudgetInfoDTO): Promise<ShowBudgetDTO> {
+    const budget: Budget = await this.budgetsRepository.findOne({
+      where: {
+        userId: info.userId,
+        id: info.budgetId,
       },
-    );
+    });
 
-    return from(budgetsPromise).pipe(
-      catchError(() =>
-        throwError(
-          new RpcException({
-            code: 404,
-            message: 'The budget was not found!',
-          }),
-        ),
-      ),
-      map((entity) =>
-        plainToClass(ShowBudgetDTO, entity, { excludeExtraneousValues: true }),
-      ),
-    );
+    if (!budget) {
+      throw new RpcException({
+        code: 404,
+        message: 'The budget was not found!',
+      });
+    }
+
+    return plainToClass(ShowBudgetDTO, budget, {
+      excludeExtraneousValues: true,
+    });
   }
 
-  public createBudget(info: CreateBudgetDTO): Observable<ShowBudgetDTO> {
-    const budgetsPromise: Promise<Budget[]> = this.budgetsRepository.find({
+  public async createBudget(info: CreateBudgetDTO): Promise<ShowBudgetDTO> {
+    const budgets: Budget[] = await this.budgetsRepository.find({
       where: {
         userId: info.userId,
       },
     });
 
-    return from(budgetsPromise).pipe(
-      mergeMap((entities) => {
-        if (entities.some((x) => x.type.name === info.type)) {
-          return throwError(
-            new RpcException({
-              code: 400,
-              message: `A budget with type ${info.type} already exists!`,
-            }),
-          );
-        }
+    if (budgets.some((x) => x.type.name === info.type)) {
+      throw new RpcException({
+        code: 400,
+        message: `A budget with type ${info.type} already exists!`,
+      });
+    }
 
-        const budgetTypePromise = this.budgetTypesRepository.findOneOrFail({
-          where: {
-            name: info.type,
-          },
-        });
+    const budgetTypePromise = this.budgetTypesRepository.findOne({
+      where: {
+        name: info.type,
+      },
+    });
 
-        const categories = info.payments.map((x) => x.category);
-        const paymentsDetailsPromise = this.paymentDetailsRepository.find({
-          where: {
-            category: In(categories),
-          },
-        });
+    const categories = info.payments.map((x) => x.category);
+    const paymentsDetailsPromise = this.paymentDetailsRepository.find({
+      where: {
+        category: In(categories),
+      },
+    });
 
-        const promise = Promise.all([
-          budgetTypePromise,
-          paymentsDetailsPromise,
-        ]).then(([type, paymentsDetails]) => {
-          const payments: Payment[] = info.payments
-            .map(({ value, category, type }) => {
-              return {
-                value,
-                details: paymentsDetails.find(
-                  (x) => x.category === category && x.type.name === type,
-                ),
-              };
-            })
-            .map((x) => this.paymentsRepository.create(x));
+    const [type, paymentsDetails] = await Promise.all([
+      budgetTypePromise,
+      paymentsDetailsPromise,
+    ]);
 
-          const { userId } = info;
-          const budgetInfo: Partial<Budget> = {
-            userId,
-            type,
-            payments,
-          };
+    if (!type) {
+      throw new RpcException({
+        code: 400,
+        message: `The passed budget type does not exist!`,
+      });
+    }
 
-          return this.budgetsRepository.save(budgetInfo);
-        });
-
-        return from(promise);
-      }),
-      catchError((err) => {
-        console.log(err);
-
-        if (err.error) {
-          return throwError(err);
-        }
-
-        return throwError(
-          new RpcException({
-            code: 400,
-            message: 'The budget creation failed!',
-          }),
+    const payments: Payment[] = info.payments
+      .map(({ value, category, type }) => {
+        const details = paymentsDetails.find(
+          (x) => x.category === category && x.type.name === type,
         );
-      }),
-      map((entity) =>
-        plainToClass(ShowBudgetDTO, entity, { excludeExtraneousValues: true }),
-      ),
-    );
-  }
 
-  public updateBudget(info: UpdateBudgetDTO): Observable<ShowBudgetDTO> {
-    const budgetPromise: Promise<Budget> = this.budgetsRepository.findOneOrFail(
-      {
-        where: {
-          userId: info.userId,
-          id: info.budgetId,
-        },
-      },
-    );
-
-    return from(budgetPromise).pipe(
-      catchError(() =>
-        throwError(
-          new RpcException({
-            code: 404,
-            message: 'The budget was not found!',
-          }),
-        ),
-      ),
-      mergeMap((entity) => {
-        const changedRelationsPromises: Promise<any>[] = [
-          Promise.resolve(entity),
-        ];
-
-        if (info.type && entity.type.name !== info.type) {
-          const budgetTypePromise = this.budgetTypesRepository.findOneOrFail({
-            where: {
-              name: info.type,
-            },
-            relations: ['budgets'],
+        if (!details) {
+          throw new RpcException({
+            code: 400,
+            message: `There is a payment with invalid category or type!`,
           });
-
-          changedRelationsPromises.push(budgetTypePromise);
-        } else {
-          changedRelationsPromises.push(Promise.resolve(null));
         }
 
-        return from(Promise.all(changedRelationsPromises));
-      }),
-      mergeMap(([entity, budgetType]) => {
-        if (budgetType && budgetType.budgets.length > 0) {
-          return throwError(
-            new RpcException({
-              code: 400,
-              message: 'A budget with type ${info.type} already exists!',
-            }),
-          );
-        }
-
-        const changedRelationsPromises = [
-          Promise.resolve(entity),
-          Promise.resolve(budgetType),
-        ];
-        if (info.payments) {
-          const deleteOldPaymentsPromise = this.paymentsRepository.delete(
-            entity.payments.map((x) => x.id),
-          );
-
-          const categories = info.payments.map((x) => x.category);
-          const newPaymentsDetailsPromise = this.paymentDetailsRepository.find({
-            where: {
-              category: In(categories),
-            },
-          });
-
-          changedRelationsPromises.push(
-            deleteOldPaymentsPromise,
-            newPaymentsDetailsPromise,
-          );
-        } else {
-          changedRelationsPromises.push(
-            Promise.resolve(null),
-            Promise.resolve(null),
-          );
-        }
-
-        return from(Promise.all(changedRelationsPromises));
-      }),
-      mergeMap(([entity, budgetTypeEntity, _, newPaymentDetailsEntity]) => {
-        const budgetInfo: Partial<Budget> = {
-          ...entity,
+        return {
+          value,
+          details,
         };
+      })
+      .map((x) => this.paymentsRepository.create(x));
 
-        if (budgetTypeEntity) {
-          budgetInfo.type = budgetTypeEntity;
-        }
-        if (newPaymentDetailsEntity) {
-          const payments: Payment[] = info.payments
-            .map(({ value, category, type }) => {
-              return {
-                value,
-                details: newPaymentDetailsEntity.find(
-                  (x) => x.category === category && x.type.name === type,
-                ),
-              };
-            })
-            .map((x) => this.paymentsRepository.create(x));
+    const { userId } = info;
+    const budgetInfo: Partial<Budget> = {
+      userId,
+      type,
+      payments,
+    };
 
-          budgetInfo.payments = payments;
-        }
+    const savedBudget = await this.budgetsRepository.save(budgetInfo);
 
-        return from(this.budgetsRepository.save(budgetInfo));
-      }),
-      catchError((err) => {
-        if (err.error) {
-          return throwError(err);
-        }
-
-        return throwError(
-          new RpcException({
-            code: 400,
-            message: 'The budget update failed!',
-          }),
-        );
-      }),
-      map((entity) => {
-        console.log(entity);
-
-        return plainToClass(ShowBudgetDTO, entity, {
-          excludeExtraneousValues: true,
-        });
-      }),
-    );
+    return plainToClass(ShowBudgetDTO, savedBudget, {
+      excludeExtraneousValues: true,
+    });
   }
 
-  public deleteBudget(info: BudgetInfoDTO): Observable<ShowBudgetDTO> {
-    const budgetPromise: Promise<Budget> = this.budgetsRepository.findOneOrFail(
-      {
-        where: {
-          userId: info.userId,
-          id: info.budgetId,
-        },
+  public async updateBudget(info: UpdateBudgetDTO): Promise<ShowBudgetDTO> {
+    const budget: Budget = await this.budgetsRepository.findOne({
+      where: {
+        userId: info.userId,
+        id: info.budgetId,
       },
+    });
+
+    if (!budget) {
+      throw new RpcException({
+        code: 404,
+        message: 'The budget was not found!',
+      });
+    }
+
+    let budgetType = null;
+    if (info.type && budget.type.name !== info.type) {
+      budgetType = await this.budgetTypesRepository.findOne({
+        where: {
+          name: info.type,
+        },
+        relations: ['budgets'],
+      });
+    }
+    if (budgetType && budgetType.budgets.length > 0) {
+      throw new RpcException({
+        code: 400,
+        message: `A budget with type ${info.type} already exists!`,
+      });
+    }
+
+    const changedRelationsPromises: Promise<any>[] = [];
+    if (info.payments) {
+      const deleteOldPaymentsPromise = this.paymentsRepository.delete(
+        budget.payments.map((x) => x.id),
+      );
+
+      const categories = info.payments.map((x) => x.category);
+      const newPaymentsDetailsPromise = this.paymentDetailsRepository.find({
+        where: {
+          category: In(categories),
+        },
+      });
+
+      changedRelationsPromises.push(
+        deleteOldPaymentsPromise,
+        newPaymentsDetailsPromise,
+      );
+    } else {
+      changedRelationsPromises.push(
+        Promise.resolve(null),
+        Promise.resolve(null),
+      );
+    }
+
+    const [_, newPaymentDetailsEntity] = await Promise.all(
+      changedRelationsPromises,
     );
 
-    return from(budgetPromise).pipe(
-      catchError((err) => {
-        console.log(err);
+    const budgetInfo: Partial<Budget> = {
+      ...budget,
+    };
 
-        return throwError(
-          new RpcException({
-            code: 404,
-            message: 'The budget was not found!',
-          }),
-        );
-      }),
-      mergeMap((entity) => {
-        const promise = this.budgetsRepository
-          .delete(entity.id)
-          .then(() => entity);
+    if (budgetType) {
+      budgetInfo.type = budgetType;
+    }
+    if (newPaymentDetailsEntity) {
+      const payments: Payment[] = info.payments
+        .map(({ value, category, type }) => {
+          const details = newPaymentDetailsEntity.find(
+            (x) => x.category === category && x.type.name === type,
+          );
 
-        return from(promise);
-      }),
-      catchError((err) => {
-        console.log(err);
+          if (!details) {
+            throw new RpcException({
+              code: 400,
+              message: `There is a payment with invalid category or type!`,
+            });
+          }
 
-        if (err.error) {
-          return throwError(err);
-        }
+          return {
+            value,
+            details,
+          };
+        })
+        .map((x) => this.paymentsRepository.create(x));
 
-        return throwError(
-          new RpcException({
-            code: 400,
-            message: 'The budget delete failed!',
-          }),
-        );
-      }),
-      map((entity) => {
-        return plainToClass(ShowBudgetDTO, entity, {
-          excludeExtraneousValues: true,
-        });
-      }),
-    );
+      budgetInfo.payments = payments;
+    }
+
+    const updatedBudget = await this.budgetsRepository.save(budgetInfo);
+
+    return plainToClass(ShowBudgetDTO, updatedBudget, {
+      excludeExtraneousValues: true,
+    });
+  }
+
+  public async deleteBudget(info: BudgetInfoDTO): Promise<ShowBudgetDTO> {
+    const budget: Budget = await this.budgetsRepository.findOne({
+      where: {
+        userId: info.userId,
+        id: info.budgetId,
+      },
+    });
+
+    if (!budget) {
+      throw new RpcException({
+        code: 404,
+        message: 'The budget was not found!',
+      });
+    }
+
+    const deletedBudget = await this.budgetsRepository.delete(budget.id);
+
+    return plainToClass(ShowBudgetDTO, budget, {
+      excludeExtraneousValues: true,
+    });
   }
 }

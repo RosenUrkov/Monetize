@@ -18,7 +18,7 @@ export class MicroserviceErrorInterceptor implements NestInterceptor {
         return throwError(
           new HttpException(
             err.response || err.message,
-            err.response?.statusCode || err.code,
+            err.status || err.code,
           ),
         );
       }),

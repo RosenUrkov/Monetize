@@ -10,21 +10,13 @@ import { BudgetType } from './entities/budget-type.entity';
 import { Payment } from './entities/payment.entity';
 import { PaymentDetails } from './entities/payment-details.entity';
 import { IDENTIFIERS } from './config/identifiers';
+import { statisticsServiceConfig } from './config/services';
 
 @Module({
   imports: [
     ConfigurationModule,
     TypeOrmModule.forFeature([Budget, BudgetType, Payment, PaymentDetails]),
-    ClientsModule.register([
-      {
-        name: IDENTIFIERS.statisticsService,
-        transport: Transport.TCP,
-        options: {
-          host: '127.0.0.1',
-          port: 4003,
-        },
-      },
-    ]),
+    ClientsModule.register([statisticsServiceConfig]),
   ],
   providers: [AppService],
   controllers: [AppController],
