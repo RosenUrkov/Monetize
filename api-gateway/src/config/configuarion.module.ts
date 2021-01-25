@@ -30,7 +30,7 @@ import { User } from 'src/entities/user.entity';
         password: configService.get('DB_PASSWORD').toString(),
         database: configService.get('DB_DATABASE_NAME').toString(),
         entities: [User],
-        synchronize: true,
+        synchronize: false,
       }),
     }),
   ],

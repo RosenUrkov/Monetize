@@ -1,4 +1,4 @@
-import { Payment } from 'src/entities/payment.entity';
+import { Payment } from './payment.entity';
 import {
   Column,
   Entity,

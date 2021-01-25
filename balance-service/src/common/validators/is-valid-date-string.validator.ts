@@ -1,4 +1,3 @@
-import { IncomeCategory } from '../enums/income-category.enum';
 import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
@@ -14,7 +13,6 @@ export class IsValidDateString implements ValidatorConstraintInterface {
 
   defaultMessage(args: ValidationArguments) {
     const value = args.value;
-
     return `The ${value} is a valid date string with format YYYY-MM-DD!`;
   }
 }

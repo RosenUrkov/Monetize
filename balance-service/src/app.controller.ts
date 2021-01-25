@@ -18,34 +18,28 @@ export class AppController {
     private readonly appService: AppService,
   ) {}
 
-  // @MessagePattern('BalancePing')
-  // public balancePing() {
-  //   this.statisticsService.emit('pattern', 'FromBalance');
-  //   return from([4, 5, 6]);
-  // }
-
   @MessagePattern(IDENTIFIERS.getPayments)
-  public getPayments(info: UserInfoDTO): Observable<ShowPaymentDTO[]> {
+  public getPayments(info: UserInfoDTO): Promise<ShowPaymentDTO[]> {
     return this.appService.getPayments(info);
   }
 
   @MessagePattern(IDENTIFIERS.getPayment)
-  public getPayment(info: PaymentInfoDTO): Observable<ShowPaymentDTO> {
+  public getPayment(info: PaymentInfoDTO): Promise<ShowPaymentDTO> {
     return this.appService.getPayment(info);
   }
 
   @MessagePattern(IDENTIFIERS.createPayment)
-  public createPayment(info: CreatePaymentDTO): Observable<ShowPaymentDTO> {
+  public createPayment(info: CreatePaymentDTO): Promise<ShowPaymentDTO> {
     return this.appService.createPayment(info);
   }
 
   @MessagePattern(IDENTIFIERS.updatePayment)
-  public updatePayment(info: UpdatePaymentDTO): Observable<ShowPaymentDTO> {
+  public updatePayment(info: UpdatePaymentDTO): Promise<ShowPaymentDTO> {
     return this.appService.updatePayment(info);
   }
 
   @MessagePattern(IDENTIFIERS.deletePayment)
-  public deletePayment(info: PaymentInfoDTO): Observable<ShowPaymentDTO> {
+  public deletePayment(info: PaymentInfoDTO): Promise<ShowPaymentDTO> {
     return this.appService.deletePayment(info);
   }
 }

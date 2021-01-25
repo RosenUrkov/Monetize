@@ -13,13 +13,14 @@ export class UserService {
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
   ) {}
 
-  @TransformPlainToClass(ShowUserDTO, { excludeExtraneousValues: true })
   public async findUserByUsername(username: string): Promise<ShowUserDTO> {
     const foundUser: User = await this.usersRepository.findOne({
       username,
     });
 
-    return foundUser;
+    return plainToClass(ShowUserDTO, foundUser, {
+      excludeExtraneousValues: true,
+    });
   }
 
   public async validateUserPassword(user: CreateUserDTO): Promise<boolean> {
@@ -30,7 +31,6 @@ export class UserService {
     return await bcrypt.compare(user.password, userEntity.password);
   }
 
-  @TransformPlainToClass(ShowUserDTO, { excludeExtraneousValues: true })
   public async createUser(user: CreateUserDTO): Promise<ShowUserDTO> {
     const foundUser: User = await this.usersRepository.findOne({
       username: user.username,
@@ -43,6 +43,8 @@ export class UserService {
     userEntity.password = await bcrypt.hash(user.password, 10);
     const createdUser: User = await this.usersRepository.save(userEntity);
 
-    return createdUser;
+    return plainToClass(ShowUserDTO, createdUser, {
+      excludeExtraneousValues: true,
+    });
   }
 }

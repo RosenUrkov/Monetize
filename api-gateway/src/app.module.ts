@@ -6,36 +6,20 @@ import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { AuthModule } from './auth/auth.module';
 import { IDENTIFIERS } from './config/identifiers';
+import {
+  balanceServiceConfig,
+  budgetServiceConfig,
+  statisticsServiceConfig,
+} from './config/services';
 
 @Module({
   imports: [
     ConfigurationModule,
     AuthModule,
     ClientsModule.register([
-      {
-        name: IDENTIFIERS.balanceService,
-        transport: Transport.TCP,
-        options: {
-          host: '127.0.0.1',
-          port: 4001,
-        },
-      },
-      {
-        name: IDENTIFIERS.budgetService,
-        transport: Transport.TCP,
-        options: {
-          host: '127.0.0.1',
-          port: 4002,
-        },
-      },
-      {
-        name: IDENTIFIERS.statisticsService,
-        transport: Transport.TCP,
-        options: {
-          host: '127.0.0.1',
-          port: 4003,
-        },
-      },
+      balanceServiceConfig,
+      budgetServiceConfig,
+      statisticsServiceConfig,
     ]),
   ],
   controllers: [BalanceController, BudgetController, StatisticsController],

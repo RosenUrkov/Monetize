@@ -20,7 +20,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "typeorm": "ts-node ./node_modules/typeorm/cli.js",
-    "seed": "ts-node ./src/database/seed/seed.ts"
+    "seed": "ts-node ./src/config/database/seed/seed.ts"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
