@@ -40,7 +40,7 @@ const budgetsReducer = (state = initialState, action) => {
         loading: false,
       };
     case UPDATE_BUDGET_SUCCESS:
-      const index = state.budgets.find((x) => x.id === action.budget.id);
+      const index = state.budgets.findIndex((x) => x.id === action.budget.id);
       const updatedBudgets = [...state.budgets];
       updatedBudgets[index] = action.budget;
 

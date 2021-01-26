@@ -1,45 +1,16 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { budgetTypes } from "../../../constants/budgetTypes";
 import Accordion from "../../UI/Accordion/Accordion";
 import BudgetDetails from "../BudgetDetails/BudgetDetails";
 
-// [
-//   {
-//       "id": 3,
-//       "type": "Month",
-//       "payments": [
-//           {
-//               "value": "20.00",
-//               "type": "Expense",
-//               "category": "Drink"
-//           },
-//           {
-//               "value": "20.00",
-//               "type": "Income",
-//               "category": "Salary"
-//           }
-//       ]
-//   },
-//   {
-//       "id": 4,
-//       "type": "Day",
-//       "payments": [
-//           {
-//               "value": "20.00",
-//               "type": "Expense",
-//               "category": "Drink"
-//           },
-//           {
-//               "value": "30.00",
-//               "type": "Income",
-//               "category": "Salary"
-//           }
-//       ]
-//   }
-// ]
-
 const BudgetList = (props) => {
   const { budgets, remove, update } = props;
+
+  const [budgetDetails, setBudgetDetails] = useState(0);
+
+  const showNewBudgetDetails = (detailsIndex) => (ev, expanded) => {
+    setBudgetDetails(expanded ? detailsIndex : false);
+  };
 
   const types = Object.keys(budgetTypes);
   const sortedBudgetsWithIcons = budgets.reduce((sorted, curr) => {
@@ -58,7 +29,9 @@ const BudgetList = (props) => {
             title={budget.type}
             TitleIcon={budget.icon}
             key={budget.id}
-            update={() => update(budget.id)}
+            expanded={budgetDetails === index}
+            onChange={showNewBudgetDetails(index)}
+            update={() => update(budget)}
             remove={() => remove(budget.id)}
           >
             <BudgetDetails payments={budget.payments} />

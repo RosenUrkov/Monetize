@@ -20,7 +20,7 @@ const App = () => {
     <BrowserRouter>
       <Layout>
         <Switch>
-          <Redirect from="/" to="/register" exact />
+          <Redirect from="/" to="/balance" exact />
 
           <Route path="/balance" component={Balance} />
           <Route path="/budgets" component={Budget} />

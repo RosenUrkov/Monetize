@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AccordionComponent = (props) => {
-  const { title, TitleIcon, update, remove } = props;
+  const { title, TitleIcon, expanded, onChange, update, remove } = props;
 
   const classes = useStyles();
 
@@ -36,7 +36,7 @@ const AccordionComponent = (props) => {
   };
 
   return (
-    <Accordion>
+    <Accordion expanded={expanded} onChange={onChange}>
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls={`panel-${title}-content`}

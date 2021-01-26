@@ -107,6 +107,7 @@ const Balance = (props) => {
           color="primary"
           aria-label="add"
           size="small"
+          style={{ alignSelf: "center" }}
           onClick={startCreate}
         >
           <AddIcon />
