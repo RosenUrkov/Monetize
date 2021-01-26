@@ -15,8 +15,6 @@ const initialState = {
 };
 
 const authReducer = (state = initialState, action) => {
-  console.log(state, action);
-
   switch (action.type) {
     case AUTH_REQUEST_START:
       return { ...state, message: null, error: null, loading: true };

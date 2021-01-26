@@ -15,14 +15,16 @@ export class MicroserviceErrorInterceptor implements NestInterceptor {
       catchError((err) => {
         console.log('here', err);
 
-        const status = err.status || err.code;
-        const response = err.response || err.message;
-        response.message =
-          typeof response.message === 'object'
-            ? response.message[0]
-            : response.message;
+        if (err.message && err.code) {
+          return throwError(new HttpException(err.message, err.code));
+        }
 
-        return throwError(new HttpException(response, status));
+        const message =
+          typeof err.response.message === 'object'
+            ? err.response.message[0]
+            : err.response.message;
+
+        return throwError(new HttpException(message, err.status));
       }),
     );
   }

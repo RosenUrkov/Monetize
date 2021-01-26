@@ -16,7 +16,7 @@ export class ValidationErrorInterceptor implements NestInterceptor {
       catchError((err) => {
         console.log('here', err);
 
-        if (err.message && err.code) {
+        if (!err.response) {
           return throwError(err);
         }
 

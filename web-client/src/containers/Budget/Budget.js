@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import BudgetList from "../../components/Budget/BudgetList/BudgetList";
-import CreateBudget from "../../components/Budget/CreateBudget/CreateBudget";
 import Loader from "../../components/UI/Loader/Loader";
 import {
   budgetsHideMessage,
@@ -10,6 +9,7 @@ import {
   fetchBudgets,
   updateBudget,
 } from "../../store/actions/budgets";
+import withToasts from "../../hoc/withToasts";
 
 const Budget = (props) => {
   const { showToast } = props;
@@ -39,17 +39,19 @@ const Budget = (props) => {
   const update = (id, budget) => dispatch(updateBudget(id, budget));
   const remove = (budgetId) => dispatch(deleteBudget(budgetId));
 
+  const startUpdate = (id) => {
+    console.log(id);
+  };
+
   return (
     <div>
-      <CreateBudget create={create} />
-      <br />
       <BudgetList
         budgets={budgetsState.budgets}
         remove={remove}
-        update={update}
+        update={startUpdate}
       />
     </div>
   );
 };
 
-export default Budget;
+export default withToasts(Budget);
