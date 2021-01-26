@@ -10,23 +10,17 @@ import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import LockOpenIcon from "@material-ui/icons/LockOpen";
-import PersonAddIcon from "@material-ui/icons/PersonAdd";
-import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
-import MonetizationIcon from "@material-ui/icons/MonetizationOn";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { logout } from "./../store/actions/auth";
+import { appRoutes, helperRoutes } from "../constants/routes";
 
 const drawerWidth = 240;
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -80,7 +74,6 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "flex-end",
     padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
     ...theme.mixins.toolbar,
   },
   content: {
@@ -100,50 +93,8 @@ const Layout = (props) => {
 
   const logoutHandler = () => dispatch(logout());
 
-  const appRoutes = [
-    {
-      auth: true,
-      icon: <AccountBalanceIcon />,
-      to: "/balance",
-      text: "Balance",
-    },
-    {
-      auth: true,
-      icon: <MonetizationIcon />,
-      to: "/budgets",
-      text: "Budgets",
-    },
-  ];
-
-  const authRoutes = [
-    {
-      auth: false,
-      icon: <PersonAddIcon />,
-      to: "/register",
-      text: "Register",
-    },
-    {
-      auth: false,
-      icon: <LockOpenIcon />,
-      to: "/login",
-      text: "Login",
-    },
-    {
-      auth: true,
-      icon: <ExitToAppIcon />,
-      to: "/login",
-      text: "Logout",
-      handler: logoutHandler,
-    },
-  ];
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+  const handleDrawerOpen = () => setOpen(true);
+  const handleDrawerClose = () => setOpen(false);
 
   return (
     <div className={classes.root}>
@@ -166,6 +117,7 @@ const Layout = (props) => {
           >
             <MenuIcon />
           </IconButton>
+
           <Typography variant="h6" noWrap>
             Monetize
           </Typography>
@@ -204,10 +156,12 @@ const Layout = (props) => {
               <NavLink
                 to={route.to}
                 key={index}
-                style={{ textDecoration: "none", color: "#3F51B5" }}
+                style={{ textDecoration: "none", color: "#303F9F" }}
               >
                 <ListItem button>
-                  <ListItemIcon>{route.icon}</ListItemIcon>
+                  <ListItemIcon>
+                    <route.icon />
+                  </ListItemIcon>
                   <ListItemText primary={route.text} />
                 </ListItem>
               </NavLink>
@@ -217,17 +171,21 @@ const Layout = (props) => {
         <Divider />
 
         <List>
-          {authRoutes
+          {helperRoutes
             .filter((route) => route.auth === !!auth.token)
             .map((route, index) => (
               <NavLink
                 to={route.to}
                 key={index}
-                style={{ textDecoration: "none", color: "#3F51B5" }}
-                onClick={route.handler ? () => route.handler() : () => {}}
+                style={{ textDecoration: "none", color: "#303F9F" }}
+                onClick={
+                  route.text === "Logout" ? () => logoutHandler() : () => {}
+                }
               >
                 <ListItem button>
-                  <ListItemIcon>{route.icon}</ListItemIcon>
+                  <ListItemIcon>
+                    <route.icon />
+                  </ListItemIcon>
                   <ListItemText primary={route.text} />
                 </ListItem>
               </NavLink>

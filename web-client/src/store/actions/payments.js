@@ -6,6 +6,7 @@ import {
   UPDATE_PAYMENT_SUCCESS,
   DELETE_PAYMENT_SUCCESS,
   FETCH_PAYMENTS_SUCCESS,
+  PAYMENTS_HIDE_MESSAGE,
 } from "../actionTypes";
 
 const paymentsRequestStart = () => {
@@ -107,5 +108,11 @@ export const deletePayment = (paymentId) => {
       .catch((error) => {
         dispatch(paymentsRequestFail(error.response.data));
       });
+  };
+};
+
+export const paymentsHideMessage = () => {
+  return {
+    type: PAYMENTS_HIDE_MESSAGE,
   };
 };

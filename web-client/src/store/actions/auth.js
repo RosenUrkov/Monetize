@@ -5,6 +5,7 @@ import {
   REGISTER_SUCCESS,
   LOGIN_SUCCESS,
   LOGOUT_SUCCESS,
+  AUTH_HIDE_MESSAGE,
 } from "../actionTypes";
 
 const authRequestStart = () => {
@@ -39,7 +40,7 @@ const logoutSuccess = () => {
   };
 };
 
-export const register = (username, password) => {
+export const register = (username, password, successCallback = () => {}) => {
   return (dispatch) => {
     dispatch(authRequestStart());
 
@@ -49,15 +50,16 @@ export const register = (username, password) => {
       .post("register", authData)
       .then((res) => {
         dispatch(registerSuccess());
+        successCallback();
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response);
         dispatch(authRequestFail(error.response.data));
       });
   };
 };
 
-export const login = (username, password) => {
+export const login = (username, password, successCallback = () => {}) => {
   return (dispatch) => {
     dispatch(authRequestStart());
 
@@ -68,9 +70,10 @@ export const login = (username, password) => {
       .then((res) => {
         localStorage.setItem("token", res.data.token);
         dispatch(loginSuccess(res.data.token));
+        successCallback();
       })
       .catch((error) => {
-        console.log(error.response);
+        console.log(error);
         dispatch(authRequestFail(error.response.data));
       });
   };
@@ -90,6 +93,12 @@ export const logout = () => {
         console.log(error);
         dispatch(authRequestFail(error.response.data));
       });
+  };
+};
+
+export const authHideMessage = () => {
+  return {
+    type: AUTH_HIDE_MESSAGE,
   };
 };
 

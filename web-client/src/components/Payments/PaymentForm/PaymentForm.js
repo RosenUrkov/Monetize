@@ -24,6 +24,7 @@ import { accountTypes } from "../../../constants/accountTypes";
 import Select from "../../UI/Select/Select";
 import DatePicker from "../../UI/DatePicker/DatePicker";
 import { formatDate } from "../../../common/formatDate";
+import withToasts from "../../../hoc/withToasts";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -114,24 +115,21 @@ const PaymentForm = (props) => {
     },
   });
 
-  const handleInputChange = useCallback(
-    ({ name, value }) => {
-      const updatedControl = { ...paymentForm[name] };
+  const handleInputChange = ({ name, value }) => {
+    const updatedControl = { ...paymentForm[name] };
 
-      updatedControl.value = value;
-      updatedControl.touched = true;
-      updatedControl.valid = isInputValid(value, updatedControl.validation);
+    updatedControl.value = value;
+    updatedControl.touched = true;
+    updatedControl.valid = isInputValid(value, updatedControl.validation);
 
-      const updatedForm = { ...paymentForm, [name]: updatedControl };
-      setPaymentForm(updatedForm);
+    const updatedForm = { ...paymentForm, [name]: updatedControl };
+    setPaymentForm(updatedForm);
 
-      const formValid = Object.values(updatedForm).every(
-        (control) => control.valid
-      );
-      setIsFormValid(formValid);
-    },
-    [paymentForm]
-  );
+    const formValid = Object.values(updatedForm).every(
+      (control) => control.valid
+    );
+    setIsFormValid(formValid);
+  };
 
   const submitHandler = (ev) => {
     const payment = {
@@ -154,7 +152,7 @@ const PaymentForm = (props) => {
 
       if (config.type === "text") {
         return (
-          <Grid item xs={12} sm={6} key={name}>
+          <Grid item xs={12} sm={6} key={name} style={{ display: "flex" }}>
             <TextField
               id={name}
               name={name}
@@ -162,9 +160,9 @@ const PaymentForm = (props) => {
               type={config.type}
               placeholder={config.placeholder}
               value={config.value}
+              style={{ display: "flex", justifyContent: "flex-end" }}
               onChange={(ev) => handleInputChange(ev.target)}
-              // style={{ minWidth: 500 }}
-              // fullWidth
+              fullWidth
             />
           </Grid>
         );
@@ -183,11 +181,11 @@ const PaymentForm = (props) => {
       }
       if (config.type === "date") {
         return (
-          <Grid item xs={12} sm={12} key={name}>
+          <Grid item xs={12} sm={6} key={name}>
             <DatePicker
-              // style={{ minWidth: 500 }}
               label="Payment for:"
               date={config.value}
+              fullWidth={true}
               changeDate={(date) => (ev) =>
                 handleInputChange({
                   name: config.name,
@@ -230,6 +228,8 @@ const PaymentForm = (props) => {
             </Button>
           </Toolbar>
         </AppBar>
+
+        <br />
 
         <Grid container spacing={3}>
           {formElements}

@@ -5,10 +5,12 @@ import {
   DELETE_BUDGET_SUCCESS,
   UPDATE_BUDGET_SUCCESS,
   FETCH_BUDGETS_SUCCESS,
+  BUDGETS_HIDE_MESSAGE,
 } from "../actionTypes";
 
 const initialState = {
   budgets: [],
+  message: null,
   error: null,
   loading: false,
 };
@@ -16,13 +18,16 @@ const initialState = {
 const budgetsReducer = (state = initialState, action) => {
   switch (action.type) {
     case BUDGETS_REQUEST_START:
-      return { ...state, error: null, loading: true };
+      return { ...state, message: null, error: null, loading: true };
     case BUDGETS_REQUEST_FAIL:
-      return { ...state, error: action.error, loading: false };
+      return { ...state, message: null, error: action.error, loading: false };
+    case BUDGETS_HIDE_MESSAGE:
+      return { ...state, message: null, error: null };
     case FETCH_BUDGETS_SUCCESS:
       return {
         ...state,
         budgets: action.budgets,
+        message: null,
         error: null,
         loading: false,
       };
@@ -30,6 +35,7 @@ const budgetsReducer = (state = initialState, action) => {
       return {
         ...state,
         budgets: [...state.budgets, action.budget],
+        message: "Budget created successfully!",
         error: null,
         loading: false,
       };
@@ -41,6 +47,7 @@ const budgetsReducer = (state = initialState, action) => {
       return {
         ...state,
         budgets: updatedBudgets,
+        message: "Budget updated successfully!",
         error: null,
         loading: false,
       };
@@ -48,6 +55,7 @@ const budgetsReducer = (state = initialState, action) => {
       return {
         ...state,
         budgets: state.budgets.filter((x) => x.id !== action.budgetId),
+        message: "Budget deleted successfully!",
         error: null,
         loading: false,
       };

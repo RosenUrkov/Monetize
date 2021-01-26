@@ -1,10 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Redirect } from "react-router-dom";
 import { isInputValid } from "../../../common/validators";
-import Error from "../../../components/Error/Error/Error";
 import Loader from "../../../components/UI/Loader/Loader";
-import { register } from "../../../store/actions/auth";
+import { authHideMessage, register } from "../../../store/actions/auth";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -15,7 +14,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import "./Register.css";
+import withToasts from "../../../hoc/withToasts";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -37,7 +36,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Register = () => {
+const Register = (props) => {
+  const { showToast, history } = props;
+
   const classes = useStyles();
 
   const [isFormValid, setIsFormValid] = useState(false);
@@ -72,8 +73,14 @@ const Register = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
 
+  useEffect(() => {
+    if (auth.error) {
+      showToast(auth.error.message, "error");
+      dispatch(authHideMessage());
+    }
+  }, [auth.error, dispatch, showToast]);
+
   if (auth.loading) return <Loader />;
-  if (auth.error) return <Error />;
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -94,8 +101,11 @@ const Register = () => {
 
   const registerHandler = (ev) => {
     ev.preventDefault();
+
     dispatch(
-      register(registerForm.username.value, registerForm.password.value)
+      register(registerForm.username.value, registerForm.password.value, () =>
+        history.push("/login")
+      )
     );
   };
 
@@ -159,4 +169,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default withToasts(Register);

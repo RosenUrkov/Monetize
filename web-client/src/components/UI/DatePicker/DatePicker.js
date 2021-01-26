@@ -7,7 +7,7 @@ import {
 } from "@material-ui/pickers";
 
 const DatePicker = (props) => {
-  const { label, date, changeDate } = props;
+  const { label, date, changeDate, fullWidth } = props;
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -16,6 +16,7 @@ const DatePicker = (props) => {
         label={label}
         value={date}
         onChange={(date) => changeDate(date)}
+        fullWidth={fullWidth}
       />
     </MuiPickersUtilsProvider>
   );

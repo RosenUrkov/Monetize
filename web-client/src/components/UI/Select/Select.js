@@ -8,11 +8,7 @@ import Select from "@material-ui/core/Select";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
+    minWidth: "100%",
   },
 }));
 
@@ -25,12 +21,12 @@ const SelectComponent = (props) => {
     <FormControl className={classes.formControl}>
       <InputLabel id={`select-${name}-label`}>{name}</InputLabel>
       <Select
-        // style={{ minWidth: 500 }}
         labelId={`select-${name}-label`}
         id={`select-${name}`}
         name={name}
         value={value}
         onChange={onChange}
+        fullWidth
       >
         {options.map((value) => (
           <MenuItem value={value} key={value}>

@@ -6,6 +6,7 @@ import {
   DELETE_BUDGET_SUCCESS,
   UPDATE_BUDGET_SUCCESS,
   FETCH_BUDGETS_SUCCESS,
+  AUTH_HIDE_MESSAGE,
 } from "../actionTypes";
 
 const budgetsRequestStart = () => {
@@ -110,5 +111,11 @@ export const deleteBudget = (budgetId) => {
         console.log(error);
         dispatch(budgetsRequestFail(error.response.data));
       });
+  };
+};
+
+export const budgetsHideMessage = () => {
+  return {
+    type: AUTH_HIDE_MESSAGE,
   };
 };
