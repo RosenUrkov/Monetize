@@ -91,10 +91,10 @@ const Layout = (props) => {
 
   const [open, setOpen] = useState(false);
 
-  const logoutHandler = () => dispatch(logout());
-
   const handleDrawerOpen = () => setOpen(true);
   const handleDrawerClose = () => setOpen(false);
+
+  const logoutHandler = () => dispatch(logout());
 
   return (
     <div className={classes.root}>

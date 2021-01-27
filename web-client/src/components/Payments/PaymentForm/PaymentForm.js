@@ -2,29 +2,22 @@ import React, { forwardRef, useCallback, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItem from "@material-ui/core/ListItem";
-import List from "@material-ui/core/List";
-import Divider from "@material-ui/core/Divider";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
-import Slide from "@material-ui/core/Slide";
 import { isInputValid } from "../../../common/validators";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import { paymentTypes } from "../../../constants/paymentTypes";
-import { expenseCategories } from "../../../constants/expenseCategories";
-import { incomeCategories } from "../../../constants/incomeCategories";
-import { accountTypes } from "../../../constants/accountTypes";
 import Select from "../../UI/Select/Select";
 import DatePicker from "../../UI/DatePicker/DatePicker";
 import { formatDate } from "../../../common/formatDate";
 import withToasts from "../../../hoc/withToasts";
+import { paymentFormElements } from "../../../constants/paymentFormElements";
+import Transition from "../../UI/Transition/Transition";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -36,82 +29,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Transition = forwardRef((props, ref) => {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
-
 const PaymentForm = (props) => {
   const { open, close, submit, basePayment } = props;
 
   const classes = useStyles();
 
   const [isFormValid, setIsFormValid] = useState(false);
-  const [paymentForm, setPaymentForm] = useState({
-    value: {
-      name: "value",
-      placeholder: "value",
-      value: basePayment?.value || "",
-      type: "text",
-      validation: {
-        required: true,
-      },
-      valid: !!basePayment,
-      touched: false,
-    },
-    type: {
-      name: "type",
-      placeholder: "type",
-      value: basePayment?.type || "Expense",
-      type: "select",
-      getOptions() {
-        return Object.keys(paymentTypes);
-      },
-      validation: {
-        required: true,
-      },
-      valid: true,
-      touched: false,
-    },
-    category: {
-      name: "category",
-      placeholder: "category",
-      value: basePayment?.category || "",
-      type: "select",
-      getOptions(paymentType) {
-        return paymentType === "Expense"
-          ? Object.keys(expenseCategories)
-          : Object.keys(incomeCategories);
-      },
-      validation: {
-        required: true,
-      },
-      valid: !!basePayment,
-      touched: false,
-    },
-    account: {
-      name: "account",
-      placeholder: "account",
-      value: basePayment?.account || "",
-      type: "select",
-      getOptions() {
-        return Object.keys(accountTypes);
-      },
-      validation: {
-        required: true,
-      },
-      valid: !!basePayment,
-      touched: false,
-    },
-    date: {
-      name: "date",
-      placeholder: "date",
-      value: basePayment?.date ? new Date(basePayment.date) : new Date(),
-      type: "date",
-      validation: {},
-      valid: true,
-      touched: false,
-    },
-  });
+  const [paymentForm, setPaymentForm] = useState(
+    paymentFormElements(basePayment)
+  );
 
   const handleInputChange = ({ name, value }) => {
     const updatedControl = { ...paymentForm[name] };
@@ -197,44 +123,49 @@ const PaymentForm = (props) => {
     });
 
   return (
-    <div>
-      <Dialog
-        fullScreen
-        open={open}
-        onClose={close}
-        TransitionComponent={Transition}
+    <Dialog
+      fullScreen
+      open={open}
+      onClose={close}
+      TransitionComponent={Transition}
+    >
+      <AppBar className={classes.appBar}>
+        <Toolbar>
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={close}
+            aria-label="close"
+          >
+            <CloseIcon />
+          </IconButton>
+          <Typography variant="h6" className={classes.title}>
+            Payment Form
+          </Typography>
+          <Button
+            autoFocus
+            color="inherit"
+            disabled={!isFormValid}
+            onClick={submitHandler}
+          >
+            SAVE
+          </Button>
+        </Toolbar>
+      </AppBar>
+
+      <br />
+
+      <Grid
+        container
+        spacing={3}
+        style={{
+          width: "100%",
+          alignSelf: "center",
+        }}
       >
-        <AppBar className={classes.appBar}>
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={close}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
-            <Typography variant="h6" className={classes.title}>
-              Payment Form
-            </Typography>
-            <Button
-              autoFocus
-              color="inherit"
-              disabled={!isFormValid}
-              onClick={submitHandler}
-            >
-              SAVE
-            </Button>
-          </Toolbar>
-        </AppBar>
-
-        <br />
-
-        <Grid container spacing={3}>
-          {formElements}
-        </Grid>
-      </Dialog>
-    </div>
+        {formElements}
+      </Grid>
+    </Dialog>
   );
 };
 

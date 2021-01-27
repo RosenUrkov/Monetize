@@ -15,6 +15,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { NavLink, Redirect } from "react-router-dom";
 import withToasts from "../../../hoc/withToasts";
+import { loginFormElements } from "../../../constants/loginFormElements";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -39,36 +40,13 @@ const useStyles = makeStyles((theme) => ({
 const Login = (props) => {
   const { showToast, history } = props;
 
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
+
   const classes = useStyles();
 
   const [isFormValid, setIsFormValid] = useState(false);
-  const [loginForm, setLoginForm] = useState({
-    username: {
-      name: "username",
-      placeholder: "username",
-      value: "",
-      type: "text",
-      validation: {
-        required: true,
-      },
-      valid: false,
-      touched: false,
-    },
-    password: {
-      name: "password",
-      placeholder: "password",
-      value: "",
-      type: "password",
-      validation: {
-        required: true,
-      },
-      valid: false,
-      touched: false,
-    },
-  });
-
-  const dispatch = useDispatch();
-  const auth = useSelector((state) => state.auth);
+  const [loginForm, setLoginForm] = useState(loginFormElements);
 
   useEffect(() => {
     if (auth.message) {
@@ -105,10 +83,11 @@ const Login = (props) => {
 
   const loginHandler = (ev) => {
     ev.preventDefault();
+
     dispatch(
-      login(loginForm.username.value, loginForm.password.value, () => {
-        history.push("/balance");
-      })
+      login(loginForm.username.value, loginForm.password.value, () =>
+        history.push("/balance")
+      )
     );
   };
 

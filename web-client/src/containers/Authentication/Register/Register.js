@@ -15,6 +15,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import withToasts from "../../../hoc/withToasts";
+import { registerFormElements } from "../../../constants/registerFormElements";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -39,39 +40,13 @@ const useStyles = makeStyles((theme) => ({
 const Register = (props) => {
   const { showToast, history } = props;
 
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
+
   const classes = useStyles();
 
   const [isFormValid, setIsFormValid] = useState(false);
-  const [registerForm, setRegisterForm] = useState({
-    username: {
-      name: "username",
-      placeholder: "username",
-      value: "",
-      type: "text",
-      validation: {
-        required: true,
-        minLength: 2,
-        maxLength: 20,
-      },
-      valid: false,
-      touched: false,
-    },
-    password: {
-      name: "password",
-      placeholder: "password",
-      value: "",
-      type: "password",
-      validation: {
-        required: true,
-        pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/,
-      },
-      valid: false,
-      touched: false,
-    },
-  });
-
-  const dispatch = useDispatch();
-  const auth = useSelector((state) => state.auth);
+  const [registerForm, setRegisterForm] = useState(registerFormElements);
 
   useEffect(() => {
     if (auth.error) {

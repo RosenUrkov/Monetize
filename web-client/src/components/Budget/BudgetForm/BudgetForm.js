@@ -2,10 +2,6 @@ import React, { forwardRef, useCallback, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItem from "@material-ui/core/ListItem";
-import List from "@material-ui/core/List";
-import Divider from "@material-ui/core/Divider";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -15,18 +11,14 @@ import Slide from "@material-ui/core/Slide";
 import { isInputValid } from "../../../common/validators";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import { paymentTypes } from "../../../constants/paymentTypes";
-import { expenseCategories } from "../../../constants/expenseCategories";
-import { incomeCategories } from "../../../constants/incomeCategories";
-import { accountTypes } from "../../../constants/accountTypes";
 import Select from "../../UI/Select/Select";
-import DatePicker from "../../UI/DatePicker/DatePicker";
-import { formatDate } from "../../../common/formatDate";
-import withToasts from "../../../hoc/withToasts";
-import { budgetTypes } from "../../../constants/budgetTypes";
 import DeleteIcon from "@material-ui/icons/Delete";
+import Transition from "../../UI/Transition/Transition";
+import {
+  budgetPaymentFormElement,
+  budgetTypeFormElement,
+} from "../../../constants/budgetFormElements";
+import withToasts from "../../../hoc/withToasts";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -38,78 +30,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Transition = forwardRef((props, ref) => {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
-
-const createPaymentTemplate = (basePayment) => ({
-  value: {
-    name: "value",
-    placeholder: "value",
-    value: basePayment?.value || "",
-    type: "text",
-    validation: {
-      required: true,
-    },
-    valid: !!basePayment,
-    touched: false,
-  },
-  type: {
-    name: "type",
-    placeholder: "type",
-    value: basePayment?.type || "Expense",
-    type: "select",
-    getOptions() {
-      return Object.keys(paymentTypes);
-    },
-    validation: {
-      required: true,
-    },
-    valid: true,
-    touched: false,
-  },
-  category: {
-    name: "category",
-    placeholder: "category",
-    value: basePayment?.category || "",
-    type: "select",
-    getOptions(paymentType) {
-      return paymentType === "Expense"
-        ? Object.keys(expenseCategories)
-        : Object.keys(incomeCategories);
-    },
-    validation: {
-      required: true,
-    },
-    valid: !!basePayment,
-    touched: false,
-  },
-});
-
 const BudgetForm = (props) => {
-  const { open, close, submit, baseBudget, freeBudgetTypes } = props;
+  const { open, close, submit, baseBudget, freeBudgetTypes, showToast } = props;
 
   const classes = useStyles();
 
   const [isFormValid, setIsFormValid] = useState(false);
-  const [budgetTypeElement, setBudgetTypeElement] = useState({
-    name: "type",
-    placeholder: "budget type",
-    value: baseBudget?.type || "",
-    type: "select",
-    getOptions() {
-      return baseBudget
-        ? [...freeBudgetTypes, baseBudget.type]
-        : freeBudgetTypes;
-    },
-    validation: {
-      required: true,
-    },
-    valid: !!baseBudget?.type,
-    touched: false,
-  });
+  const [budgetTypeElement, setBudgetTypeElement] = useState(
+    budgetTypeFormElement(baseBudget, freeBudgetTypes)
+  );
   const [budgetPaymentsElements, setBudgetPaymentsElements] = useState(
-    baseBudget ? baseBudget.payments.map((x) => createPaymentTemplate(x)) : []
+    baseBudget
+      ? baseBudget.payments.map((x) => budgetPaymentFormElement(x))
+      : []
   );
 
   const handleBudgetTypeInputChange = (value) => {
@@ -132,6 +65,16 @@ const BudgetForm = (props) => {
 
   const handlePaymentElementInputChange = ({ identifier, value }) => {
     const { name, index } = identifier;
+
+    if (
+      name === "category" &&
+      budgetPaymentsElements.some((x) => x.category.value === value)
+    ) {
+      return showToast(
+        "You must only add payments with unique categories!",
+        "error"
+      );
+    }
 
     const copyPayments = budgetPaymentsElements.slice();
     const copyPayment = copyPayments[index];
@@ -168,7 +111,7 @@ const BudgetForm = (props) => {
 
   const addBudgetPayment = () => {
     const copyPayments = budgetPaymentsElements.slice();
-    copyPayments.push(createPaymentTemplate());
+    copyPayments.push(budgetPaymentFormElement());
 
     setBudgetPaymentsElements(copyPayments);
     setIsFormValid(false);
@@ -238,8 +181,6 @@ const BudgetForm = (props) => {
       );
     }
     if (config.type === "select") {
-      console.log(config.getOptions(budgetPaymentsElements[index].type.value));
-
       return (
         <Grid item xs={12} sm={4} key={index + name}>
           <Select
@@ -261,7 +202,6 @@ const BudgetForm = (props) => {
   };
 
   const budgetTypeVisualization = visualizeBudgetType();
-
   const paymentFormElementsVisualization = budgetPaymentsElements.map(
     (payment, index) => {
       const visualized = Object.keys(payment)
@@ -329,11 +269,18 @@ const BudgetForm = (props) => {
 
         <br />
 
-        {budgetTypeVisualization}
+        <div
+          style={{
+            width: "98%",
+            alignSelf: "center",
+          }}
+        >
+          {budgetTypeVisualization}
 
-        <br />
+          <br />
 
-        {paymentFormElementsVisualization}
+          {paymentFormElementsVisualization}
+        </div>
 
         <br />
 
@@ -351,4 +298,4 @@ const BudgetForm = (props) => {
   );
 };
 
-export default BudgetForm;
+export default withToasts(BudgetForm);

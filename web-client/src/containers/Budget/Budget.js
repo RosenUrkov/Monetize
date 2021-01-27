@@ -15,6 +15,7 @@ import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import BudgetForm from "../../components/Budget/BudgetForm/BudgetForm";
 import { budgetTypes } from "../../constants/budgetTypes";
+import useCreateAndUpdateFormControl from "../../hooks/useCreateAndUpdateFormControl";
 
 const Budget = (props) => {
   const { showToast } = props;
@@ -22,9 +23,16 @@ const Budget = (props) => {
   const dispatch = useDispatch();
   const budgetsState = useSelector((state) => state.budgets);
 
-  const [budgetToUpdate, setBudgetToUpdate] = useState(null);
-  const [showBudgetForm, setShowBudgetForm] = useState(false);
-  const [openBudgetForm, setOpenBudgetForm] = useState(false);
+  const {
+    entityToUpdate,
+    showForm,
+    openForm,
+    startCreate,
+    startUpdate,
+    finishCreate,
+    finishUpdate,
+    cancelForm,
+  } = useCreateAndUpdateFormControl(createBudget, updateBudget);
 
   useEffect(() => dispatch(fetchBudgets()), [dispatch]);
 
@@ -44,54 +52,12 @@ const Budget = (props) => {
 
   if (budgetsState.loading) return <Loader />;
 
+  const remove = (budgetId) => dispatch(deleteBudget(budgetId));
+
   const usedBudgetTypes = budgetsState.budgets.map((x) => x.type);
   const freeBudgetTypes = Object.keys(budgetTypes).filter(
     (x) => !usedBudgetTypes.includes(x)
   );
-
-  const remove = (budgetId) => {
-    dispatch(deleteBudget(budgetId));
-  };
-
-  const startCreate = () => {
-    setBudgetToUpdate(null);
-    setOpenBudgetForm(true);
-    setShowBudgetForm(true);
-  };
-
-  const finishCreate = (budget) => {
-    dispatch(createBudget(budget));
-    setOpenBudgetForm(false);
-
-    setTimeout(() => {
-      setShowBudgetForm(false);
-    }, 500);
-  };
-
-  const startUpdate = (budget) => {
-    setBudgetToUpdate(budget);
-    setOpenBudgetForm(true);
-    setShowBudgetForm(true);
-  };
-
-  const finishUpdate = (budget) => {
-    dispatch(updateBudget(budgetToUpdate.id, budget));
-    setBudgetToUpdate(null);
-    setOpenBudgetForm(false);
-
-    setTimeout(() => {
-      setShowBudgetForm(false);
-    }, 500);
-  };
-
-  const cancelBudgetForm = () => {
-    setBudgetToUpdate(null);
-    setOpenBudgetForm(false);
-
-    setTimeout(() => {
-      setShowBudgetForm(false);
-    }, 500);
-  };
 
   return (
     <div>
@@ -110,13 +76,13 @@ const Budget = (props) => {
         </Fab>
       </div>
 
-      {showBudgetForm && (
+      {showForm && (
         <BudgetForm
-          open={openBudgetForm}
+          open={openForm}
           freeBudgetTypes={freeBudgetTypes}
-          baseBudget={budgetToUpdate}
-          submit={budgetToUpdate ? finishUpdate : finishCreate}
-          close={cancelBudgetForm}
+          baseBudget={entityToUpdate}
+          submit={entityToUpdate ? finishUpdate : finishCreate}
+          close={cancelForm}
         />
       )}
 

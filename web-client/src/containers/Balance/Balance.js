@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PaymentForm from "../../components/Payments/PaymentForm/PaymentForm";
-import PaymentList from "../../components/Payments/PaymentList/PaymentList";
 import Loader from "../../components/UI/Loader/Loader";
 import {
   createPayment,
@@ -15,6 +14,9 @@ import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import { formatDate } from "../../common/formatDate";
 import withToasts from "../../hoc/withToasts";
+import useCreateAndUpdateFormControl from "../../hooks/useCreateAndUpdateFormControl";
+import Table from "../../components/UI/Table/Table";
+import { paymentColumns } from "../../constants/paymentColumns";
 
 const Balance = (props) => {
   const { showToast } = props;
@@ -25,9 +27,16 @@ const Balance = (props) => {
   const [paymentsDate, setPaymentsDate] = useState(new Date());
   const [displayPayments, setDisplayPayments] = useState([]);
 
-  const [paymentToUpdate, setPaymentToUpdate] = useState(null);
-  const [showPaymentForm, setShowPaymentForm] = useState(false);
-  const [openPaymentForm, setOpenPaymentForm] = useState(false);
+  const {
+    entityToUpdate,
+    showForm,
+    openForm,
+    startCreate,
+    startUpdate,
+    finishCreate,
+    finishUpdate,
+    cancelForm,
+  } = useCreateAndUpdateFormControl(createPayment, updatePayment);
 
   useEffect(() => dispatch(fetchPayments()), [dispatch]);
 
@@ -56,49 +65,7 @@ const Balance = (props) => {
 
   if (paymentsState.loading) return <Loader />;
 
-  const remove = (paymentId) => {
-    dispatch(deletePayment(paymentId));
-  };
-
-  const startCreate = () => {
-    setPaymentToUpdate(null);
-    setOpenPaymentForm(true);
-    setShowPaymentForm(true);
-  };
-
-  const finishCreate = (payment) => {
-    dispatch(createPayment(payment));
-    setOpenPaymentForm(false);
-
-    setTimeout(() => {
-      setShowPaymentForm(false);
-    }, 500);
-  };
-
-  const startUpdate = (payment) => {
-    setPaymentToUpdate(payment);
-    setOpenPaymentForm(true);
-    setShowPaymentForm(true);
-  };
-
-  const finishUpdate = (payment) => {
-    dispatch(updatePayment(paymentToUpdate.id, payment));
-    setPaymentToUpdate(null);
-    setOpenPaymentForm(false);
-
-    setTimeout(() => {
-      setShowPaymentForm(false);
-    }, 500);
-  };
-
-  const cancelPaymentForm = () => {
-    setPaymentToUpdate(null);
-    setOpenPaymentForm(false);
-
-    setTimeout(() => {
-      setShowPaymentForm(false);
-    }, 500);
-  };
+  const remove = (paymentId) => dispatch(deletePayment(paymentId));
 
   return (
     <div>
@@ -120,21 +87,23 @@ const Balance = (props) => {
         />
       </div>
 
-      {showPaymentForm && (
+      {showForm && (
         <PaymentForm
-          open={openPaymentForm}
-          basePayment={paymentToUpdate}
-          submit={paymentToUpdate ? finishUpdate : finishCreate}
-          close={cancelPaymentForm}
+          open={openForm}
+          basePayment={entityToUpdate}
+          submit={entityToUpdate ? finishUpdate : finishCreate}
+          close={cancelForm}
         />
       )}
 
       <br />
 
-      <PaymentList
-        payments={displayPayments}
+      <Table
+        columns={paymentColumns}
+        data={displayPayments}
+        pagination={true}
+        update={startUpdate}
         remove={remove}
-        startUpdate={startUpdate}
       />
     </div>
   );
