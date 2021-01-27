@@ -14,4 +14,6 @@ export const IDENTIFIERS = {
   createBudget: 'createBudget',
   updateBudget: 'updateBudget',
   deleteBudget: 'deleteBudget',
+
+  getStatistics: 'getStatistics',
 };

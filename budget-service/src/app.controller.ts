@@ -19,27 +19,48 @@ export class AppController {
   ) {}
 
   @MessagePattern(IDENTIFIERS.getBudgets)
-  public getBudgets(info: UserInfoDTO): Promise<ShowBudgetDTO[]> {
-    return this.appService.getBudgets(info);
+  public async getBudgets(info: UserInfoDTO): Promise<ShowBudgetDTO[]> {
+    const budgets: ShowBudgetDTO[] = await this.appService.getBudgets(info);
+
+    const payload = { userId: info.userId, budgets };
+    this.statisticsService.emit(IDENTIFIERS.budgetAction, payload);
+
+    return budgets;
   }
 
   @MessagePattern(IDENTIFIERS.getBudget)
-  public getBudget(info: BudgetInfoDTO): Promise<ShowBudgetDTO> {
-    return this.appService.getBudget(info);
+  public async getBudget(info: BudgetInfoDTO): Promise<ShowBudgetDTO> {
+    const budget: ShowBudgetDTO = await this.appService.getBudget(info);
+
+    this.getBudgets({ ...info });
+
+    return budget;
   }
 
   @MessagePattern(IDENTIFIERS.createBudget)
-  public createBudget(info: CreateBudgetDTO): Promise<ShowBudgetDTO> {
-    return this.appService.createBudget(info);
+  public async createBudget(info: CreateBudgetDTO): Promise<ShowBudgetDTO> {
+    const budget: ShowBudgetDTO = await this.appService.createBudget(info);
+
+    this.getBudgets({ ...info });
+
+    return budget;
   }
 
   @MessagePattern(IDENTIFIERS.updateBudget)
-  public updateBudget(info: UpdateBudgetDTO): Promise<ShowBudgetDTO> {
-    return this.appService.updateBudget(info);
+  public async updateBudget(info: UpdateBudgetDTO): Promise<ShowBudgetDTO> {
+    const budget: ShowBudgetDTO = await this.appService.updateBudget(info);
+
+    this.getBudgets({ ...info });
+
+    return budget;
   }
 
   @MessagePattern(IDENTIFIERS.deleteBudget)
-  public deleteBudget(info: BudgetInfoDTO): Promise<ShowBudgetDTO> {
-    return this.appService.deleteBudget(info);
+  public async deleteBudget(info: BudgetInfoDTO): Promise<ShowBudgetDTO> {
+    const budget: ShowBudgetDTO = await this.appService.deleteBudget(info);
+
+    this.getBudgets({ ...info });
+
+    return budget;
   }
 }

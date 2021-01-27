@@ -3,6 +3,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from '@hapi/joi';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
+import { ClientsModule } from '@nestjs/microservices';
+import {
+  balanceServiceConfig,
+  budgetServiceConfig,
+  statisticsServiceConfig,
+} from './services';
 
 @Global()
 @Module({
@@ -33,7 +39,12 @@ import { User } from 'src/entities/user.entity';
         synchronize: false,
       }),
     }),
+    ClientsModule.register([
+      balanceServiceConfig,
+      budgetServiceConfig,
+      statisticsServiceConfig,
+    ]),
   ],
-  exports: [ConfigModule],
+  exports: [ConfigModule, ClientsModule],
 })
 export class ConfigurationModule {}

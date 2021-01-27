@@ -1,16 +1,28 @@
+import { GetStatisticsDTO } from './dto/get-statistics-dto';
+import { AppService } from './app.service';
 import { Controller, Get } from '@nestjs/common';
 import { EventPattern, MessagePattern } from '@nestjs/microservices';
 import { from, Observable } from 'rxjs';
+import { IDENTIFIERS } from './config/identifiers';
+import { BalancePayload } from './dto/balance-payload.dto';
+import { BudgetPayload } from './dto/budget-payload.dto';
 
 @Controller()
 export class AppController {
-  @MessagePattern('StatisticsPing')
-  public statisticsPing() {
-    return from([7, 8, 9]);
+  public constructor(private readonly appService: AppService) {}
+
+  @MessagePattern(IDENTIFIERS.getStatistics)
+  public getStatistics(info: GetStatisticsDTO): any {
+    return this.appService.getStatistics(info);
   }
 
-  @EventPattern('StatisticsEmit')
-  public statisticsEmit(data) {
-    console.log(data);
+  @EventPattern(IDENTIFIERS.balanceAction)
+  public balanceActionHandler(data: BalancePayload): void {
+    this.appService.handleBalanceAction(data);
+  }
+
+  @EventPattern(IDENTIFIERS.budgetAction)
+  public budgetActionHandler(data: BudgetPayload): void {
+    this.appService.handleBudgetAction(data);
   }
 }

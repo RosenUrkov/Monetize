@@ -30,6 +30,7 @@ export class AuthService {
     const payload: ShowUserDTO = { ...foundUser };
 
     return {
+      id: foundUser.id,
       token: await this.jwtService.signAsync(payload),
     };
   }

@@ -19,27 +19,51 @@ export class AppController {
   ) {}
 
   @MessagePattern(IDENTIFIERS.getPayments)
-  public getPayments(info: UserInfoDTO): Promise<ShowPaymentDTO[]> {
-    return this.appService.getPayments(info);
+  public async getPayments(info: UserInfoDTO): Promise<ShowPaymentDTO[]> {
+    const payments: ShowPaymentDTO[] = await this.appService.getPayments(info);
+
+    const payload = {
+      userId: info.userId,
+      payments,
+    };
+    this.statisticsService.emit(IDENTIFIERS.balanceAction, payload);
+
+    return payments;
   }
 
   @MessagePattern(IDENTIFIERS.getPayment)
-  public getPayment(info: PaymentInfoDTO): Promise<ShowPaymentDTO> {
-    return this.appService.getPayment(info);
+  public async getPayment(info: PaymentInfoDTO): Promise<ShowPaymentDTO> {
+    const payment: ShowPaymentDTO = await this.appService.getPayment(info);
+
+    this.getPayments({ ...info });
+
+    return payment;
   }
 
   @MessagePattern(IDENTIFIERS.createPayment)
-  public createPayment(info: CreatePaymentDTO): Promise<ShowPaymentDTO> {
-    return this.appService.createPayment(info);
+  public async createPayment(info: CreatePaymentDTO): Promise<ShowPaymentDTO> {
+    const payment: ShowPaymentDTO = await this.appService.createPayment(info);
+
+    this.getPayments({ ...info });
+
+    return payment;
   }
 
   @MessagePattern(IDENTIFIERS.updatePayment)
-  public updatePayment(info: UpdatePaymentDTO): Promise<ShowPaymentDTO> {
-    return this.appService.updatePayment(info);
+  public async updatePayment(info: UpdatePaymentDTO): Promise<ShowPaymentDTO> {
+    const payment: ShowPaymentDTO = await this.appService.updatePayment(info);
+
+    this.getPayments({ ...info });
+
+    return payment;
   }
 
   @MessagePattern(IDENTIFIERS.deletePayment)
-  public deletePayment(info: PaymentInfoDTO): Promise<ShowPaymentDTO> {
-    return this.appService.deletePayment(info);
+  public async deletePayment(info: PaymentInfoDTO): Promise<ShowPaymentDTO> {
+    const payment: ShowPaymentDTO = await this.appService.deletePayment(info);
+
+    this.getPayments({ ...info });
+
+    return payment;
   }
 }
