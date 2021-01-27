@@ -5,6 +5,11 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
+import TextField from "@material-ui/core/TextField";
+
+const TextFieldComponent = (props) => {
+  return <TextField {...props} disabled={true} />;
+};
 
 const DatePicker = (props) => {
   const { label, date, changeDate, fullWidth } = props;
@@ -17,6 +22,7 @@ const DatePicker = (props) => {
         value={date}
         onChange={(date) => changeDate(date)}
         fullWidth={fullWidth}
+        TextFieldComponent={TextFieldComponent}
       />
     </MuiPickersUtilsProvider>
   );

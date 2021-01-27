@@ -107,9 +107,7 @@ const PaymentForm = (props) => {
       placeholder: "date",
       value: basePayment?.date ? new Date(basePayment.date) : new Date(),
       type: "date",
-      validation: {
-        required: true,
-      },
+      validation: {},
       valid: true,
       touched: false,
     },
@@ -186,11 +184,12 @@ const PaymentForm = (props) => {
               label="Payment for:"
               date={config.value}
               fullWidth={true}
-              changeDate={(date) => (ev) =>
+              changeDate={(date) =>
                 handleInputChange({
                   name: config.name,
                   value: date,
-                })}
+                })
+              }
             />
           </Grid>
         );

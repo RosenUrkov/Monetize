@@ -42,11 +42,7 @@ const Transition = forwardRef((props, ref) => {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const createPaymentTemplate = (
-  basePayment,
-  freeExpenseCategories,
-  freeIncomeCategories
-) => ({
+const createPaymentTemplate = (basePayment) => ({
   value: {
     name: "value",
     placeholder: "value",
@@ -79,8 +75,8 @@ const createPaymentTemplate = (
     type: "select",
     getOptions(paymentType) {
       return paymentType === "Expense"
-        ? freeExpenseCategories
-        : freeIncomeCategories;
+        ? Object.keys(expenseCategories)
+        : Object.keys(incomeCategories);
     },
     validation: {
       required: true,
@@ -94,18 +90,6 @@ const BudgetForm = (props) => {
   const { open, close, submit, baseBudget, freeBudgetTypes } = props;
 
   const classes = useStyles();
-
-  const freeExpenseCategories = baseBudget
-    ? Object.keys(expenseCategories).filter(
-        (x) => !baseBudget.payments.some((y) => y.category === x)
-      )
-    : Object.keys(expenseCategories);
-
-  const freeIncomeCategories = baseBudget
-    ? Object.keys(incomeCategories).filter(
-        (x) => !baseBudget.payments.some((y) => y.category === x)
-      )
-    : Object.keys(incomeCategories);
 
   const [isFormValid, setIsFormValid] = useState(false);
   const [budgetTypeElement, setBudgetTypeElement] = useState({
@@ -125,11 +109,7 @@ const BudgetForm = (props) => {
     touched: false,
   });
   const [budgetPaymentsElements, setBudgetPaymentsElements] = useState(
-    baseBudget
-      ? baseBudget.payments.map((x) =>
-          createPaymentTemplate(x, freeExpenseCategories, freeIncomeCategories)
-        )
-      : []
+    baseBudget ? baseBudget.payments.map((x) => createPaymentTemplate(x)) : []
   );
 
   const handleBudgetTypeInputChange = (value) => {
@@ -157,8 +137,6 @@ const BudgetForm = (props) => {
     const copyPayment = copyPayments[index];
     const updatedControl = { ...copyPayment[name] };
 
-    const oldValue = updatedControl.value;
-
     updatedControl.value = value;
     updatedControl.touched = true;
     updatedControl.valid = isInputValid(value, updatedControl.validation);
@@ -166,19 +144,6 @@ const BudgetForm = (props) => {
     copyPayment[name] = updatedControl;
     copyPayments[index] = copyPayment;
     setBudgetPaymentsElements(copyPayments);
-
-    if (name === "category") {
-      const type = copyPayment.type.value;
-      const arrayToRemoveFrom =
-        type === "Expense" ? freeExpenseCategories : freeIncomeCategories;
-
-      const index = arrayToRemoveFrom.findIndex((x) => x === value);
-      arrayToRemoveFrom.splice(index, 1);
-
-      if (oldValue) {
-        arrayToRemoveFrom.push(oldValue);
-      }
-    }
 
     const formValid =
       budgetTypeElement.valid &&
@@ -203,26 +168,13 @@ const BudgetForm = (props) => {
 
   const addBudgetPayment = () => {
     const copyPayments = budgetPaymentsElements.slice();
-    copyPayments.push(
-      createPaymentTemplate(null, freeExpenseCategories, freeIncomeCategories)
-    );
+    copyPayments.push(createPaymentTemplate());
 
     setBudgetPaymentsElements(copyPayments);
     setIsFormValid(false);
   };
 
   const removeBudgetPayment = (index) => {
-    const oldPayment = budgetPaymentsElements[index];
-
-    if (oldPayment.category !== "") {
-      const type = oldPayment.type;
-      console.log("here", oldPayment);
-      const arrayToRemoveFrom =
-        type === "Expense" ? freeExpenseCategories : freeIncomeCategories;
-
-      arrayToRemoveFrom.push(oldPayment.category);
-    }
-
     const copyPayments = budgetPaymentsElements.filter((_, i) => i !== index);
     setBudgetPaymentsElements(copyPayments);
 
