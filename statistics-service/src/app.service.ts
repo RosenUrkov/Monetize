@@ -11,6 +11,7 @@ import { ShowBudgetDTO } from './dto/show-budget.dto';
 import { ShowBudgetPaymentDTO } from './dto/show-budget-payment.dto';
 import { ShowStatisticsDTO } from './dto/show-statistics.dto';
 import { RpcException } from '@nestjs/microservices';
+import { PaymentType } from './common/enums/payment-type.enum';
 
 @Injectable()
 export class AppService {
@@ -26,9 +27,10 @@ export class AppService {
 
     const paymentsOfDate: ShowPaymentDTO[] = this.balanceActions
       .find((x) => x.userId === info.userId)
-      ?.payments?.filter(
-        (x) => start <= Date.parse(x.date) && Date.parse(x.date) < end,
-      );
+      ?.payments?.filter((x) => {
+        const date = Date.parse(x.date);
+        return start <= date && date < end;
+      });
 
     if (!paymentsOfDate) {
       throw new RpcException({
@@ -65,84 +67,88 @@ export class AppService {
       });
     }
 
-    let balIndex = 0;
-    let budIndex = 0;
+    let balanceIndex = 0;
+    let budgetIndex = 0;
     const paymentsToBudgetDifference: ShowBudgetPaymentDTO[] = [];
 
-    while (accumulatedPayments[balIndex] && budgetPayments[budIndex]) {
-      if (
-        accumulatedPayments[balIndex].category.localeCompare(
-          budgetPayments[budIndex].category,
-        ) < 0
-      ) {
-        const isIncome =
-          accumulatedPayments[balIndex].type === 'Income' ? 1 : -1;
+    while (accumulatedPayments[balanceIndex] && budgetPayments[budgetIndex]) {
+      const comparison = accumulatedPayments[
+        balanceIndex
+      ].category.localeCompare(budgetPayments[budgetIndex].category);
 
-        const categoryResult = { ...accumulatedPayments[balIndex] };
+      if (comparison < 0) {
+        const isIncome =
+          accumulatedPayments[balanceIndex].type === PaymentType.Income
+            ? 1
+            : -1;
+
+        const categoryResult = { ...accumulatedPayments[balanceIndex] };
         categoryResult.value = (
           Number(categoryResult.value) * isIncome
         ).toString();
 
         paymentsToBudgetDifference.push(categoryResult);
 
-        balIndex++;
+        balanceIndex++;
         continue;
       }
 
-      if (
-        accumulatedPayments[balIndex].category.localeCompare(
-          budgetPayments[budIndex].category,
-        ) > 0
-      ) {
-        const isIncome = budgetPayments[budIndex].type === 'Income' ? -1 : 1;
+      if (comparison > 0) {
+        const isIncome =
+          budgetPayments[budgetIndex].type === PaymentType.Income ? -1 : 1;
 
-        const categoryResult = { ...budgetPayments[budIndex] };
+        const categoryResult = { ...budgetPayments[budgetIndex] };
         categoryResult.value = (
           Number(categoryResult.value) * isIncome
         ).toString();
 
         paymentsToBudgetDifference.push(categoryResult);
 
-        budIndex++;
+        budgetIndex++;
         continue;
       }
 
       const categoryResult = {
-        type: accumulatedPayments[balIndex].type,
-        category: accumulatedPayments[balIndex].category,
+        type: accumulatedPayments[balanceIndex].type,
+        category: accumulatedPayments[balanceIndex].category,
         value: (
-          Number(budgetPayments[budIndex].value) -
-          Number(accumulatedPayments[balIndex].value)
+          Number(budgetPayments[budgetIndex].value) -
+          Number(accumulatedPayments[balanceIndex].value)
         ).toString(),
       };
+
       paymentsToBudgetDifference.push(categoryResult);
 
-      balIndex++;
-      budIndex++;
+      balanceIndex++;
+      budgetIndex++;
     }
 
-    while (accumulatedPayments[balIndex]) {
-      const isIncome = budgetPayments[budIndex].type === 'Income' ? 1 : -1;
+    while (accumulatedPayments[balanceIndex]) {
+      const isIncome =
+        accumulatedPayments[balanceIndex].type === PaymentType.Income ? 1 : -1;
 
-      const categoryResult = { ...accumulatedPayments[balIndex] };
+      const categoryResult = { ...accumulatedPayments[balanceIndex] };
       categoryResult.value = (
         Number(categoryResult.value) * isIncome
       ).toString();
 
       paymentsToBudgetDifference.push(categoryResult);
-      balIndex++;
+
+      balanceIndex++;
     }
 
-    while (budgetPayments[budIndex]) {
-      const isIncome = budgetPayments[budIndex].type === 'Income' ? -1 : 1;
+    while (budgetPayments[budgetIndex]) {
+      const isIncome =
+        budgetPayments[budgetIndex].type === PaymentType.Income ? -1 : 1;
 
-      const categoryResult = { ...budgetPayments[budIndex] };
+      const categoryResult = { ...budgetPayments[budgetIndex] };
       categoryResult.value = (
         Number(categoryResult.value) * isIncome
       ).toString();
 
       paymentsToBudgetDifference.push(categoryResult);
-      budIndex++;
+
+      budgetIndex++;
     }
 
     return {
@@ -152,10 +158,26 @@ export class AppService {
   }
 
   public handleBalanceAction(data: BalancePayload): void {
-    this.balanceActions.push(data);
+    const index = this.balanceActions.findIndex(
+      (x) => x.userId === data.userId,
+    );
+
+    if (index === -1) {
+      this.balanceActions.push(data);
+      return;
+    }
+
+    this.balanceActions[index] = data;
   }
 
   public handleBudgetAction(data: BudgetPayload): void {
-    this.budgetActions.push(data);
+    const index = this.budgetActions.findIndex((x) => x.userId === data.userId);
+
+    if (index === -1) {
+      this.budgetActions.push(data);
+      return;
+    }
+
+    this.budgetActions[index] = data;
   }
 }

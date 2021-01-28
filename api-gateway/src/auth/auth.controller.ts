@@ -32,11 +32,8 @@ export class AuthController {
   public async loginUser(@Body() user: CreateUserDTO) {
     const { id, token } = await this.authService.login(user);
 
-    // emit? (for initializing the statistics service)
-    this.balanceService
-      .send(IDENTIFIERS.getPayments, { userId: id })
-      .subscribe();
-    this.budgetService.send(IDENTIFIERS.getBudgets, { userId: id }).subscribe();
+    this.balanceService.emit(IDENTIFIERS.userAuthenticated, { userId: id });
+    this.budgetService.emit(IDENTIFIERS.userAuthenticated, { userId: id });
 
     return { token };
   }
@@ -46,7 +43,7 @@ export class AuthController {
     console.log(token);
 
     return {
-      msg: 'Successful logout!',
+      message: 'Successful logout!',
     };
   }
 }

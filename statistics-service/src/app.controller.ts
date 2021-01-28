@@ -6,13 +6,14 @@ import { from, Observable } from 'rxjs';
 import { IDENTIFIERS } from './config/identifiers';
 import { BalancePayload } from './dto/balance-payload.dto';
 import { BudgetPayload } from './dto/budget-payload.dto';
+import { ShowStatisticsDTO } from './dto/show-statistics.dto';
 
 @Controller()
 export class AppController {
   public constructor(private readonly appService: AppService) {}
 
   @MessagePattern(IDENTIFIERS.getStatistics)
-  public getStatistics(info: GetStatisticsDTO): any {
+  public getStatistics(info: GetStatisticsDTO): ShowStatisticsDTO {
     return this.appService.getStatistics(info);
   }
 

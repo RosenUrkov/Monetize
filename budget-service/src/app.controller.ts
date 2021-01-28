@@ -1,6 +1,10 @@
 import { ShowBudgetDTO } from './dto/show-budget.dto';
 import { Controller, Get, Inject } from '@nestjs/common';
-import { ClientProxy, MessagePattern } from '@nestjs/microservices';
+import {
+  ClientProxy,
+  EventPattern,
+  MessagePattern,
+} from '@nestjs/microservices';
 import { from, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { AppService } from './app.service';
@@ -62,5 +66,10 @@ export class AppController {
     this.getBudgets({ ...info });
 
     return budget;
+  }
+
+  @EventPattern(IDENTIFIERS.userAuthenticated)
+  public userAuthenticated(info: UserInfoDTO) {
+    this.getBudgets(info);
   }
 }

@@ -1,7 +1,11 @@
 import { UpdatePaymentDTO } from './dto/update-payment.dto';
 import { map, tap } from 'rxjs/operators';
 import { Controller, Get, Inject } from '@nestjs/common';
-import { ClientProxy, MessagePattern } from '@nestjs/microservices';
+import {
+  ClientProxy,
+  EventPattern,
+  MessagePattern,
+} from '@nestjs/microservices';
 import { from, Observable } from 'rxjs';
 import { CreatePaymentDTO } from './dto/create-payment.dto';
 import { PaymentInfoDTO } from './dto/payment-info.dto';
@@ -65,5 +69,10 @@ export class AppController {
     this.getPayments({ ...info });
 
     return payment;
+  }
+
+  @EventPattern(IDENTIFIERS.userAuthenticated)
+  public userAuthenticated(info: UserInfoDTO) {
+    this.getPayments(info);
   }
 }
