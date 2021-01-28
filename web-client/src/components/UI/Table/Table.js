@@ -13,6 +13,7 @@ import TableRow from "@material-ui/core/TableRow";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import AddBoxIcon from "@material-ui/icons/AddBox";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles({
   root: {
@@ -20,6 +21,10 @@ const useStyles = makeStyles({
   },
   container: {
     maxHeight: 440,
+  },
+  dataIcon: {
+    verticalAlign: "middle",
+    marginRight: "2px",
   },
 });
 
@@ -78,12 +83,7 @@ const TableComponent = (props) => {
 
                     return (
                       <TableCell key={column.id}>
-                        <Icon
-                          style={{
-                            verticalAlign: "middle",
-                            marginRight: "2px",
-                          }}
-                        />
+                        <Icon className={classes.dataIcon} />
                         {column.format && typeof value === "number"
                           ? column.format(value)
                           : value}
@@ -111,7 +111,7 @@ const TableComponent = (props) => {
 
       {pagination && (
         <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
+          rowsPerPageOptions={[5, 10, 25, 100]}
           component="div"
           count={data.length}
           rowsPerPage={rowsPerPage}
@@ -122,6 +122,14 @@ const TableComponent = (props) => {
       )}
     </Paper>
   );
+};
+
+TableComponent.propTypes = {
+  columns: PropTypes.array.isRequired,
+  data: PropTypes.array.isRequired,
+  pagination: PropTypes.bool,
+  update: PropTypes.func,
+  remove: PropTypes.func,
 };
 
 export default TableComponent;

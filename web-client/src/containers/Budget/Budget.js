@@ -16,12 +16,25 @@ import AddIcon from "@material-ui/icons/Add";
 import BudgetForm from "../../components/Budget/BudgetForm/BudgetForm";
 import { budgetTypes } from "../../constants/budgetTypes";
 import useCreateAndUpdateFormControl from "../../hooks/useCreateAndUpdateFormControl";
+import { makeStyles } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  toolbarHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  addButton: {
+    alignSelf: "center",
+  },
+}));
 
 const Budget = (props) => {
   const { showToast } = props;
 
   const dispatch = useDispatch();
   const budgetsState = useSelector((state) => state.budgets);
+
+  const classes = useStyles();
 
   const {
     entityToUpdate,
@@ -61,14 +74,14 @@ const Budget = (props) => {
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div className={classes.toolbarHeader}>
         <h2>Current Budgets</h2>
 
         <Fab
           color="secondary"
           aria-label="add"
           size="small"
-          style={{ alignSelf: "center" }}
+          className={classes.addButton}
           onClick={startCreate}
           disabled={freeBudgetTypes.length === 0}
         >

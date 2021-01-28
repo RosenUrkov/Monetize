@@ -50,6 +50,12 @@ const deleteBudgetSuccess = (budgetId) => {
   };
 };
 
+export const budgetsHideMessage = () => {
+  return {
+    type: AUTH_HIDE_MESSAGE,
+  };
+};
+
 export const fetchBudgets = () => {
   return (dispatch) => {
     dispatch(budgetsRequestStart());
@@ -60,7 +66,7 @@ export const fetchBudgets = () => {
         dispatch(fetchBudgetsSuccess(res.data));
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response);
         dispatch(budgetsRequestFail(error.response.data));
       });
   };
@@ -76,7 +82,7 @@ export const createBudget = (budgetData) => {
         dispatch(createBudgetSuccess(res.data));
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response);
         dispatch(budgetsRequestFail(error.response.data));
       });
   };
@@ -92,7 +98,7 @@ export const updateBudget = (id, budgetData) => {
         dispatch(updateBudgetSuccess(res.data));
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response);
         dispatch(budgetsRequestFail(error.response.data));
       });
   };
@@ -108,14 +114,8 @@ export const deleteBudget = (budgetId) => {
         dispatch(deleteBudgetSuccess(budgetId));
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response);
         dispatch(budgetsRequestFail(error.response.data));
       });
-  };
-};
-
-export const budgetsHideMessage = () => {
-  return {
-    type: AUTH_HIDE_MESSAGE,
   };
 };

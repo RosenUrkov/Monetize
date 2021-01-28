@@ -12,6 +12,7 @@ export const paymentFormElements = (basePayment) => {
       type: "text",
       validation: {
         required: true,
+        isNumber: true,
       },
       valid: !!basePayment,
       touched: false,

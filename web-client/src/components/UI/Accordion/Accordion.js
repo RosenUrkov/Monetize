@@ -8,6 +8,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { IconButton } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,6 +18,18 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.typography.pxToRem(15),
     fontWeight: theme.typography.fontWeightRegular,
     paddingLeft: 5,
+  },
+  outerContainer: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  headingContainer: {
+    display: "flex",
+    alignSelf: "center",
+  },
+  contentContainer: {
+    display: "flex",
   },
 }));
 
@@ -42,19 +55,13 @@ const AccordionComponent = (props) => {
         aria-controls={`panel-${title}-content`}
         id={`panel-${title}-header`}
       >
-        <div
-          style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <div style={{ display: "flex", alignSelf: "center" }}>
+        <div className={classes.outerContainer}>
+          <div className={classes.headingContainer}>
             <TitleIcon />
             <Typography className={classes.heading}>{title}</Typography>
           </div>
 
-          <div style={{ display: "flex" }}>
+          <div className={classes.contentContainer}>
             <IconButton onClick={startUpdate}>
               <EditIcon color="primary" />
             </IconButton>
@@ -68,6 +75,15 @@ const AccordionComponent = (props) => {
       <AccordionDetails>{props.children}</AccordionDetails>
     </Accordion>
   );
+};
+
+AccordionComponent.propTypes = {
+  title: PropTypes.string.isRequired,
+  TitleIcon: PropTypes.object.isRequired,
+  expanded: PropTypes.bool,
+  onChange: PropTypes.func.isRequired,
+  update: PropTypes.func.isRequired,
+  remove: PropTypes.func.isRequired,
 };
 
 export default AccordionComponent;

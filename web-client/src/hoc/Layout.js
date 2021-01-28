@@ -80,6 +80,10 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
   },
+  link: {
+    textDecoration: "none",
+    color: "#303F9F",
+  },
 }));
 
 const Layout = (props) => {
@@ -153,11 +157,7 @@ const Layout = (props) => {
           {appRoutes
             .filter((route) => route.auth === !!auth.token)
             .map((route, index) => (
-              <NavLink
-                to={route.to}
-                key={index}
-                style={{ textDecoration: "none", color: "#303F9F" }}
-              >
+              <NavLink to={route.to} key={index} className={classes.link}>
                 <ListItem button>
                   <ListItemIcon>
                     <route.icon />

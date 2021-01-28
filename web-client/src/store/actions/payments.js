@@ -50,6 +50,12 @@ const deletePaymentSuccess = (paymentId) => {
   };
 };
 
+export const paymentsHideMessage = () => {
+  return {
+    type: PAYMENTS_HIDE_MESSAGE,
+  };
+};
+
 export const fetchPayments = () => {
   return (dispatch) => {
     dispatch(paymentsRequestStart());
@@ -60,7 +66,7 @@ export const fetchPayments = () => {
         dispatch(fetchPaymentsSuccess(res.data));
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response);
         dispatch(paymentsRequestFail(error.response.data));
       });
   };
@@ -76,6 +82,7 @@ export const createPayment = (paymentData) => {
         dispatch(createPaymentSuccess(res.data));
       })
       .catch((error) => {
+        console.log(error.response);
         dispatch(paymentsRequestFail(error.response.data));
       });
   };
@@ -91,6 +98,7 @@ export const updatePayment = (id, paymentData) => {
         dispatch(updatePaymentSuccess(res.data));
       })
       .catch((error) => {
+        console.log(error.response);
         dispatch(paymentsRequestFail(error.response.data));
       });
   };
@@ -106,13 +114,8 @@ export const deletePayment = (paymentId) => {
         dispatch(deletePaymentSuccess(paymentId));
       })
       .catch((error) => {
+        console.log(error.response);
         dispatch(paymentsRequestFail(error.response.data));
       });
-  };
-};
-
-export const paymentsHideMessage = () => {
-  return {
-    type: PAYMENTS_HIDE_MESSAGE,
   };
 };

@@ -18,6 +18,7 @@ import { formatDate } from "../../../common/formatDate";
 import withToasts from "../../../hoc/withToasts";
 import { paymentFormElements } from "../../../constants/paymentFormElements";
 import Transition from "../../UI/Transition/Transition";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -27,12 +28,23 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(2),
     flex: 1,
   },
+  textInputContainer: {
+    display: "flex",
+  },
+  textInput: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+  elementsContainer: {
+    width: "100%",
+    alignSelf: "center",
+  },
 }));
 
 const PaymentForm = (props) => {
   const { open, close, submit, basePayment } = props;
 
-  const classes = useStyles();
+  const styleClasses = useStyles();
 
   const [isFormValid, setIsFormValid] = useState(false);
   const [paymentForm, setPaymentForm] = useState(
@@ -72,11 +84,21 @@ const PaymentForm = (props) => {
     .map(({ name, config }) => {
       const isValidClass = config.valid ? "valid" : "invalid";
       const isTouchedClass = config.touched ? "touched" : "untouched";
-      const classes = [isValidClass, isTouchedClass].join(" ");
+      const classes = [
+        isValidClass,
+        isTouchedClass,
+        styleClasses.textInput,
+      ].join(" ");
 
       if (config.type === "text") {
         return (
-          <Grid item xs={12} sm={6} key={name} style={{ display: "flex" }}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            key={name}
+            className={styleClasses.textInputContainer}
+          >
             <TextField
               id={name}
               name={name}
@@ -84,7 +106,6 @@ const PaymentForm = (props) => {
               type={config.type}
               placeholder={config.placeholder}
               value={config.value}
-              style={{ display: "flex", justifyContent: "flex-end" }}
               onChange={(ev) => handleInputChange(ev.target)}
               fullWidth
             />
@@ -129,7 +150,7 @@ const PaymentForm = (props) => {
       onClose={close}
       TransitionComponent={Transition}
     >
-      <AppBar className={classes.appBar}>
+      <AppBar className={styleClasses.appBar}>
         <Toolbar>
           <IconButton
             edge="start"
@@ -139,7 +160,7 @@ const PaymentForm = (props) => {
           >
             <CloseIcon />
           </IconButton>
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h6" className={styleClasses.title}>
             Payment Form
           </Typography>
           <Button
@@ -155,18 +176,18 @@ const PaymentForm = (props) => {
 
       <br />
 
-      <Grid
-        container
-        spacing={3}
-        style={{
-          width: "100%",
-          alignSelf: "center",
-        }}
-      >
+      <Grid container spacing={3} className={styleClasses.elementsContainer}>
         {formElements}
       </Grid>
     </Dialog>
   );
+};
+
+PaymentForm.propTypes = {
+  open: PropTypes.bool.isRequired,
+  close: PropTypes.func.isRequired,
+  submit: PropTypes.func.isRequired,
+  basePayment: PropTypes.object,
 };
 
 export default PaymentForm;

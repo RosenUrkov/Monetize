@@ -19,6 +19,7 @@ import {
   budgetTypeFormElement,
 } from "../../../constants/budgetFormElements";
 import withToasts from "../../../hoc/withToasts";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -28,12 +29,31 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(2),
     flex: 1,
   },
+  outerPaymentsContainer: {
+    display: "flex",
+    justifyContent: "space-around",
+    paddingBottom: 5,
+  },
+  innerPaymentsContainer: {
+    width: "95%",
+  },
+  textInputContainer: {
+    display: "flex",
+  },
+  textInput: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+  elementsContainer: {
+    width: "98%",
+    alignSelf: "center",
+  },
 }));
 
 const BudgetForm = (props) => {
   const { open, close, submit, baseBudget, freeBudgetTypes, showToast } = props;
 
-  const classes = useStyles();
+  const styleClasses = useStyles();
 
   const [isFormValid, setIsFormValid] = useState(false);
   const [budgetTypeElement, setBudgetTypeElement] = useState(
@@ -137,6 +157,7 @@ const BudgetForm = (props) => {
 
     return (
       <Select
+        className={classes}
         name={"type"}
         value={budgetTypeElement.value}
         onChange={(ev) => handleBudgetTypeInputChange(ev.target.value)}
@@ -150,7 +171,9 @@ const BudgetForm = (props) => {
 
     const isValidClass = config.valid ? "valid" : "invalid";
     const isTouchedClass = config.touched ? "touched" : "untouched";
-    const classes = [isValidClass, isTouchedClass].join(" ");
+    const classes = [isValidClass, isTouchedClass, styleClasses.textInput].join(
+      " "
+    );
 
     if (config.type === "text") {
       return (
@@ -159,7 +182,7 @@ const BudgetForm = (props) => {
           xs={12}
           sm={4}
           key={index + name}
-          style={{ display: "flex" }}
+          className={styleClasses.textInputContainer}
         >
           <TextField
             id={index + name}
@@ -168,7 +191,6 @@ const BudgetForm = (props) => {
             type={config.type}
             placeholder={config.placeholder}
             value={config.value}
-            style={{ display: "flex", justifyContent: "flex-end" }}
             onChange={(ev) =>
               handlePaymentElementInputChange({
                 identifier,
@@ -184,6 +206,7 @@ const BudgetForm = (props) => {
       return (
         <Grid item xs={12} sm={4} key={index + name}>
           <Select
+            className={classes}
             name={name}
             value={config.value}
             onChange={(ev) =>
@@ -212,15 +235,12 @@ const BudgetForm = (props) => {
         .map(visualizePaymentFormElement);
 
       return (
-        <div
-          key={index}
-          style={{
-            display: "flex",
-            justifyContent: "space-around",
-            paddingBottom: 5,
-          }}
-        >
-          <Grid container spacing={3} style={{ width: "95%" }}>
+        <div key={index} className={styleClasses.outerPaymentsContainer}>
+          <Grid
+            container
+            spacing={3}
+            className={styleClasses.innerPaymentsContainer}
+          >
             {visualized}
           </Grid>
 
@@ -243,7 +263,7 @@ const BudgetForm = (props) => {
         onClose={close}
         TransitionComponent={Transition}
       >
-        <AppBar className={classes.appBar} color="secondary">
+        <AppBar className={styleClasses.appBar} color="secondary">
           <Toolbar>
             <IconButton
               edge="start"
@@ -253,7 +273,7 @@ const BudgetForm = (props) => {
             >
               <CloseIcon />
             </IconButton>
-            <Typography variant="h6" className={classes.title}>
+            <Typography variant="h6" className={styleClasses.title}>
               Budget Form
             </Typography>
             <Button
@@ -269,12 +289,7 @@ const BudgetForm = (props) => {
 
         <br />
 
-        <div
-          style={{
-            width: "98%",
-            alignSelf: "center",
-          }}
-        >
+        <div className={styleClasses.elementsContainer}>
           {budgetTypeVisualization}
 
           <br />
@@ -296,6 +311,14 @@ const BudgetForm = (props) => {
       </Dialog>
     </div>
   );
+};
+
+BudgetForm.propTypes = {
+  open: PropTypes.bool.isRequired,
+  close: PropTypes.func.isRequired,
+  submit: PropTypes.func.isRequired,
+  baseBudget: PropTypes.object,
+  freeBudgetTypes: PropTypes.array.isRequired,
 };
 
 export default withToasts(BudgetForm);

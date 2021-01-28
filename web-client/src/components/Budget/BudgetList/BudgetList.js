@@ -3,6 +3,7 @@ import { budgetPaymentColumns } from "../../../constants/budgetPaymentColumns";
 import { budgetTypes } from "../../../constants/budgetTypes";
 import Accordion from "../../UI/Accordion/Accordion";
 import Table from "../../UI/Table/Table";
+import PropTypes from "prop-types";
 
 const BudgetList = (props) => {
   const { budgets, remove, update } = props;
@@ -26,7 +27,6 @@ const BudgetList = (props) => {
   return (
     <div>
       {sortedBudgetsWithIcons.map((budget, index) => {
-        console.log(sortedBudgetsWithIcons, budgetDetails, index);
         return (
           <Accordion
             title={budget.type}
@@ -47,6 +47,12 @@ const BudgetList = (props) => {
       })}
     </div>
   );
+};
+
+BudgetList.propTypes = {
+  budgets: PropTypes.array.isRequired,
+  remove: PropTypes.func.isRequired,
+  update: PropTypes.func.isRequired,
 };
 
 export default BudgetList;

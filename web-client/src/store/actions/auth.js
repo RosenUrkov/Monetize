@@ -40,6 +40,12 @@ const logoutSuccess = () => {
   };
 };
 
+export const authHideMessage = () => {
+  return {
+    type: AUTH_HIDE_MESSAGE,
+  };
+};
+
 export const register = (username, password, successCallback = () => {}) => {
   return (dispatch) => {
     dispatch(authRequestStart());
@@ -73,7 +79,7 @@ export const login = (username, password, successCallback = () => {}) => {
         successCallback();
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response);
         dispatch(authRequestFail(error.response.data));
       });
   };
@@ -90,15 +96,9 @@ export const logout = () => {
         dispatch(logoutSuccess());
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response);
         dispatch(authRequestFail(error.response.data));
       });
-  };
-};
-
-export const authHideMessage = () => {
-  return {
-    type: AUTH_HIDE_MESSAGE,
   };
 };
 

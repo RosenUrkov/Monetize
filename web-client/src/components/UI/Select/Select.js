@@ -5,6 +5,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -36,6 +37,13 @@ const SelectComponent = (props) => {
       </Select>
     </FormControl>
   );
+};
+
+SelectComponent.propTypes = {
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  options: PropTypes.array.isRequired,
 };
 
 export default SelectComponent;

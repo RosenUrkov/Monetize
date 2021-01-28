@@ -6,6 +6,7 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import TextField from "@material-ui/core/TextField";
+import PropTypes from "prop-types";
 
 const TextFieldComponent = (props) => {
   return <TextField {...props} disabled={true} />;
@@ -26,6 +27,13 @@ const DatePicker = (props) => {
       />
     </MuiPickersUtilsProvider>
   );
+};
+
+DatePicker.propTypes = {
+  label: PropTypes.string.isRequired,
+  date: PropTypes.instanceOf(Date).isRequired,
+  changeDate: PropTypes.func.isRequired,
+  fullWidth: PropTypes.bool,
 };
 
 export default DatePicker;

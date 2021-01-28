@@ -17,12 +17,25 @@ import withToasts from "../../hoc/withToasts";
 import useCreateAndUpdateFormControl from "../../hooks/useCreateAndUpdateFormControl";
 import Table from "../../components/UI/Table/Table";
 import { paymentColumns } from "../../constants/paymentColumns";
+import { makeStyles } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  toolbarHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  addButton: {
+    alignSelf: "center",
+  },
+}));
 
 const Balance = (props) => {
   const { showToast } = props;
 
   const dispatch = useDispatch();
   const paymentsState = useSelector((state) => state.payments);
+
+  const classes = useStyles();
 
   const [paymentsDate, setPaymentsDate] = useState(new Date());
   const [displayPayments, setDisplayPayments] = useState([]);
@@ -69,12 +82,12 @@ const Balance = (props) => {
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div className={classes.toolbarHeader}>
         <Fab
           color="primary"
           aria-label="add"
           size="small"
-          style={{ alignSelf: "center" }}
+          className={classes.addButton}
           onClick={startCreate}
         >
           <AddIcon />
