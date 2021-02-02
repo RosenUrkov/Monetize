@@ -3,7 +3,7 @@ import DateRangeIcon from "@material-ui/icons/DateRange";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 
 export const budgetTypes = {
-  Day: { icon: TodayIcon },
-  Month: { icon: DateRangeIcon },
-  Annual: { icon: CalendarTodayIcon },
+  Day: { name: "Day", icon: TodayIcon },
+  Month: { name: "Month", icon: DateRangeIcon },
+  Annual: { name: "Annual", icon: CalendarTodayIcon },
 };

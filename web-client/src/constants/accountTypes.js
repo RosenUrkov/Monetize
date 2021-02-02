@@ -3,7 +3,7 @@ import EuroIcon from "@material-ui/icons/Euro";
 import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
 
 export const accountTypes = {
-  Cash: { icon: EuroIcon },
-  Bank: { icon: AccountBalanceIcon },
-  CreditCard: { icon: CreditCardIcon },
+  Cash: { name: "Cash", icon: EuroIcon },
+  Bank: { name: "Bank", icon: AccountBalanceIcon },
+  CreditCard: { name: "CreditCard", icon: CreditCardIcon },
 };

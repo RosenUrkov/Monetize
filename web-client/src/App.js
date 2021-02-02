@@ -8,6 +8,7 @@ import Balance from "./containers/Balance/Balance";
 import Budget from "./containers/Budget/Budget";
 import { authCheckState } from "./store/actions/auth";
 import Layout from "./hoc/Layout";
+import Statistics from "./containers/Statistics/Statistics";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ const App = () => {
 
           <Route path="/balance" component={Balance} />
           <Route path="/budgets" component={Budget} />
+          <Route path="/statistics" component={Statistics} />
 
           <Route path="/register" component={Register} />
           <Route path="/login" component={Login} />

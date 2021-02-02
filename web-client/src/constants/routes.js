@@ -3,6 +3,7 @@ import LockOpenIcon from "@material-ui/icons/LockOpen";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import MonetizationIcon from "@material-ui/icons/MonetizationOn";
 import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet";
+import InsertChartIcon from "@material-ui/icons/InsertChart";
 
 export const appRoutes = [
   {
@@ -16,6 +17,12 @@ export const appRoutes = [
     icon: MonetizationIcon,
     to: "/budgets",
     text: "Budgets",
+  },
+  {
+    auth: true,
+    icon: InsertChartIcon,
+    to: "/statistics",
+    text: "Statistics",
   },
 ];
 

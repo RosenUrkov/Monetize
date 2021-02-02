@@ -9,6 +9,7 @@ import {
   Inject,
   Put,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ClientProxy } from '@nestjs/microservices';
@@ -30,8 +31,10 @@ export class StatisticsController {
   @Get()
   public getStatistics(
     @User() user: ShowUserDTO,
-    @Body() info: GetStatisticsDTO,
+    @Query() info: GetStatisticsDTO,
   ): Observable<any> {
+    console.log('hereee', info);
+
     const payload: UserInfoDTO & GetStatisticsDTO = {
       userId: user.id,
       ...info,
