@@ -14,6 +14,7 @@ import { symbolCircle, symbol } from "d3-shape";
 import { formatPrefix } from "d3-format";
 import { ValueScale } from "@devexpress/dx-react-chart";
 import Content from "./Content";
+import PropTypes from "prop-types";
 
 const Point = (props) => (
   <ScatterSeries.Point
@@ -56,6 +57,11 @@ const PointChart = (props) => {
       </Chart>
     </Paper>
   );
+};
+
+PointChart.propTypes = {
+  data: PropTypes.array.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 export default PointChart;

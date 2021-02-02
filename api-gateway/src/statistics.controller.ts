@@ -33,8 +33,6 @@ export class StatisticsController {
     @User() user: ShowUserDTO,
     @Query() info: GetStatisticsDTO,
   ): Observable<any> {
-    console.log('hereee', info);
-
     const payload: UserInfoDTO & GetStatisticsDTO = {
       userId: user.id,
       ...info,

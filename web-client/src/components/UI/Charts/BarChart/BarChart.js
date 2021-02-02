@@ -11,6 +11,7 @@ import {
 import { scaleLinear } from "d3-scale";
 import { ValueScale } from "@devexpress/dx-react-chart";
 import { EventTracker, HoverState } from "@devexpress/dx-react-chart";
+import PropTypes from "prop-types";
 
 const scale = () => scaleLinear();
 const modifyDomain = (domain) => {
@@ -41,6 +42,11 @@ const BarChart = (props) => {
       </Chart>
     </Paper>
   );
+};
+
+BarChart.propTypes = {
+  data: PropTypes.array.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 export default BarChart;
