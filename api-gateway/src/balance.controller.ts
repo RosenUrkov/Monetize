@@ -44,7 +44,6 @@ export class BalanceController {
       userId: user.id,
       paymentId: +id,
     };
-
     return this.balanceService.send(IDENTIFIERS.getPayment, payload);
   }
 

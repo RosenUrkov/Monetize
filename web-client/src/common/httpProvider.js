@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "http://localhost:4000";
+const url = "/api/";
 const httpProvider = axios.create({ baseURL: url });
 
 httpProvider.interceptors.request.use(

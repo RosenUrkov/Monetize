@@ -6,9 +6,22 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
+  const host = process.env.BALANCE_SERVICE_HOST
+    ? process.env.BALANCE_SERVICE_HOST
+    : 'localhost';
+  const port = process.env.BALANCE_SERVICE_PORT
+    ? Number(process.env.BALANCE_SERVICE_PORT)
+    : 4001;
+
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
-    identityConfig,
+    {
+      transport: Transport.TCP,
+      options: {
+        host,
+        port,
+      },
+    },
   );
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));

@@ -25,7 +25,6 @@ export class AppController {
   @MessagePattern(IDENTIFIERS.getPayments)
   public async getPayments(info: UserInfoDTO): Promise<ShowPaymentDTO[]> {
     const payments: ShowPaymentDTO[] = await this.appService.getPayments(info);
-
     const payload = {
       userId: info.userId,
       payments,

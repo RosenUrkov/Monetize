@@ -1,0 +1,66 @@
+version: "3"
+services:
+  api-gateway-database:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=monetize-auth
+      - MYSQL_PASSWORD=root
+  balance-service-database:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=monetize-balance
+      - MYSQL_PASSWORD=root
+  nginx:
+    depends_on:
+      - api-gateway
+      - web-client
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports:
+      - "3000:80"
+  web-client:
+    stdin_open: true
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./web-client
+    volumes:
+      - /app/node_modules
+      - ./web-client:/app
+    # environment:
+    #   - CHOKIDAR_USEPOLLING=true
+  api-gateway:
+    depends_on:
+      - api-gateway-database
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./api-gateway
+    volumes:
+      - /app/node_modules
+      - ./api-gateway:/app
+    env_file:
+      - ./api-gateway/.env
+    environment:
+      - DB_HOST=api-gateway-database
+      - BALANCE_SERVICE_HOST=balance-service
+      - BALANCE_SERVICE_PORT=4001
+  balance-service:
+    depends_on:
+      - balance-service-database
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./balance-service
+    volumes:
+      - /app/node_modules
+      - ./balance-service:/app
+    env_file:
+      - ./balance-service/.env
+    environment:
+      - DB_HOST=balance-service-database
+      - BALANCE_SERVICE_HOST=balance-service
+      - BALANCE_SERVICE_PORT=4001
