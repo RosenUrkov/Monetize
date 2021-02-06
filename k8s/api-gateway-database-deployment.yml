@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway-database-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: api-gateway-database
+  template:
+    metadata:
+      labels:
+        component: api-gateway-database
+    spec:
+      containers:
+        - name: api-gateway-database
+          image: mysql:8
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: api-gateway-database-password
+                  key: PASSWORD
+            - name: MYSQL_DATABASE
+              value: monetize-auth
+          args: ["--default-authentication-plugin=mysql_native_password"]
+          ports:
+            - containerPort: 3306
+      #     volumeMounts:
+      #       - name: api-gateway-database-storage
+      #         mountPath: /var/lib/mysql
+      # volumes:
+      #   - name: api-gateway-database-storage
+      #     persistentVolumeClaim:
+      #       claimName: database-persistent-volume-claim

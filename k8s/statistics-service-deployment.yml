@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: statistics-service-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: statistics-service
+  template:
+    metadata:
+      labels:
+        component: statistics-service
+    spec:
+      containers:
+        - name: statistics-service
+          image: rosenurkov/monetize-statistics-service
+          ports:
+            - containerPort: 4003
+          env:
+            - name: STATISTICS_SERVICE_HOST
+              value: statistics-service-cluster-ip-service
+            - name: STATISTICS_SERVICE_PORT
+              value: "4003"

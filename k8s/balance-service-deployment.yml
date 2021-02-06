@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: balance-service-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: balance-service
+  template:
+    metadata:
+      labels:
+        component: balance-service
+    spec:
+      containers:
+        - name: balance-service
+          image: rosenurkov/monetize-balance-service
+          ports:
+            - containerPort: 4001
+          env:
+            - name: TYPEORM_CONNECTION
+              value: mysql
+            - name: TYPEORM_HOST
+              value: balance-service-database-cluster-ip-service
+            - name: TYPEORM_PORT
+              value: "3306"
+            - name: TYPEORM_USERNAME
+              value: root
+            - name: TYPEORM_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: balance-service-database-password
+                  key: PASSWORD
+            - name: TYPEORM_DATABASE
+              value: monetize-balance
+            - name: TYPEORM_ENTITIES
+              value: src/entities/*.entity.ts
+            - name: TYPEORM_MIGRATIONS
+              value: src/config/database/migrations/*.ts
+            - name: TYPEORM_MIGRATIONS_DIR
+              value: src/config/database/migrations
+            - name: BALANCE_SERVICE_HOST
+              value: balance-service-cluster-ip-service
+            - name: BALANCE_SERVICE_PORT
+              value: "4001"
+            - name: STATISTICS_SERVICE_HOST
+              value: statistics-service-cluster-ip-service
+            - name: STATISTICS_SERVICE_PORT
+              value: "4003"

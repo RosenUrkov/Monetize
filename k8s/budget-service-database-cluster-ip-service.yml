@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: budget-service-database-cluster-ip-service
+spec:
+  type: ClusterIP
+  selector:
+    component: budget-service-database
+  ports:
+    - port: 3306
+      targetPort: 3306

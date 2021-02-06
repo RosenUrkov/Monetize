@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: api-gateway
+  template:
+    metadata:
+      labels:
+        component: api-gateway
+    spec:
+      containers:
+        - name: api-gateway
+          image: rosenurkov/monetize-api-gateway
+          ports:
+            - containerPort: 4000
+          env:
+            - name: PORT
+              value: "4000"
+            - name: TYPEORM_CONNECTION
+              value: mysql
+            - name: TYPEORM_HOST
+              value: api-gateway-database-cluster-ip-service
+            - name: TYPEORM_PORT
+              value: "3306"
+            - name: TYPEORM_USERNAME
+              value: root
+            - name: TYPEORM_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: api-gateway-database-password
+                  key: PASSWORD
+            - name: TYPEORM_DATABASE
+              value: monetize-auth
+            - name: TYPEORM_ENTITIES
+              value: src/entities/*.entity.ts
+            - name: TYPEORM_MIGRATIONS
+              value: src/config/database/migrations/*.ts
+            - name: TYPEORM_MIGRATIONS_DIR
+              value: src/config/database/migrations
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWTSECRET
+            - name: JWT_EXPIRE_TIME
+              value: "3600"
+            - name: BALANCE_SERVICE_HOST
+              value: balance-service-cluster-ip-service
+            - name: BALANCE_SERVICE_PORT
+              value: "4001"
+            - name: BUDGET_SERVICE_HOST
+              value: budget-service-cluster-ip-service
+            - name: BUDGET_SERVICE_PORT
+              value: "4002"
+            - name: STATISTICS_SERVICE_HOST
+              value: statistics-service-cluster-ip-service
+            - name: STATISTICS_SERVICE_PORT
+              value: "4003"

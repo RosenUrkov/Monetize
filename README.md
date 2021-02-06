@@ -1,5 +1,7 @@
 # Monetize
 
+[![Build Status](https://travis-ci.com/RosenUrkov/Monetize.svg?branch=main)](https://travis-ci.com/RosenUrkov/Monetize)
+
 ## Description
 
 A budgeting application for rising the user's financial awareness.

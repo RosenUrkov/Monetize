@@ -74,8 +74,6 @@ services:
       - TYPEORM_ENTITIES=src/entities/*.entity.ts
       - TYPEORM_MIGRATIONS=src/config/database/migrations/*.ts
       - TYPEORM_MIGRATIONS_DIR=src/config/database/migrations
-      - TYPEORM_SYNCHRONIZE=false
-      - TYPEORM_LOGGING=all
 
       - JWT_SECRET=s3cr3t
       - JWT_EXPIRE_TIME=3600
@@ -109,8 +107,6 @@ services:
       - TYPEORM_ENTITIES=src/entities/*.entity.ts
       - TYPEORM_MIGRATIONS=src/config/database/migrations/*.ts
       - TYPEORM_MIGRATIONS_DIR=src/config/database/migrations
-      - TYPEORM_SYNCHRONIZE=false
-      - TYPEORM_LOGGING=all
 
       - BALANCE_SERVICE_HOST=balance-service
       - BALANCE_SERVICE_PORT=4001
@@ -138,8 +134,6 @@ services:
       - TYPEORM_ENTITIES=src/entities/*.entity.ts
       - TYPEORM_MIGRATIONS=src/config/database/migrations/*.ts
       - TYPEORM_MIGRATIONS_DIR=src/config/database/migrations
-      - TYPEORM_SYNCHRONIZE=false
-      - TYPEORM_LOGGING=all
 
       - BUDGET_SERVICE_HOST=budget-service
       - BUDGET_SERVICE_PORT=4002
