@@ -3,17 +3,33 @@ services:
   api-gateway-database:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - ./api-gateway/src/config/database/data:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=monetize-auth
       - MYSQL_PASSWORD=root
+
   balance-service-database:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - ./balance-service/src/config/database/data:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=monetize-balance
       - MYSQL_PASSWORD=root
+
+  budget-service-database:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - ./budget-service/src/config/database/data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=monetize-budget
+      - MYSQL_PASSWORD=root
+
   nginx:
     depends_on:
       - api-gateway
@@ -24,6 +40,7 @@ services:
       context: ./nginx
     ports:
       - "3000:80"
+
   web-client:
     stdin_open: true
     build:
@@ -32,8 +49,9 @@ services:
     volumes:
       - /app/node_modules
       - ./web-client:/app
-    # environment:
-    #   - CHOKIDAR_USEPOLLING=true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+
   api-gateway:
     depends_on:
       - api-gateway-database
@@ -43,12 +61,34 @@ services:
     volumes:
       - /app/node_modules
       - ./api-gateway:/app
-    env_file:
-      - ./api-gateway/.env
     environment:
-      - DB_HOST=api-gateway-database
+      - PORT=4000
+
+      - TYPEORM_CONNECTION=mysql
+      - TYPEORM_HOST=api-gateway-database
+      - TYPEORM_PORT=3306
+      - TYPEORM_USERNAME=root
+      - TYPEORM_PASSWORD=root
+      - TYPEORM_DATABASE=monetize-auth
+
+      - TYPEORM_ENTITIES=src/entities/*.entity.ts
+      - TYPEORM_MIGRATIONS=src/config/database/migrations/*.ts
+      - TYPEORM_MIGRATIONS_DIR=src/config/database/migrations
+      - TYPEORM_SYNCHRONIZE=false
+      - TYPEORM_LOGGING=all
+
+      - JWT_SECRET=s3cr3t
+      - JWT_EXPIRE_TIME=3600
+
       - BALANCE_SERVICE_HOST=balance-service
       - BALANCE_SERVICE_PORT=4001
+
+      - BUDGET_SERVICE_HOST=budget-service
+      - BUDGET_SERVICE_PORT=4002
+
+      - STATISTICS_SERVICE_HOST=statistics-service
+      - STATISTICS_SERVICE_PORT=4003
+
   balance-service:
     depends_on:
       - balance-service-database
@@ -58,9 +98,62 @@ services:
     volumes:
       - /app/node_modules
       - ./balance-service:/app
-    env_file:
-      - ./balance-service/.env
     environment:
-      - DB_HOST=balance-service-database
+      - TYPEORM_CONNECTION=mysql
+      - TYPEORM_HOST=balance-service-database
+      - TYPEORM_PORT=3306
+      - TYPEORM_USERNAME=root
+      - TYPEORM_PASSWORD=root
+      - TYPEORM_DATABASE=monetize-balance
+
+      - TYPEORM_ENTITIES=src/entities/*.entity.ts
+      - TYPEORM_MIGRATIONS=src/config/database/migrations/*.ts
+      - TYPEORM_MIGRATIONS_DIR=src/config/database/migrations
+      - TYPEORM_SYNCHRONIZE=false
+      - TYPEORM_LOGGING=all
+
       - BALANCE_SERVICE_HOST=balance-service
       - BALANCE_SERVICE_PORT=4001
+
+      - STATISTICS_SERVICE_HOST=statistics-service
+      - STATISTICS_SERVICE_PORT=4003
+
+  budget-service:
+    depends_on:
+      - budget-service-database
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./budget-service
+    volumes:
+      - /app/node_modules
+      - ./budget-service:/app
+    environment:
+      - TYPEORM_CONNECTION=mysql
+      - TYPEORM_HOST=budget-service-database
+      - TYPEORM_PORT=3306
+      - TYPEORM_USERNAME=root
+      - TYPEORM_PASSWORD=root
+      - TYPEORM_DATABASE=monetize-budget
+
+      - TYPEORM_ENTITIES=src/entities/*.entity.ts
+      - TYPEORM_MIGRATIONS=src/config/database/migrations/*.ts
+      - TYPEORM_MIGRATIONS_DIR=src/config/database/migrations
+      - TYPEORM_SYNCHRONIZE=false
+      - TYPEORM_LOGGING=all
+
+      - BUDGET_SERVICE_HOST=budget-service
+      - BUDGET_SERVICE_PORT=4002
+
+      - STATISTICS_SERVICE_HOST=statistics-service
+      - STATISTICS_SERVICE_PORT=4003
+
+  statistics-service:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./statistics-service
+    volumes:
+      - /app/node_modules
+      - ./statistics-service:/app
+    environment:
+      - STATISTICS_SERVICE_HOST=statistics-service
+      - STATISTICS_SERVICE_PORT=4003

@@ -2,6 +2,7 @@ import { User } from './../../../entities/user.entity';
 import { createConnection, Repository, In } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
+// TEST USER ONLY!
 const seedUser = async (connection) => {
   const userRepo: Repository<User> = connection.manager.getRepository(User);
   const seedUser = await userRepo.findOne({

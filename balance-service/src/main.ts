@@ -1,4 +1,3 @@
-import { identityConfig } from './config/services';
 import { ValidationErrorInterceptor } from './middleware/interceptors/validation-error.interceptor';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';

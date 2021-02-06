@@ -2,13 +2,25 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { AppModule } from './app.module';
-import { identityConfig } from './config/services';
 import { ValidationErrorInterceptor } from './middleware/interceptors/validation-error.interceptor';
 
 async function bootstrap() {
+  const host = process.env.BUDGET_SERVICE_HOST
+    ? process.env.BUDGET_SERVICE_HOST
+    : 'localhost';
+  const port = process.env.BUDGET_SERVICE_PORT
+    ? Number(process.env.BUDGET_SERVICE_PORT)
+    : 4002;
+
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
-    identityConfig,
+    {
+      transport: Transport.TCP,
+      options: {
+        host,
+        port,
+      },
+    },
   );
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
