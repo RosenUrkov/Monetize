@@ -5,9 +5,8 @@ WORKDIR "/app"
 COPY ./package.json ./
 RUN npm install --legacy-peer-deps
 
-RUN npm run prebuild
-RUN npm run build
+COPY . .
 
-ADD ./dist ./dist
+RUN npm run build
 
 CMD ["npm", "run", "start:prod"]
