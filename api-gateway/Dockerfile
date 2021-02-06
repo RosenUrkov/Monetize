@@ -8,6 +8,6 @@ RUN npm install --legacy-peer-deps
 RUN npm run prebuild
 RUN npm run build
 
-COPY ./dist ./dist
+ADD ./dist ./dist
 
 CMD ["npm", "run", "start:prod"]
