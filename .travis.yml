@@ -1,0 +1,19 @@
+sudo: required
+language: generic
+services:
+  - docker
+
+script:
+  - docker build -t rosenurkov/monetize-web-client ./web-client
+  - docker build -t rosenurkov/monetize-api-gateway ./api-gateway
+  - docker build -t rosenurkov/monetize-balance-service ./balance-service
+  - docker build -t rosenurkov/monetize-budget-service ./budget-service
+  - docker build -t rosenurkov/monetize-statistics-service ./statistics-service
+  # Login to docker cli
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Push the production images to docker hub
+  - docker push rosenurkov/monetize-web-client
+  - docker push rosenurkov/monetize-api-gateway
+  - docker push rosenurkov/monetize-balance-service
+  - docker push rosenurkov/monetize-budget-service
+  - docker push rosenurkov/monetize-statistics-service
