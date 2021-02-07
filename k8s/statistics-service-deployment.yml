@@ -18,7 +18,5 @@ spec:
           ports:
             - containerPort: 4003
           env:
-            - name: STATISTICS_SERVICE_HOST
-              value: statistics-service-cluster-ip-service
             - name: STATISTICS_SERVICE_PORT
               value: "4003"

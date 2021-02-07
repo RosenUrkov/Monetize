@@ -21,7 +21,7 @@ import { IDENTIFIERS } from './identifiers';
         TYPEORM_MIGRATIONS: Joi.string().required(),
         TYPEORM_MIGRATIONS_DIR: Joi.string().required(),
 
-        BALANCE_SERVICE_HOST: Joi.string().required(),
+        BALANCE_SERVICE_HOST: Joi.string().optional(),
         BALANCE_SERVICE_PORT: Joi.number().default(4001),
 
         STATISTICS_SERVICE_HOST: Joi.string().required(),

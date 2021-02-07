@@ -7,7 +7,7 @@ import { ValidationErrorInterceptor } from './middleware/interceptors/validation
 async function bootstrap() {
   const host = process.env.STATISTICS_SERVICE_HOST
     ? process.env.STATISTICS_SERVICE_HOST
-    : 'localhost';
+    : undefined;
   const port = process.env.STATISTICS_SERVICE_PORT
     ? Number(process.env.STATISTICS_SERVICE_PORT)
     : 4003;
@@ -18,6 +18,7 @@ async function bootstrap() {
       transport: Transport.TCP,
       options: {
         port,
+        host,
       },
     },
   );

@@ -39,8 +39,6 @@ spec:
               value: src/config/database/migrations/*.ts
             - name: TYPEORM_MIGRATIONS_DIR
               value: src/config/database/migrations
-            - name: BUDGET_SERVICE_HOST
-              value: budget-service-cluster-ip-service
             - name: BUDGET_SERVICE_PORT
               value: "4002"
             - name: STATISTICS_SERVICE_HOST
