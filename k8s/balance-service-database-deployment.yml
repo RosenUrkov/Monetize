@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: balance-service-database
-          image: mysql:8
+          image: mysql
           env:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
