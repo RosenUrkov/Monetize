@@ -8,14 +8,20 @@ import {
   Title,
   Tooltip,
 } from "@devexpress/dx-react-chart-material-ui";
-import { scaleLinear } from "d3-scale";
-import { ValueScale } from "@devexpress/dx-react-chart";
+import { scaleLinear, scaleLog } from "d3-scale";
+import { ValueScale, Animation } from "@devexpress/dx-react-chart";
 import { EventTracker, HoverState } from "@devexpress/dx-react-chart";
 import PropTypes from "prop-types";
 
 const scale = () => scaleLinear();
-const modifyDomain = (domain) => {
-  return [domain[0], domain[domain.length - 1]];
+const modifyDomain = (data) => (domain) => {
+  const sorted = data
+    .slice()
+    .map((x) => x.value)
+    .map(Number)
+    .sort((x, y) => x - y);
+
+  return [sorted[0], sorted[sorted.length - 1]];
 };
 
 const BarChart = (props) => {
@@ -25,7 +31,7 @@ const BarChart = (props) => {
     <Paper>
       <Chart data={data}>
         <ArgumentAxis />
-        <ValueScale factory={scale} modifyDomain={modifyDomain} />
+        <ValueScale factory={scale} modifyDomain={modifyDomain(data)} />
         <ValueAxis />
 
         <BarSeries
@@ -36,6 +42,7 @@ const BarChart = (props) => {
 
         <Title text={title} />
 
+        <Animation />
         <EventTracker />
         <HoverState />
         <Tooltip />

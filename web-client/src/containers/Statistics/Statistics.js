@@ -56,7 +56,7 @@ const Statistics = (props) => {
       <div className={classes.budgetTypeContainer}>
         <Grid item xs={12} sm={4}>
           <Select
-            name={"type"}
+            name={"Budget type:"}
             value={statisticsBudgetType}
             onChange={(ev) => setStatisticsBudgetType(ev.target.value)}
             options={Object.keys(budgetTypes)}

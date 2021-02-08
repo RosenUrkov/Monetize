@@ -4,6 +4,7 @@ import {
   ArgumentAxis,
   ValueAxis,
   Chart,
+  SplineSeries,
   ScatterSeries,
   Title,
   Tooltip,
@@ -12,7 +13,7 @@ import { EventTracker, HoverState } from "@devexpress/dx-react-chart";
 import { scaleLinear } from "d3-scale";
 import { symbolCircle, symbol } from "d3-shape";
 import { formatPrefix } from "d3-format";
-import { ValueScale } from "@devexpress/dx-react-chart";
+import { ValueScale, Animation } from "@devexpress/dx-react-chart";
 import Content from "./Content";
 import PropTypes from "prop-types";
 
@@ -38,8 +39,8 @@ const PointChart = (props) => {
   return (
     <Paper>
       <Chart data={chartData}>
-        <ArgumentAxis />
         <ValueScale factory={scale} modifyDomain={modifyDomain} />
+        <ArgumentAxis />
         <ValueAxis />
 
         <ScatterSeries
@@ -49,8 +50,11 @@ const PointChart = (props) => {
           color="#3F51B5"
         />
 
+        <SplineSeries valueField="value" argumentField="date" color="#F50057" />
+
         <Title text={title} />
 
+        <Animation />
         <EventTracker />
         <HoverState />
         <Tooltip contentComponent={Content(chartData)} />

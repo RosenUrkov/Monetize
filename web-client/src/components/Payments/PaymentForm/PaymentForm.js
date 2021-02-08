@@ -19,6 +19,7 @@ import withToasts from "../../../hoc/withToasts";
 import { paymentFormElements } from "../../../constants/paymentFormElements";
 import Transition from "../../UI/Transition/Transition";
 import PropTypes from "prop-types";
+import { capitalizeString } from "../../../common/capitalizeString";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -102,10 +103,10 @@ const PaymentForm = (props) => {
             <TextField
               id={name}
               autoComplete="off"
-              name={name}
+              name={capitalizeString(name)}
               className={classes}
               type={config.type}
-              placeholder={config.placeholder}
+              placeholder={capitalizeString(config.placeholder)}
               value={config.value}
               onChange={(ev) => handleInputChange(ev.target)}
               fullWidth
@@ -117,7 +118,7 @@ const PaymentForm = (props) => {
         return (
           <Grid item xs={12} sm={6} key={name}>
             <Select
-              name={name}
+              name={capitalizeString(name)}
               value={config.value}
               onChange={(ev) => handleInputChange(ev.target)}
               options={config.getOptions(paymentForm.type.value)}
