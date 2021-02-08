@@ -8,7 +8,5 @@ export const IDENTIFIERS = {
   deletePayment: 'deletePayment',
 
   userLogin: 'userLogin',
-  userLogout: 'userLogout',
   balanceChange: 'balanceChange',
-  balanceDelete: 'balanceDelete',
 };

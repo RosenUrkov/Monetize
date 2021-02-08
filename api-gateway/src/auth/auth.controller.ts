@@ -22,6 +22,8 @@ export class AuthController {
     private readonly balanceService: ClientProxy,
     @Inject(IDENTIFIERS.budgetService)
     private readonly budgetService: ClientProxy,
+    @Inject(IDENTIFIERS.statisticsService)
+    private readonly statisticsService: ClientProxy,
     private readonly authService: AuthService,
   ) {}
 
@@ -43,10 +45,9 @@ export class AuthController {
   @Post('/logout')
   @UseGuards(AuthGuard('jwt'))
   public async logoutUser(@User() user: ShowUserDTO) {
-    this.balanceService.emit(IDENTIFIERS.userLogout, {
+    this.statisticsService.emit(IDENTIFIERS.deleteData, {
       userId: user.id,
     });
-    this.budgetService.emit(IDENTIFIERS.userLogout, { userId: user.id });
 
     return {
       message: 'Successful logout!',

@@ -7,6 +7,9 @@ import * as Joi from '@hapi/joi';
   imports: [
     ConfigModule.forRoot({
       validationSchema: Joi.object({
+        REDIS_HOST: Joi.string().required(),
+        REDIS_PORT: Joi.number().default(6379),
+
         STATISTICS_SERVICE_HOST: Joi.string().required(),
         STATISTICS_SERVICE_PORT: Joi.number().default(4003),
       }),

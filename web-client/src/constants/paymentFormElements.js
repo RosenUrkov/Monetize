@@ -6,8 +6,8 @@ import { accountTypes } from "./accountTypes";
 export const paymentFormElements = (basePayment) => {
   return {
     value: {
-      name: "value",
-      placeholder: "value",
+      name: "Value",
+      placeholder: "Value",
       value: basePayment?.value || "",
       type: "text",
       validation: {
@@ -18,8 +18,8 @@ export const paymentFormElements = (basePayment) => {
       touched: false,
     },
     type: {
-      name: "type",
-      placeholder: "type",
+      name: "Type",
+      placeholder: "Type",
       value: basePayment?.type || "Expense",
       type: "select",
       getOptions() {
@@ -32,8 +32,8 @@ export const paymentFormElements = (basePayment) => {
       touched: false,
     },
     category: {
-      name: "category",
-      placeholder: "category",
+      name: "Category",
+      placeholder: "Category",
       value: basePayment?.category || "",
       type: "select",
       getOptions(paymentType) {
@@ -48,8 +48,8 @@ export const paymentFormElements = (basePayment) => {
       touched: false,
     },
     account: {
-      name: "account",
-      placeholder: "account",
+      name: "Account",
+      placeholder: "Account",
       value: basePayment?.account || "",
       type: "select",
       getOptions() {
@@ -62,8 +62,8 @@ export const paymentFormElements = (basePayment) => {
       touched: false,
     },
     date: {
-      name: "date",
-      placeholder: "date",
+      name: "Date",
+      placeholder: "Date",
       value: basePayment?.date ? new Date(basePayment.date) : new Date(),
       type: "date",
       validation: {},

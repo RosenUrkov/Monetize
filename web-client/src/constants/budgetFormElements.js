@@ -4,8 +4,8 @@ import { incomeCategories } from "./incomeCategories";
 
 export const budgetTypeFormElement = (baseBudget, freeBudgetTypes) => {
   return {
-    name: "type",
-    placeholder: "budget type",
+    name: "Type",
+    placeholder: "Budget type",
     value: baseBudget?.type || "",
     type: "select",
     getOptions() {
@@ -23,8 +23,8 @@ export const budgetTypeFormElement = (baseBudget, freeBudgetTypes) => {
 
 export const budgetPaymentFormElement = (basePayment) => ({
   value: {
-    name: "value",
-    placeholder: "value",
+    name: "Value",
+    placeholder: "Value",
     value: basePayment?.value || "",
     type: "text",
     validation: {
@@ -35,8 +35,8 @@ export const budgetPaymentFormElement = (basePayment) => ({
     touched: false,
   },
   type: {
-    name: "type",
-    placeholder: "type",
+    name: "Type",
+    placeholder: "Type",
     value: basePayment?.type || "Expense",
     type: "select",
     getOptions() {
@@ -49,8 +49,8 @@ export const budgetPaymentFormElement = (basePayment) => ({
     touched: false,
   },
   category: {
-    name: "category",
-    placeholder: "category",
+    name: "Category",
+    placeholder: "Category",
     value: basePayment?.category || "",
     type: "select",
     getOptions: (paymentType) => {

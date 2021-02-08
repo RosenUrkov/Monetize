@@ -72,9 +72,4 @@ export class AppController {
   public userLogin(info: UserInfoDTO) {
     this.getBudgets(info);
   }
-
-  @EventPattern(IDENTIFIERS.userLogout)
-  public userLogout(info: UserInfoDTO) {
-    this.statisticsService.emit(IDENTIFIERS.budgetDelete, info);
-  }
 }

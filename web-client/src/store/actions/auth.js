@@ -28,10 +28,8 @@ const registerSuccess = () => {
 };
 
 const loginSuccess = (data) => {
-  const expirationDate = new Date(new Date().getTime() + data.expiresIn * 1000);
-
   localStorage.setItem("token", data.token);
-  localStorage.setItem("expirationDate", expirationDate);
+  localStorage.setItem("expirationDate", data.expirationDate);
 
   return {
     type: LOGIN_SUCCESS,
@@ -82,7 +80,11 @@ export const login = (username, password, successCallback = () => {}) => {
     httpProvider
       .post("login", authData)
       .then((res) => {
-        dispatch(loginSuccess(res.data));
+        const expirationDate = new Date(
+          new Date().getTime() + res.data.expiresIn * 1000
+        );
+
+        dispatch(loginSuccess({ token: res.data.token, expirationDate }));
         dispatch(checkAuthTimeout(res.data.expiresIn));
 
         successCallback();
@@ -120,7 +122,7 @@ export const authCheckState = () => {
       return;
     }
 
-    dispatch(loginSuccess(token));
+    dispatch(loginSuccess({ token, expirationDate }));
     dispatch(
       checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000)
     );

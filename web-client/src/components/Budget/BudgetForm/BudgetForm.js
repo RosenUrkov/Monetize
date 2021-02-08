@@ -21,7 +21,6 @@ import {
 import withToasts from "../../../hoc/withToasts";
 import PropTypes from "prop-types";
 import { formatDate } from "../../../common/formatDate";
-import { capitalizeString } from "../../../common/capitalizeString";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -194,10 +193,10 @@ const BudgetForm = (props) => {
           <TextField
             id={index + name}
             autoComplete="off"
-            name={capitalizeString(name)}
+            name={name}
             className={classes}
             type={config.type}
-            placeholder={capitalizeString(config.placeholder)}
+            placeholder={config.placeholder}
             value={config.value}
             onChange={(ev) =>
               handlePaymentElementInputChange({
@@ -215,7 +214,7 @@ const BudgetForm = (props) => {
         <Grid item xs={12} sm={4} key={index + name}>
           <Select
             className={classes}
-            name={capitalizeString(name)}
+            name={name}
             value={config.value}
             onChange={(ev) =>
               handlePaymentElementInputChange({

@@ -74,9 +74,4 @@ export class AppController {
   public userLogin(info: UserInfoDTO) {
     this.getPayments(info);
   }
-
-  @EventPattern(IDENTIFIERS.userLogout)
-  public userLogout(info: UserInfoDTO) {
-    this.statisticsService.emit(IDENTIFIERS.balanceDelete, info);
-  }
 }

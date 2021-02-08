@@ -3,9 +3,8 @@ export const IDENTIFIERS = {
   userLogout: 'userLogout',
 
   balanceChange: 'balanceChange',
-  balanceDelete: 'balanceDelete',
   budgetChange: 'budgetChange',
-  budgetDelete: 'budgetDelete',
+  deleteData: 'deleteData',
 
   getStatistics: 'getStatistics',
 };

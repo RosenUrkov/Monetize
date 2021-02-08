@@ -13,25 +13,42 @@ import { ShowStatisticsDTO } from './dto/show-statistics.dto';
 import { RpcException } from '@nestjs/microservices';
 import { PaymentType } from './common/enums/payment-type.enum';
 import { UserInfoDTO } from './dto/user-info.dto';
+import { ConfigService } from '@nestjs/config';
+import * as redis from 'redis';
+import { promisify } from 'util';
+import { UserDataDTO } from './dto/user-data.dto';
 
 @Injectable()
 export class AppService {
-  private balanceActions: BalancePayload[] = [];
-  private budgetActions: BudgetPayload[] = [];
+  private getAsyncData: (key: string) => Promise<string>;
+  private setAsyncData: (key: string, value: string) => Promise<void>;
 
-  public getStatistics(info: GetStatisticsDTO): ShowStatisticsDTO {
+  public constructor(configService: ConfigService) {
+    const redisClient = redis.createClient({
+      host: configService.get('REDIS_HOST'),
+      port: +configService.get('REDIS_PORT'),
+    });
+
+    this.getAsyncData = promisify(redisClient.get).bind(redisClient);
+    this.setAsyncData = promisify(redisClient.set).bind(redisClient);
+  }
+
+  public async getStatistics(
+    info: GetStatisticsDTO,
+  ): Promise<ShowStatisticsDTO> {
     const endDate = getEndBudgetDate(new Date(info.startDate), info.budgetType);
     const endDateString = formatDate(endDate);
 
     const start = Date.parse(info.startDate);
     const end = Date.parse(endDateString);
 
-    const paymentsOfDate: ShowPaymentDTO[] = this.balanceActions
-      .find((x) => x.userId === info.userId)
-      ?.payments?.filter((x) => {
-        const date = Date.parse(x.date);
-        return start <= date && date < end;
-      });
+    const userDataString = await this.getAsyncData(info.userId.toString());
+    const userData: UserDataDTO = JSON.parse(userDataString);
+
+    const paymentsOfDate: ShowPaymentDTO[] = userData?.payments?.filter((x) => {
+      const date = Date.parse(x.date);
+      return start <= date && date < end;
+    });
 
     if (!paymentsOfDate) {
       throw new RpcException({
@@ -56,9 +73,8 @@ export class AppService {
       })
       .sort((x, y) => x.category.localeCompare(y.category));
 
-    const budgetPayments: ShowBudgetPaymentDTO[] = this.budgetActions
-      .find((x) => x.userId === info.userId)
-      ?.budgets?.find((x) => x.type === info.budgetType)
+    const budgetPayments: ShowBudgetPaymentDTO[] = userData?.budgets
+      ?.find((x) => x.type === info.budgetType)
       ?.payments?.sort((x, y) => x.category.localeCompare(y.category));
 
     if (!budgetPayments) {
@@ -158,49 +174,48 @@ export class AppService {
     };
   }
 
-  public handleBalanceChange(data: BalancePayload): void {
-    const index = this.balanceActions.findIndex(
-      (x) => x.userId === data.userId,
+  public async handleBalanceChange(data: BalancePayload): Promise<void> {
+    const userDataString = await this.getAsyncData(data.userId.toString());
+    const userData: UserDataDTO = JSON.parse(userDataString);
+
+    if (!userData) {
+      const newUserData: UserDataDTO = { payments: data.payments, budgets: [] };
+      return await this.setAsyncData(
+        data.userId.toString(),
+        JSON.stringify(newUserData),
+      );
+    }
+
+    userData.payments = data.payments;
+    return await this.setAsyncData(
+      data.userId.toString(),
+      JSON.stringify(userData),
     );
-
-    if (index === -1) {
-      this.balanceActions.push(data);
-      return;
-    }
-
-    this.balanceActions[index] = data;
   }
 
-  public handleBudgetChange(data: BudgetPayload): void {
-    const index = this.budgetActions.findIndex((x) => x.userId === data.userId);
+  public async handleBudgetChange(data: BudgetPayload): Promise<void> {
+    const userDataString = await this.getAsyncData(data.userId.toString());
+    const userData: UserDataDTO = JSON.parse(userDataString);
 
-    if (index === -1) {
-      this.budgetActions.push(data);
-      return;
+    if (!userData) {
+      const newUserData: UserDataDTO = { payments: [], budgets: data.budgets };
+      return await this.setAsyncData(
+        data.userId.toString(),
+        JSON.stringify(newUserData),
+      );
     }
 
-    this.budgetActions[index] = data;
-  }
-
-  public handleBalanceDelete(data: UserInfoDTO): void {
-    const index = this.balanceActions.findIndex(
-      (x) => x.userId === data.userId,
+    userData.budgets = data.budgets;
+    return await this.setAsyncData(
+      data.userId.toString(),
+      JSON.stringify(userData),
     );
-
-    if (index === -1) {
-      return;
-    }
-
-    this.balanceActions.splice(index, 1);
   }
 
-  public handleBudgetDelete(data: UserInfoDTO): void {
-    const index = this.budgetActions.findIndex((x) => x.userId === data.userId);
-
-    if (index === -1) {
-      return;
-    }
-
-    this.budgetActions.splice(index, 1);
+  public async handleDeleteData(data: UserInfoDTO): Promise<void> {
+    return await this.setAsyncData(
+      data.userId.toString(),
+      JSON.stringify(null),
+    );
   }
 }

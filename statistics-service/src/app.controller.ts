@@ -14,27 +14,22 @@ export class AppController {
   public constructor(private readonly appService: AppService) {}
 
   @MessagePattern(IDENTIFIERS.getStatistics)
-  public getStatistics(info: GetStatisticsDTO): ShowStatisticsDTO {
+  public getStatistics(info: GetStatisticsDTO): Promise<ShowStatisticsDTO> {
     return this.appService.getStatistics(info);
   }
 
   @EventPattern(IDENTIFIERS.balanceChange)
-  public balanceChangeHandler(data: BalancePayload): void {
-    this.appService.handleBalanceChange(data);
+  public balanceChangeHandler(data: BalancePayload): Promise<void> {
+    return this.appService.handleBalanceChange(data);
   }
 
   @EventPattern(IDENTIFIERS.budgetChange)
-  public budgetChangeHandler(data: BudgetPayload): void {
-    this.appService.handleBudgetChange(data);
+  public budgetChangeHandler(data: BudgetPayload): Promise<void> {
+    return this.appService.handleBudgetChange(data);
   }
 
-  @EventPattern(IDENTIFIERS.balanceDelete)
-  public balanceDeleteHandler(data: UserInfoDTO): void {
-    this.appService.handleBalanceDelete(data);
-  }
-
-  @EventPattern(IDENTIFIERS.budgetDelete)
-  public budgetDeleteHandler(data: UserInfoDTO): void {
-    this.appService.handleBudgetDelete(data);
+  @EventPattern(IDENTIFIERS.deleteData)
+  public deleteDataHandler(data: UserInfoDTO): Promise<void> {
+    return this.appService.handleDeleteData(data);
   }
 }

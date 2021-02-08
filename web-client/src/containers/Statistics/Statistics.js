@@ -45,7 +45,6 @@ const Statistics = (props) => {
   useEffect(() => {
     if (statisticsState.error) {
       showToast(statisticsState.error.message, "error");
-      dispatch(statisticsHideMessage());
     }
   }, [dispatch, statisticsState.error, showToast]);
 
@@ -73,13 +72,13 @@ const Statistics = (props) => {
 
       <br />
 
-      {statisticsState.paymentsOfDate && (
+      {!statisticsState.error && statisticsState.paymentsOfDate && (
         <PointChart data={statisticsState.paymentsOfDate} title={"Payments"} />
       )}
 
       <br />
 
-      {statisticsState.paymentsToBudgetDifference && (
+      {!statisticsState.error && statisticsState.paymentsToBudgetDifference && (
         <BarChart
           data={statisticsState.paymentsToBudgetDifference}
           title={"Payments to Budget"}
