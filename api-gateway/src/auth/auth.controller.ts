@@ -12,6 +12,8 @@ import { CreateUserDTO } from '../dto/auth/create-user.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { ClientProxy } from '@nestjs/microservices';
 import { IDENTIFIERS } from 'src/config/identifiers';
+import { ShowUserDTO } from 'src/dto/auth/show-user.dto';
+import { User } from 'src/middleware/decorators/user.decorator';
 
 @Controller()
 export class AuthController {
@@ -32,18 +34,19 @@ export class AuthController {
   public async loginUser(@Body() user: CreateUserDTO) {
     const { id, token, expiresIn } = await this.authService.login(user);
 
-    this.balanceService.emit(IDENTIFIERS.userAuthenticated, { userId: id });
-    this.budgetService.emit(IDENTIFIERS.userAuthenticated, { userId: id });
+    this.balanceService.emit(IDENTIFIERS.userLogin, { userId: id });
+    this.budgetService.emit(IDENTIFIERS.userLogin, { userId: id });
 
     return { token, expiresIn };
   }
 
   @Post('/logout')
-  public async logoutUser(@Token() token: string) {
-    console.log(token);
-
-    // this.balanceService.emit(IDENTIFIERS.userAuthenticated, { userId: id });
-    // this.budgetService.emit(IDENTIFIERS.userAuthenticated, { userId: id });
+  @UseGuards(AuthGuard('jwt'))
+  public async logoutUser(@User() user: ShowUserDTO) {
+    this.balanceService.emit(IDENTIFIERS.userLogout, {
+      userId: user.id,
+    });
+    this.budgetService.emit(IDENTIFIERS.userLogout, { userId: user.id });
 
     return {
       message: 'Successful logout!',

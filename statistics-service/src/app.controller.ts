@@ -1,3 +1,4 @@
+import { UserInfoDTO } from './dto/user-info.dto';
 import { GetStatisticsDTO } from './dto/get-statistics-dto';
 import { AppService } from './app.service';
 import { Controller, Get } from '@nestjs/common';
@@ -17,13 +18,23 @@ export class AppController {
     return this.appService.getStatistics(info);
   }
 
-  @EventPattern(IDENTIFIERS.balanceAction)
-  public balanceActionHandler(data: BalancePayload): void {
-    this.appService.handleBalanceAction(data);
+  @EventPattern(IDENTIFIERS.balanceChange)
+  public balanceChangeHandler(data: BalancePayload): void {
+    this.appService.handleBalanceChange(data);
   }
 
-  @EventPattern(IDENTIFIERS.budgetAction)
-  public budgetActionHandler(data: BudgetPayload): void {
-    this.appService.handleBudgetAction(data);
+  @EventPattern(IDENTIFIERS.budgetChange)
+  public budgetChangeHandler(data: BudgetPayload): void {
+    this.appService.handleBudgetChange(data);
+  }
+
+  @EventPattern(IDENTIFIERS.balanceDelete)
+  public balanceDeleteHandler(data: UserInfoDTO): void {
+    this.appService.handleBalanceDelete(data);
+  }
+
+  @EventPattern(IDENTIFIERS.budgetDelete)
+  public budgetDeleteHandler(data: UserInfoDTO): void {
+    this.appService.handleBudgetDelete(data);
   }
 }

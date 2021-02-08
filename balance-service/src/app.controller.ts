@@ -29,7 +29,7 @@ export class AppController {
       userId: info.userId,
       payments,
     };
-    this.statisticsService.emit(IDENTIFIERS.balanceAction, payload);
+    this.statisticsService.emit(IDENTIFIERS.balanceChange, payload);
 
     return payments;
   }
@@ -70,8 +70,13 @@ export class AppController {
     return payment;
   }
 
-  @EventPattern(IDENTIFIERS.userAuthenticated)
-  public userAuthenticated(info: UserInfoDTO) {
+  @EventPattern(IDENTIFIERS.userLogin)
+  public userLogin(info: UserInfoDTO) {
     this.getPayments(info);
+  }
+
+  @EventPattern(IDENTIFIERS.userLogout)
+  public userLogout(info: UserInfoDTO) {
+    this.statisticsService.emit(IDENTIFIERS.balanceDelete, info);
   }
 }

@@ -27,8 +27,14 @@ const Point = (props) => (
 );
 
 const scale = () => scaleLinear();
-const modifyDomain = (domain) => {
-  return [domain[0], domain[domain.length - 1]];
+const modifyDomain = (data) => (domain) => {
+  const sorted = data
+    .slice()
+    .map((x) => x.value)
+    .map(Number)
+    .sort((x, y) => x - y);
+
+  return [sorted[0], sorted[sorted.length - 1]];
 };
 
 const PointChart = (props) => {
@@ -39,7 +45,7 @@ const PointChart = (props) => {
   return (
     <Paper>
       <Chart data={chartData}>
-        <ValueScale factory={scale} modifyDomain={modifyDomain} />
+        <ValueScale factory={scale} modifyDomain={modifyDomain(data)} />
         <ArgumentAxis />
         <ValueAxis />
 

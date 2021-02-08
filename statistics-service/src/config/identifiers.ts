@@ -1,6 +1,11 @@
 export const IDENTIFIERS = {
-  balanceAction: 'balanceAction',
-  budgetAction: 'budgetAction',
+  userLogin: 'userLogin',
+  userLogout: 'userLogout',
+
+  balanceChange: 'balanceChange',
+  balanceDelete: 'balanceDelete',
+  budgetChange: 'budgetChange',
+  budgetDelete: 'budgetDelete',
 
   getStatistics: 'getStatistics',
 };

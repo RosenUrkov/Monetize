@@ -7,6 +7,8 @@ export const IDENTIFIERS = {
   updatePayment: 'updatePayment',
   deletePayment: 'deletePayment',
 
-  balanceAction: 'balanceAction',
-  userAuthenticated: 'userAuthenticated',
+  userLogin: 'userLogin',
+  userLogout: 'userLogout',
+  balanceChange: 'balanceChange',
+  balanceDelete: 'balanceDelete',
 };

@@ -12,6 +12,7 @@ import { ShowBudgetPaymentDTO } from './dto/show-budget-payment.dto';
 import { ShowStatisticsDTO } from './dto/show-statistics.dto';
 import { RpcException } from '@nestjs/microservices';
 import { PaymentType } from './common/enums/payment-type.enum';
+import { UserInfoDTO } from './dto/user-info.dto';
 
 @Injectable()
 export class AppService {
@@ -157,7 +158,7 @@ export class AppService {
     };
   }
 
-  public handleBalanceAction(data: BalancePayload): void {
+  public handleBalanceChange(data: BalancePayload): void {
     const index = this.balanceActions.findIndex(
       (x) => x.userId === data.userId,
     );
@@ -170,7 +171,7 @@ export class AppService {
     this.balanceActions[index] = data;
   }
 
-  public handleBudgetAction(data: BudgetPayload): void {
+  public handleBudgetChange(data: BudgetPayload): void {
     const index = this.budgetActions.findIndex((x) => x.userId === data.userId);
 
     if (index === -1) {
@@ -179,5 +180,27 @@ export class AppService {
     }
 
     this.budgetActions[index] = data;
+  }
+
+  public handleBalanceDelete(data: UserInfoDTO): void {
+    const index = this.balanceActions.findIndex(
+      (x) => x.userId === data.userId,
+    );
+
+    if (index === -1) {
+      return;
+    }
+
+    this.balanceActions.splice(index, 1);
+  }
+
+  public handleBudgetDelete(data: UserInfoDTO): void {
+    const index = this.budgetActions.findIndex((x) => x.userId === data.userId);
+
+    if (index === -1) {
+      return;
+    }
+
+    this.budgetActions.splice(index, 1);
   }
 }

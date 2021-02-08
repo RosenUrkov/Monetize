@@ -7,6 +7,8 @@ export const IDENTIFIERS = {
   updateBudget: 'updateBudget',
   deleteBudget: 'deleteBudget',
 
-  budgetAction: 'budgetAction',
-  userAuthenticated: 'userAuthenticated',
+  userLogin: 'userLogin',
+  userLogout: 'userLogout',
+  budgetChange: 'budgetChange',
+  budgetDelete: 'budgetDelete',
 };

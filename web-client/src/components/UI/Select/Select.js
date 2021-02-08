@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
   },
   select: {
     "& .MuiSelect-select:focus": {
-      backgroundColor: "white",
+      backgroundColor: "transparent",
     },
   },
 }));

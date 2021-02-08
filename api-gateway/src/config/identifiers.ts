@@ -16,5 +16,7 @@ export const IDENTIFIERS = {
   deleteBudget: 'deleteBudget',
 
   getStatistics: 'getStatistics',
-  userAuthenticated: 'userAuthenticated',
+
+  userLogin: 'userLogin',
+  userLogout: 'userLogout',
 };

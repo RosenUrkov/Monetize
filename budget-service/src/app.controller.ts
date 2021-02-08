@@ -27,7 +27,7 @@ export class AppController {
     const budgets: ShowBudgetDTO[] = await this.appService.getBudgets(info);
 
     const payload = { userId: info.userId, budgets };
-    this.statisticsService.emit(IDENTIFIERS.budgetAction, payload);
+    this.statisticsService.emit(IDENTIFIERS.budgetChange, payload);
 
     return budgets;
   }
@@ -68,8 +68,13 @@ export class AppController {
     return budget;
   }
 
-  @EventPattern(IDENTIFIERS.userAuthenticated)
-  public userAuthenticated(info: UserInfoDTO) {
+  @EventPattern(IDENTIFIERS.userLogin)
+  public userLogin(info: UserInfoDTO) {
     this.getBudgets(info);
+  }
+
+  @EventPattern(IDENTIFIERS.userLogout)
+  public userLogout(info: UserInfoDTO) {
+    this.statisticsService.emit(IDENTIFIERS.budgetDelete, info);
   }
 }
