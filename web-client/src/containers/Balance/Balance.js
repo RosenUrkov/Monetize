@@ -97,6 +97,7 @@ const Balance = (props) => {
           label="Balance for:"
           date={paymentsDate}
           changeDate={(newDate) => setPaymentsDate(newDate)}
+          showSideControls
         />
       </div>
 

@@ -7,7 +7,7 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const host = process.env.BALANCE_SERVICE_HOST
     ? process.env.BALANCE_SERVICE_HOST
-    : undefined;
+    : '0.0.0.0';
   const port = process.env.BALANCE_SERVICE_PORT
     ? Number(process.env.BALANCE_SERVICE_PORT)
     : 4001;

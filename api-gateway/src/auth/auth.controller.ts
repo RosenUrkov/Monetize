@@ -30,17 +30,20 @@ export class AuthController {
 
   @Post('/login')
   public async loginUser(@Body() user: CreateUserDTO) {
-    const { id, token } = await this.authService.login(user);
+    const { id, token, expiresIn } = await this.authService.login(user);
 
     this.balanceService.emit(IDENTIFIERS.userAuthenticated, { userId: id });
     this.budgetService.emit(IDENTIFIERS.userAuthenticated, { userId: id });
 
-    return { token };
+    return { token, expiresIn };
   }
 
-  @Post('/logout') // blacklisting?
+  @Post('/logout')
   public async logoutUser(@Token() token: string) {
     console.log(token);
+
+    // this.balanceService.emit(IDENTIFIERS.userAuthenticated, { userId: id });
+    // this.budgetService.emit(IDENTIFIERS.userAuthenticated, { userId: id });
 
     return {
       message: 'Successful logout!',

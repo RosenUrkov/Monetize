@@ -74,8 +74,16 @@ export const login = (username, password, successCallback = () => {}) => {
     httpProvider
       .post("login", authData)
       .then((res) => {
+        const expirationDate = new Date(
+          new Date().getTime() + res.data.expiresIn * 1000
+        );
+
         localStorage.setItem("token", res.data.token);
+        localStorage.setItem("expirationDate", expirationDate);
+
         dispatch(loginSuccess(res.data.token));
+        dispatch(checkAuthTimeout(res.data.expiresIn));
+
         successCallback();
       })
       .catch((error) => {
@@ -93,6 +101,8 @@ export const logout = () => {
       .post("logout")
       .then((res) => {
         localStorage.removeItem("token");
+        localStorage.removeItem("expirationDate");
+
         dispatch(logoutSuccess());
       })
       .catch((error) => {
@@ -102,15 +112,25 @@ export const logout = () => {
   };
 };
 
+export const checkAuthTimeout = (expirationTime) => {
+  return (dispatch) => {
+    setTimeout(() => dispatch(logout()), +expirationTime * 1000);
+  };
+};
+
 export const authCheckState = () => {
   return (dispatch) => {
     const token = localStorage.getItem("token");
+    const expirationDate = new Date(localStorage.getItem("expirationDate"));
 
-    if (!token) {
+    if (!token || expirationDate < new Date()) {
       dispatch(logout());
       return;
     }
 
     dispatch(loginSuccess(token));
+    dispatch(
+      checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000)
+    );
   };
 };

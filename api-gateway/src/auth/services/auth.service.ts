@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDTO } from '../../dto/auth/create-user.dto';
 import { ShowUserDTO } from '../../dto/auth/show-user.dto';
@@ -9,6 +10,7 @@ export class AuthService {
   public constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
   ) {}
 
   public async register(user: CreateUserDTO): Promise<ShowUserDTO> {
@@ -32,6 +34,7 @@ export class AuthService {
     return {
       id: foundUser.id,
       token: await this.jwtService.signAsync(payload),
+      expiresIn: +this.configService.get('JWT_EXPIRE_TIME'),
     };
   }
 }

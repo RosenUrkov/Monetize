@@ -56,6 +56,7 @@ const Statistics = (props) => {
       <div className={classes.budgetTypeContainer}>
         <Grid item xs={12} sm={4}>
           <Select
+            name={"type"}
             value={statisticsBudgetType}
             onChange={(ev) => setStatisticsBudgetType(ev.target.value)}
             options={Object.keys(budgetTypes)}
@@ -66,6 +67,7 @@ const Statistics = (props) => {
           label="Statistics start date:"
           date={statisticsStartDate}
           changeDate={(newDate) => setStatisticsStartDate(newDate)}
+          showSideControls
         />
       </div>
 
