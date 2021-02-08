@@ -6,7 +6,7 @@ import {
   DELETE_BUDGET_SUCCESS,
   UPDATE_BUDGET_SUCCESS,
   FETCH_BUDGETS_SUCCESS,
-  AUTH_HIDE_MESSAGE,
+  BUDGETS_HIDE_MESSAGE,
 } from "../actionTypes";
 
 const budgetsRequestStart = () => {
@@ -52,7 +52,7 @@ const deleteBudgetSuccess = (budgetId) => {
 
 export const budgetsHideMessage = () => {
   return {
-    type: AUTH_HIDE_MESSAGE,
+    type: BUDGETS_HIDE_MESSAGE,
   };
 };
 

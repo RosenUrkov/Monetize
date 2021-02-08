@@ -20,6 +20,7 @@ import {
 } from "../../../constants/budgetFormElements";
 import withToasts from "../../../hoc/withToasts";
 import PropTypes from "prop-types";
+import { formatDate } from "../../../common/formatDate";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -120,7 +121,12 @@ const BudgetForm = (props) => {
       type: budgetTypeElement.value,
       payments: budgetPaymentsElements.map((x) =>
         Object.keys(x).reduce((acc, curr) => {
-          acc[curr] = x[curr].value;
+          if (curr === "value") {
+            acc[curr] = Number.parseFloat(x[curr].value).toFixed(2);
+          } else {
+            acc[curr] = x[curr].value;
+          }
+
           return acc;
         }, {})
       ),
@@ -186,6 +192,7 @@ const BudgetForm = (props) => {
         >
           <TextField
             id={index + name}
+            autoComplete="off"
             name={name}
             className={classes}
             type={config.type}

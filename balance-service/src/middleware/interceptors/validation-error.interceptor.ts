@@ -20,9 +20,12 @@ export class ValidationErrorInterceptor implements NestInterceptor {
           return throwError(err);
         }
 
-        return throwError(
-          new RpcException({ message: err.response, code: err.status }),
-        );
+        const message =
+          typeof err.response.message === 'object'
+            ? err.response.message[0]
+            : err.response.message;
+
+        return throwError(new RpcException({ message, code: err.status }));
       }),
     );
   }

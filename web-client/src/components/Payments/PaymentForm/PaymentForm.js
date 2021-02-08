@@ -69,7 +69,7 @@ const PaymentForm = (props) => {
 
   const submitHandler = (ev) => {
     const payment = {
-      value: paymentForm.value.value,
+      value: Number.parseFloat(paymentForm.value.value).toFixed(2),
       type: paymentForm.type.value,
       category: paymentForm.category.value,
       account: paymentForm.account.value,
@@ -101,6 +101,7 @@ const PaymentForm = (props) => {
           >
             <TextField
               id={name}
+              autoComplete="off"
               name={name}
               className={classes}
               type={config.type}

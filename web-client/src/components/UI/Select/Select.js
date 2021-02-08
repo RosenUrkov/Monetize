@@ -11,6 +11,11 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     minWidth: "100%",
   },
+  select: {
+    "& .MuiSelect-select:focus": {
+      backgroundColor: "white",
+    },
+  },
 }));
 
 const SelectComponent = (props) => {
@@ -25,6 +30,7 @@ const SelectComponent = (props) => {
         labelId={`select-${name}-label`}
         id={`select-${name}`}
         name={name}
+        className={classes.select}
         value={value}
         onChange={onChange}
         fullWidth
