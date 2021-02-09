@@ -2,6 +2,7 @@ import { Grid, makeStyles } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { formatDate } from "../../common/formatDate";
+import NothingToShow from "../../components/Error/NothingToShow/NothingToShow";
 import BarChart from "../../components/UI/Charts/BarChart/BarChart";
 import PointChart from "../../components/UI/Charts/PointChart/PointChart";
 import DatePicker from "../../components/UI/DatePicker/DatePicker";
@@ -72,18 +73,25 @@ const Statistics = (props) => {
 
       <br />
 
-      {!statisticsState.error && statisticsState.paymentsOfDate && (
+      {(statisticsState.error ||
+        (!statisticsState.paymentsOfDate?.length &&
+          !statisticsState.paymentsToBudgetDifference?.length)) && (
+        <NothingToShow />
+      )}
+
+      {!statisticsState.error && !!statisticsState.paymentsOfDate?.length && (
         <PointChart data={statisticsState.paymentsOfDate} title={"Payments"} />
       )}
 
       <br />
 
-      {!statisticsState.error && statisticsState.paymentsToBudgetDifference && (
-        <BarChart
-          data={statisticsState.paymentsToBudgetDifference}
-          title={"Payments to Budget"}
-        />
-      )}
+      {!statisticsState.error &&
+        !!statisticsState.paymentsToBudgetDifference?.length && (
+          <BarChart
+            data={statisticsState.paymentsToBudgetDifference}
+            title={"Payments to Budget"}
+          />
+        )}
     </div>
   );
 };

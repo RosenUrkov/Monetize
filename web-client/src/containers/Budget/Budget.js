@@ -17,6 +17,7 @@ import BudgetForm from "../../components/Budget/BudgetForm/BudgetForm";
 import { budgetTypes } from "../../constants/budgetTypes";
 import useCreateAndUpdateFormControl from "../../hooks/useCreateAndUpdateFormControl";
 import { makeStyles } from "@material-ui/core";
+import NothingToShow from "../../components/Error/NothingToShow/NothingToShow";
 
 const useStyles = makeStyles((theme) => ({
   toolbarHeader: {
@@ -99,11 +100,15 @@ const Budget = (props) => {
         />
       )}
 
-      <BudgetList
-        budgets={budgetsState.budgets}
-        remove={remove}
-        update={startUpdate}
-      />
+      {!budgetsState.budgets?.length && <NothingToShow />}
+
+      {!!budgetsState.budgets?.length && (
+        <BudgetList
+          budgets={budgetsState.budgets}
+          remove={remove}
+          update={startUpdate}
+        />
+      )}
     </div>
   );
 };
