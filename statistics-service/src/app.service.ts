@@ -50,7 +50,7 @@ export class AppService {
       return start <= date && date < end;
     });
 
-    if (!paymentsOfDate) {
+    if (!paymentsOfDate?.length) {
       throw new RpcException({
         message: 'The user does not have payments yet!',
         code: 400,
@@ -77,7 +77,7 @@ export class AppService {
       ?.find((x) => x.type === info.budgetType)
       ?.payments?.sort((x, y) => x.category.localeCompare(y.category));
 
-    if (!budgetPayments) {
+    if (!budgetPayments?.length) {
       throw new RpcException({
         message: 'The user does not have a budget of this type yet!',
         code: 400,

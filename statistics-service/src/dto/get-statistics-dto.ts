@@ -1,6 +1,6 @@
 import { IsDefined, IsEnum, IsNumber, Validate } from 'class-validator';
-import { BudgetType } from 'src/common/enums/budget-type.enum';
-import { IsValidDateString } from 'src/common/validators/is-valid-date-string.validator';
+import { BudgetType } from '../common/enums/budget-type.enum';
+import { IsValidDateString } from '../common/validators/is-valid-date-string.validator';
 
 export class GetStatisticsDTO {
   @IsNumber()
