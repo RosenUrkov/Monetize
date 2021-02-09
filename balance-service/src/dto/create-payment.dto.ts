@@ -10,9 +10,9 @@ import {
   Validate,
   IsCurrency,
 } from 'class-validator';
-import { PaymentType } from 'src/common/enums/payment-type.enum';
-import { IsCorrectPaymentCategoryOfType } from 'src/common/validators/is-correct-payment-category-of-type.validator';
-import { IsValidDateString } from 'src/common/validators/is-valid-date-string.validator';
+import { PaymentType } from '../common/enums/payment-type.enum';
+import { IsCorrectPaymentCategoryOfType } from '../common/validators/is-correct-payment-category-of-type.validator';
+import { IsValidDateString } from '../common/validators/is-valid-date-string.validator';
 
 export class CreatePaymentDTO {
   @IsNumber()

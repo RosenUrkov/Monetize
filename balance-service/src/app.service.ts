@@ -1,13 +1,13 @@
 import { UserInfoDTO } from './dto/user-info.dto';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Payment } from 'src/entities/payment.entity';
+import { Payment } from './entities/payment.entity';
 import { Repository } from 'typeorm';
-import { ShowPaymentDTO } from 'src/dto/show-payment.dto';
-import { CreatePaymentDTO } from 'src/dto/create-payment.dto';
-import { PaymentInfoDTO } from 'src/dto/payment-info.dto';
+import { ShowPaymentDTO } from './dto/show-payment.dto';
+import { CreatePaymentDTO } from './dto/create-payment.dto';
+import { PaymentInfoDTO } from './dto/payment-info.dto';
 import { plainToClass, TransformPlainToClass } from 'class-transformer';
-import { Account } from 'src/entities/account.entity';
+import { Account } from './entities/account.entity';
 import { RpcException } from '@nestjs/microservices';
 import { PaymentDetails } from './entities/payment-details.entity';
 import { UpdatePaymentDTO } from './dto/update-payment.dto';
