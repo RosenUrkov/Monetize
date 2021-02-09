@@ -8,8 +8,8 @@ import {
 } from 'class-validator';
 import { CreatePaymentDTO } from './create-payment.dto';
 import { Type } from 'class-transformer';
-import { BudgetType } from 'src/common/enums/budget-type.enum';
-import { HasDuplicatePaymentDetails } from 'src/common/validators/has-duplicate-payment-details.validator';
+import { BudgetType } from '../common/enums/budget-type.enum';
+import { HasDuplicatePaymentDetails } from '../common/validators/has-duplicate-payment-details.validator';
 
 export class CreateBudgetDTO {
   @IsNumber()

@@ -7,8 +7,8 @@ import {
   IsOptional,
   Validate,
 } from 'class-validator';
-import { BudgetType } from 'src/common/enums/budget-type.enum';
-import { HasDuplicatePaymentDetails } from 'src/common/validators/has-duplicate-payment-details.validator';
+import { BudgetType } from '../common/enums/budget-type.enum';
+import { HasDuplicatePaymentDetails } from '../common/validators/has-duplicate-payment-details.validator';
 import { CreatePaymentDTO } from './create-payment.dto';
 
 export class UpdateBudgetDTO {
