@@ -105,7 +105,7 @@ const PaymentForm = (props) => {
               name={name}
               className={classes}
               type={config.type}
-              placeholder={config.placeholder}
+              placeholder={name}
               value={config.value}
               onChange={(ev) => handleInputChange(ev.target)}
               fullWidth

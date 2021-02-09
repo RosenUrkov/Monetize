@@ -96,7 +96,7 @@ export const login = (username, password, successCallback = () => {}) => {
   };
 };
 
-export const logout = () => {
+export const logout = (successCallback = () => {}) => {
   return (dispatch) => {
     dispatch(authRequestStart());
 
@@ -104,6 +104,7 @@ export const logout = () => {
       .post("logout")
       .then((res) => {
         dispatch(logoutSuccess());
+        successCallback();
       })
       .catch((error) => {
         console.log(error.response);
@@ -131,6 +132,6 @@ export const authCheckState = () => {
 
 export const checkAuthTimeout = (expirationTime) => {
   return (dispatch) => {
-    setTimeout(() => dispatch(logout()), +expirationTime * 1000);
+    setTimeout(() => dispatch(logoutSuccess()), +expirationTime * 1000);
   };
 };

@@ -165,10 +165,10 @@ export class AppService {
     }
 
     const changedRelationsPromises: Promise<any>[] = [];
-    if (info.payments) {
-      const deleteOldPaymentsPromise = this.paymentsRepository.delete(
-        budget.payments.map((x) => x.id),
-      );
+    if (info.payments?.length) {
+      const deleteOldPaymentsPromise = budget.payments?.length
+        ? this.paymentsRepository.delete(budget.payments.map((x) => x.id))
+        : Promise.resolve(null);
 
       const categories = info.payments.map((x) => x.category);
       const newPaymentsDetailsPromise = this.paymentDetailsRepository.find({

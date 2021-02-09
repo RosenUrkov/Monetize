@@ -25,9 +25,12 @@ const App = () => {
   const authRoutes = (
     <Switch>
       <Redirect from="/" to="/balance" exact />
+      {/* the redirect to login after logout is too fast */}
+      <Redirect path="/login" to="/balance" />
       <Route path="/balance" render={(props) => <Balance {...props} />} />
       <Route path="/budgets" render={(props) => <Budget {...props} />} />
       <Route path="/statistics" render={(props) => <Statistics {...props} />} />
+
       <Route path="*" component={NotFound} />
     </Switch>
   );

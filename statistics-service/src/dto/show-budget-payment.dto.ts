@@ -1,16 +1,16 @@
 import { Expose } from 'class-transformer';
-import { IsDefined } from 'class-validator';
+import { IsDefined, IsString } from 'class-validator';
 
 export class ShowBudgetPaymentDTO {
-  @IsDefined()
+  @IsString()
   @Expose()
   public value: string;
 
-  @IsDefined()
+  @IsString()
   @Expose()
   public type: string;
 
-  @IsDefined()
+  @IsString()
   @Expose()
   public category: string;
 }

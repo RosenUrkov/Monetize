@@ -1,15 +1,21 @@
 import { ShowBudgetPaymentDTO } from './show-budget-payment.dto';
 import { Expose, Transform, Type } from 'class-transformer';
-import { IsDefined, ValidateNested } from 'class-validator';
+import {
+  IsArray,
+  IsDefined,
+  ValidateNested,
+  IsNumber,
+  IsString,
+} from 'class-validator';
 
 export class ShowBudgetDTO {
-  @IsDefined()
+  @IsNumber()
   public id: number;
 
-  @IsDefined()
+  @IsString()
   public type: string;
 
-  @IsDefined()
+  @IsArray()
   @ValidateNested({ each: true })
   @Type(() => ShowBudgetPaymentDTO)
   public payments: ShowBudgetPaymentDTO[];

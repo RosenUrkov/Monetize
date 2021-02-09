@@ -6,7 +6,3 @@ body {
 * {
   font-family: "Open Sans", sans-serif !important;
 }
-
-a.active > div {
-  background-color: #babfdb;
-}

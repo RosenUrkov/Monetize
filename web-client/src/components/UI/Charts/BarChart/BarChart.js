@@ -22,7 +22,7 @@ const modifyDomain = (data) => (domain) => {
     .sort((x, y) => x - y);
 
   return sorted.length === 1
-    ? [0, sorted[0]]
+    ? [0, sorted[0]].sort((x, y) => x - y)
     : [sorted[0], sorted[sorted.length - 1]];
 };
 

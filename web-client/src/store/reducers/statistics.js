@@ -6,8 +6,8 @@ import {
 } from "../actionTypes";
 
 const initialState = {
-  paymentsOfDate: null,
-  paymentsToBudgetDifference: null,
+  paymentsOfDate: [],
+  paymentsToBudgetDifference: [],
   message: null,
   error: null,
   loading: false,
@@ -16,7 +16,14 @@ const initialState = {
 const statisticsReducer = (state = initialState, action) => {
   switch (action.type) {
     case STATISTICS_REQUEST_START:
-      return { ...state, message: null, error: null, loading: true };
+      return {
+        ...state,
+        paymentsOfDate: [],
+        paymentsToBudgetDifference: [],
+        message: null,
+        error: null,
+        loading: true,
+      };
     case STATISTICS_REQUEST_FAIL:
       return { ...state, message: null, error: action.error, loading: false };
     case STATISTICS_HIDE_MESSAGE:

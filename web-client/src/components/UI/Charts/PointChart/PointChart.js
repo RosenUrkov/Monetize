@@ -34,9 +34,7 @@ const modifyDomain = (data) => (domain) => {
     .map(Number)
     .sort((x, y) => x - y);
 
-  return sorted.length === 1
-    ? [0, sorted[0]]
-    : [sorted[0], sorted[sorted.length - 1]];
+  return [0, sorted[sorted.length - 1]];
 };
 
 const PointChart = (props) => {

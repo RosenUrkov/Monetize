@@ -46,6 +46,7 @@ const Statistics = (props) => {
   useEffect(() => {
     if (statisticsState.error) {
       showToast(statisticsState.error.message, "error");
+      dispatch(statisticsHideMessage());
     }
   }, [dispatch, statisticsState.error, showToast]);
 

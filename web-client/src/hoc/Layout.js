@@ -76,13 +76,18 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(0, 1),
     ...theme.mixins.toolbar,
   },
+  routesList: {
+    "& a.active > div": {
+      backgroundColor: "#babfdb",
+    },
+  },
+  routesListItem: {
+    textDecoration: "none",
+    color: "#303F9F",
+  },
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
-  },
-  link: {
-    textDecoration: "none",
-    color: "#303F9F",
   },
 }));
 
@@ -153,11 +158,15 @@ const Layout = (props) => {
 
         <Divider />
 
-        <List>
+        <List className={classes.routesList}>
           {appRoutes
             .filter((route) => route.auth === !!auth.token)
             .map((route, index) => (
-              <NavLink to={route.to} key={index} className={classes.link}>
+              <NavLink
+                to={route.to}
+                key={index}
+                className={classes.routesListItem}
+              >
                 <ListItem button>
                   <ListItemIcon>
                     <route.icon />
@@ -177,7 +186,7 @@ const Layout = (props) => {
               <NavLink
                 to={route.to}
                 key={index}
-                style={{ textDecoration: "none", color: "#303F9F" }}
+                className={classes.routesListItem}
                 onClick={
                   route.text === "Logout" ? () => logoutHandler() : () => {}
                 }

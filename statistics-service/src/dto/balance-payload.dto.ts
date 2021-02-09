@@ -1,12 +1,12 @@
 import { Type } from 'class-transformer';
-import { IsDefined, ValidateNested } from 'class-validator';
+import { IsDefined, ValidateNested, IsNumber, IsArray } from 'class-validator';
 import { ShowPaymentDTO } from './show-payment.dto';
 
 export class BalancePayload {
-  @IsDefined()
+  @IsNumber()
   userId: number;
 
-  @IsDefined()
+  @IsArray()
   @ValidateNested({ each: true })
   @Type(() => ShowPaymentDTO)
   payments: ShowPaymentDTO[];

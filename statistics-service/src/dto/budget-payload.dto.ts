@@ -1,12 +1,12 @@
 import { Type } from 'class-transformer';
-import { IsDefined, ValidateNested } from 'class-validator';
+import { IsDefined, ValidateNested, IsNumber, IsArray } from 'class-validator';
 import { ShowBudgetDTO } from './show-budget.dto';
 
 export class BudgetPayload {
-  @IsDefined()
+  @IsNumber()
   userId: number;
 
-  @IsDefined()
+  @IsArray()
   @ValidateNested({ each: true })
   @Type(() => ShowBudgetDTO)
   budgets: ShowBudgetDTO[];
