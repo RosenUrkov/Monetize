@@ -1,4 +1,5 @@
 export const formatDate = (dateToFormat) => {
+  // console.log(dateToFormat);
   const year = dateToFormat.getUTCFullYear().toString();
   const month = (dateToFormat.getUTCMonth() + 1).toString();
   const date = dateToFormat.getUTCDate().toString();
