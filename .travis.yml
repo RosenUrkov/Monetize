@@ -16,7 +16,7 @@ before_install:
   - docker build -t rosenurkov/budget-service-test -f ./budget-service/Dockerfile.dev ./budget-service
   - docker build -t rosenurkov/statistics-service-test -f ./statistics-service/Dockerfile.dev ./statistics-service
 
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
 
 script:
   - docker run -e CI=true rosenurkov/web-client-test npm test -- --coverage
