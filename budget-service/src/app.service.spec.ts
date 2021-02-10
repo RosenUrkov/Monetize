@@ -920,7 +920,7 @@ describe('App Service Tests', () => {
 
       const findOneSpy = jest
         .spyOn(budgetsRepo, 'findOne')
-        .mockReturnValue(Promise.resolve(budget));
+        .mockReturnValue(Promise.resolve(null));
 
       const deleteSpy = jest
         .spyOn(budgetsRepo, 'delete')
