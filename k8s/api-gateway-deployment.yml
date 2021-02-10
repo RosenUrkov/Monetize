@@ -15,6 +15,10 @@ spec:
       containers:
         - name: api-gateway
           image: rosenurkov/monetize-api-gateway
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
           ports:
             - containerPort: 4000
           env:

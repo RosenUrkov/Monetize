@@ -15,6 +15,10 @@ spec:
       containers:
         - name: balance-service
           image: rosenurkov/monetize-balance-service
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
           ports:
             - containerPort: 4001
           env:

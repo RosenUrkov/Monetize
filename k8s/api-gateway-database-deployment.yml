@@ -15,6 +15,10 @@ spec:
       containers:
         - name: api-gateway-database
           image: mysql
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
           env:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
@@ -26,10 +30,10 @@ spec:
           args: ["--default-authentication-plugin=mysql_native_password"]
           ports:
             - containerPort: 3306
-      #     volumeMounts:
-      #       - name: api-gateway-database-storage
-      #         mountPath: /var/lib/mysql
-      # volumes:
-      #   - name: api-gateway-database-storage
-      #     persistentVolumeClaim:
-      #       claimName: database-persistent-volume-claim
+          volumeMounts:
+            - name: api-gateway-database-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: api-gateway-database-storage
+          persistentVolumeClaim:
+            claimName: api-gateway-database-persistent-volume-claim
