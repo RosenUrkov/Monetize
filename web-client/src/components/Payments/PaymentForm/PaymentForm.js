@@ -134,7 +134,7 @@ const PaymentForm = (props) => {
               fullWidth={true}
               changeDate={(date) =>
                 handleInputChange({
-                  name: config.name,
+                  name,
                   value: date,
                 })
               }

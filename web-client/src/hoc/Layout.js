@@ -179,7 +179,7 @@ const Layout = (props) => {
 
         <Divider />
 
-        <List>
+        <List className={classes.routesList}>
           {helperRoutes
             .filter((route) => route.auth === !!auth.token)
             .map((route, index) => (
