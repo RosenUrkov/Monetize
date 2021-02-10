@@ -15,10 +15,6 @@ spec:
       containers:
         - name: statistics-service
           image: rosenurkov/monetize-statistics-service
-          resources:
-            limits:
-              memory: "128Mi"
-              cpu: "500m"
           ports:
             - containerPort: 4003
           env:

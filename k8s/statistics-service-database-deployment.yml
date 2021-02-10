@@ -15,9 +15,5 @@ spec:
       containers:
         - name: statistics-service-database
           image: redis
-          resources:
-            limits:
-              memory: "128Mi"
-              cpu: "500m"
           ports:
             - containerPort: 6379

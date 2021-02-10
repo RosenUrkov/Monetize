@@ -15,10 +15,6 @@ spec:
       containers:
         - name: api-gateway-database
           image: mysql
-          resources:
-            limits:
-              memory: "128Mi"
-              cpu: "500m"
           env:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:

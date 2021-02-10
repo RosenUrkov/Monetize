@@ -18,8 +18,8 @@ docker push rosenurkov/monetize-statistics-service:$SHA
 
 kubectl apply -f ./k8s/
 
-kubecl set image deployments/web-client-deployment web-client=rosenurkov/monetize-web-client:$SHA
-kubecl set image deployments/api-gateway-deployment api-gateway=rosenurkov/monetize-api-gateway:$SHA
-kubecl set image deployments/balance-service-deployment balance-service=rosenurkov/monetize-balance-service:$SHA
-kubecl set image deployments/budget-service-deployment budget-service=rosenurkov/monetize-budget-service:$SHA
-kubecl set image deployments/statistics-service-deployment statistics-service=rosenurkov/monetize-statistics-service:$SHA
+kubectl set image deployments/web-client-deployment web-client=rosenurkov/monetize-web-client:$SHA
+kubectl set image deployments/api-gateway-deployment api-gateway=rosenurkov/monetize-api-gateway:$SHA
+kubectl set image deployments/balance-service-deployment balance-service=rosenurkov/monetize-balance-service:$SHA
+kubectl set image deployments/budget-service-deployment budget-service=rosenurkov/monetize-budget-service:$SHA
+kubectl set image deployments/statistics-service-deployment statistics-service=rosenurkov/monetize-statistics-service:$SHA
