@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: statistics-service-database-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: statistics-service-database
+  template:
+    metadata:
+      labels:
+        component: statistics-service-database
+    spec:
+      containers:
+        - name: statistics-service-database
+          image: redis
+          ports:
+            - containerPort: 6379

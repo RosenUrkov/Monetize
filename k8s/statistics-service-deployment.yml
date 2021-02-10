@@ -22,3 +22,7 @@ spec:
               value: "0.0.0.0"
             - name: STATISTICS_SERVICE_PORT
               value: "4003"
+            - name: REDIS_HOST
+              value: statistics-service-database-cluster-ip-service
+            - name: REDIS_PORT
+              value: "6379"
