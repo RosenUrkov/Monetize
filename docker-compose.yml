@@ -30,6 +30,9 @@ services:
       - MYSQL_DATABASE=monetize-budget
       - MYSQL_PASSWORD=root
 
+  statistics-service-database:
+    image: redis
+
   nginx:
     depends_on:
       - api-gateway
@@ -151,3 +154,5 @@ services:
     environment:
       - STATISTICS_SERVICE_HOST=statistics-service
       - STATISTICS_SERVICE_PORT=4003
+      - REDIS_HOST=statistics-service-database
+      - REDIS_PORT=6379

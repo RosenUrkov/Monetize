@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const url = "/api/";
-const url = "http://localhost:4000/";
+const url = "/api/";
+// const url = "http://localhost:4000/";
 
 const httpProvider = axios.create({ baseURL: url });
 
