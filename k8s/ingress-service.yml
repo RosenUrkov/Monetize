@@ -6,15 +6,34 @@ metadata:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
+  tls:
+    - hosts:
+        - monetizeonline.work
+        - www.monetizeonline.work
+      secretName: monetize-online-work
   rules:
-    - http:
+    - host: monetizeonline.work
+      http:
         paths:
-          - path: /(.*)
+          - path: /?(.*)
             backend:
               serviceName: web-client-cluster-ip-service
               servicePort: 3000
-          - path: /api/(.*)
+          - path: /api/?(.*)
+            backend:
+              serviceName: api-gateway-cluster-ip-service
+              servicePort: 4000
+    - host: www.monetizeonline.work
+      http:
+        paths:
+          - path: /?(.*)
+            backend:
+              serviceName: web-client-cluster-ip-service
+              servicePort: 3000
+          - path: /api/?(.*)
             backend:
               serviceName: api-gateway-cluster-ip-service
               servicePort: 4000
