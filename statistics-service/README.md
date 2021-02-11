@@ -9,7 +9,19 @@ The Statistics service for the **Monetize** application.
 
 ## Starting the project
 
-This service relies upon the _Balance and Budget_ services.
+- **Start without containers**: The service is dependent on environment variables (_.env_ file). All of the configurations can be found inside the global _ConfigurationModule_. This service relies upon the _Balance and Budget_ services.
 
-- `npm install`
-- `npm start` or `npm run start:dev`
+  - Create a `.env` file. Example:
+
+  ```
+  PORT=4002
+  DB_TYPE=mysql
+  DB_HOST=localhost
+  DB_PORT=3306
+  DB_USERNAME=root
+  DB_PASSWORD=root
+  DB_DATABASE_NAME=monetize-budget
+  ```
+
+  - `npm install`
+  - `npm start` or `npm run start:dev`
