@@ -14,6 +14,11 @@ import {
   fetchStatistics,
   statisticsHideMessage,
 } from "../../store/actions/statistics";
+import Dialog from "../../components/UI/Dialog/Dialog";
+import {
+  tutorialDescription,
+  tutorialTitle,
+} from "../../constants/paymentsToBudgetTutorial";
 
 const useStyles = makeStyles((theme) => ({
   budgetTypeContainer: {
@@ -34,6 +39,15 @@ const Statistics = (props) => {
   const [statisticsBudgetType, setStatisticsBudgetType] = useState(
     budgetTypes.Day.name
   );
+
+  const [shouldShowTutorial, setShouldShowTutorial] = useState(
+    !localStorage.getItem("paymentsToBudgetTutorial")
+  );
+
+  const closeTutorial = () => {
+    localStorage.setItem("paymentsToBudgetTutorial", "closed");
+    setShouldShowTutorial(false);
+  };
 
   useEffect(
     () =>
@@ -88,10 +102,19 @@ const Statistics = (props) => {
 
       {!statisticsState.error &&
         !!statisticsState.paymentsToBudgetDifference?.length && (
-          <BarChart
-            data={statisticsState.paymentsToBudgetDifference}
-            title={"Payments to Budget"}
-          />
+          <>
+            <Dialog
+              open={shouldShowTutorial}
+              close={closeTutorial}
+              title={tutorialTitle}
+              description={tutorialDescription}
+            />
+
+            <BarChart
+              data={statisticsState.paymentsToBudgetDifference}
+              title={"Payments to Budget"}
+            />
+          </>
         )}
     </div>
   );

@@ -25,6 +25,10 @@ jest.mock("../../components/UI/Loader/Loader", () => {
   return (props) => <div id="mock-loader">Mock Loader</div>;
 });
 
+jest.mock("../../components/UI/Dialog/Dialog", () => {
+  return (props) => <div id="mock-dialog">Mock Dialog</div>;
+});
+
 jest.mock("../../components/Error/NothingToShow/NothingToShow.js", () => {
   return (props) => <div id="mock-nothingtoshow">Mock Nothing To Show</div>;
 });
