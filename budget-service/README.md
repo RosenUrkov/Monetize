@@ -33,17 +33,5 @@ The Budget service for the **Monetize** application.
 
   - Run the migrations: `npm run typerorm -- migration:run`
   - Seed the database: `npm run seed`
-  - Create a `.env` file. Example:
-
-  ```
-  PORT=4002
-  DB_TYPE=mysql
-  DB_HOST=localhost
-  DB_PORT=3306
-  DB_USERNAME=root
-  DB_PASSWORD=root
-  DB_DATABASE_NAME=monetize-budget
-  ```
-
   - `npm install`
   - `npm start` or `npm run start:dev`

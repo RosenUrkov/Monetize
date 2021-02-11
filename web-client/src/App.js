@@ -24,7 +24,7 @@ const App = () => {
 
   const authRoutes = (
     <Switch>
-      <Redirect from="/" to="/balance" exact />
+      <Redirect exact from="/" to="/balance" />
       {/* the redirect to login after logout is too fast */}
       <Redirect path="/login" to="/balance" />
       <Route path="/balance" render={(props) => <Balance {...props} />} />
@@ -37,7 +37,7 @@ const App = () => {
 
   const anonRoutes = (
     <Switch>
-      <Redirect from="/" to="/login" exact />
+      <Redirect exact from="/" to="/login" />
       <Route path="/register" component={Register} />
       <Route path="/login" component={Login} />
       <Route path="*" component={Login} />
