@@ -1,0 +1,20 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: monetize-online-work-tls
+spec:
+  secretName: monetize-online-work
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: monetizeonline.work
+  dnsNames:
+    - monetizeonline.work
+    - www.monetizeonline.work
+  acme:
+    config:
+      - http01:
+          ingressClass: nginx
+        domains:
+          - monetizeonline.work
+          - www.monetizeonline.work
