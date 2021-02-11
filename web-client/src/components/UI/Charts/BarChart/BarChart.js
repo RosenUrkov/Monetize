@@ -12,6 +12,7 @@ import { scaleLinear, scaleLog } from "d3-scale";
 import { ValueScale, Animation } from "@devexpress/dx-react-chart";
 import { EventTracker, HoverState } from "@devexpress/dx-react-chart";
 import PropTypes from "prop-types";
+import Dialog from "../../Dialog/Dialog";
 
 const scale = () => scaleLinear();
 const modifyDomain = (data) => (domain) => {
@@ -29,8 +30,28 @@ const modifyDomain = (data) => (domain) => {
 const BarChart = (props) => {
   const { data, title } = props;
 
+  const tutorialTitle = "Payments to Budget";
+  const tutorialDescription =
+    "The Payments to Budget chart shows the difference between the payments that you registered and the payments expected in the selected budget. If you received an income that you didn't expected, thats a plus. If you expected a category of expense to be under a certain value and the payments go over it, thats a minus. Your goal is to be 0 - you paid what you expected to pay and you received what you expected to receive!";
+
+  const [shouldShowTutorial, setShouldShowTutorial] = useState(
+    !localStorage.getItem("paymentsToBudgetTutorial")
+  );
+
+  const closeTutorial = () => {
+    localStorage.setItem("paymentsToBudgetTutorial", "closed");
+    setShouldShowTutorial(false);
+  };
+
   return (
     <Paper>
+      <Dialog
+        open={shouldShowTutorial}
+        close={closeTutorial}
+        title={tutorialTitle}
+        description={tutorialDescription}
+      />
+
       <Chart data={data}>
         <ArgumentAxis />
         <ValueScale factory={scale} modifyDomain={modifyDomain(data)} />
