@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const url = process.env.REACT_APP_BASE_URL;
-console.log(process.env);
 const httpProvider = axios.create({ baseURL: url });
 
 httpProvider.interceptors.request.use(
