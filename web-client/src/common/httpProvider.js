@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = process.env.REACT_APP_BASE_URL;
+const url = "/api/";
 const httpProvider = axios.create({ baseURL: url });
 
 httpProvider.interceptors.request.use(
