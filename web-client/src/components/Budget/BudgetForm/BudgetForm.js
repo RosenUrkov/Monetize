@@ -149,9 +149,7 @@ const BudgetForm = (props) => {
 
     const formValid =
       budgetTypeElement.valid &&
-      budgetPaymentsElements.every((x) =>
-        Object.keys(x).every((y) => x[y].valid)
-      );
+      copyPayments.every((x) => Object.keys(x).every((y) => x[y].valid));
 
     setIsFormValid(formValid);
   };
