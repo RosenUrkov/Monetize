@@ -13,7 +13,7 @@ spec:
     - hosts:
         - monetizeonline.work
         - www.monetizeonline.work
-      # secretName: monetize-online-work
+      secretName: monetize-online-work
   rules:
     - host: monetizeonline.work
       http:
