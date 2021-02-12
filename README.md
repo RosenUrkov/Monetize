@@ -8,7 +8,7 @@
 
 A budgeting application for rising the user's financial awareness.
 
-- **Main technologies used**: _Production pipeline with CI/CD, Docker and Kubernetes, Microservices with Nest and Typescript, client with React and Redux_
+- **Main technologies used**: _Production pipeline with Tests, CI/CD, Docker and Kubernetes, Microservices with Nest and Typescript, Client with React and Redux_
 - **Overview**: There are three main services - _Balance, Budget and Statistics_. The _Balance_ service contains the logic about manipulating the user's input payments and the _Budget_ service handles the budget actions. Both services emit to the _Statistics_ service on every change so it has the most recent data. The _Statistics_ service's job is to accumulate all of the payments over a given period and compare them with the budget for that period so it can help the user improve their financial habits. The services are hidden behind the _API Gateway_ which holds the authentication logic. The architecture is containerized with Docker and Kubernetes who will host the services in separate isolated containers that are inaccessible for the outside world. With pure Docker (docker-compose) our point of entrance is a reverse-proxy nginx server that will route the traffic between the client and the _API Gateway_. With the Kubernetes setup the point of entrance becomes the load-balancing ingress service.
 
 ![Diagram](./assets/diagram.png)

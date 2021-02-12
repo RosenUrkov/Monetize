@@ -4,7 +4,7 @@
 
 The Statistics service for the **Monetize** application.
 
-- **Main technologies used**: _Nest, Typescript_
+- **Main technologies used**: _Nest, Typescript, Redis_
 - **Overview**: The _Statistics_ service's job is to accumulate all of the payments over a given period and compare them with the budget for that same period so it can send valuable information to the user. It receives data from the _Balance and Budget_ services upon login and on every change so it has the most updated payments and budgets.
 
 ## Starting the project
