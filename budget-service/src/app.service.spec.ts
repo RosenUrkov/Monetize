@@ -258,7 +258,7 @@ describe('App Service Tests', () => {
       const fakePayment: CreatePaymentDTO = {
         value: '20',
         type: PaymentType.Expense,
-        category: ExpenseCategory.Cloathing,
+        category: ExpenseCategory.Clothing,
       };
 
       const fakeInfo = new CreateBudgetDTO();
@@ -279,7 +279,7 @@ describe('App Service Tests', () => {
 
       const budgetType = new BudgetType();
       const paymentDetails = new PaymentDetails();
-      paymentDetails.category = ExpenseCategory.Cloathing;
+      paymentDetails.category = ExpenseCategory.Clothing;
       paymentDetails.type = {
         id: 3,
         name: 'Expense',
@@ -326,7 +326,7 @@ describe('App Service Tests', () => {
       const fakePayment: CreatePaymentDTO = {
         value: '20',
         type: PaymentType.Expense,
-        category: ExpenseCategory.Cloathing,
+        category: ExpenseCategory.Clothing,
       };
 
       const fakeInfo = new CreateBudgetDTO();
@@ -347,7 +347,7 @@ describe('App Service Tests', () => {
 
       const budgetType = new BudgetType();
       const paymentDetails = new PaymentDetails();
-      paymentDetails.category = ExpenseCategory.Cloathing;
+      paymentDetails.category = ExpenseCategory.Clothing;
       paymentDetails.type = {
         id: 3,
         name: 'Expense',
@@ -388,7 +388,7 @@ describe('App Service Tests', () => {
       const fakePayment: CreatePaymentDTO = {
         value: '20',
         type: PaymentType.Expense,
-        category: ExpenseCategory.Cloathing,
+        category: ExpenseCategory.Clothing,
       };
 
       const fakeInfo = new CreateBudgetDTO();
@@ -409,7 +409,7 @@ describe('App Service Tests', () => {
 
       const budgetType = new BudgetType();
       const paymentDetails = new PaymentDetails();
-      paymentDetails.category = ExpenseCategory.Cloathing;
+      paymentDetails.category = ExpenseCategory.Clothing;
       paymentDetails.type = {
         id: 3,
         name: 'Expense',
@@ -456,7 +456,7 @@ describe('App Service Tests', () => {
       const fakePayment: CreatePaymentDTO = {
         value: '20',
         type: PaymentType.Expense,
-        category: ExpenseCategory.Cloathing,
+        category: ExpenseCategory.Clothing,
       };
 
       const fakeInfo = new CreateBudgetDTO();
@@ -477,7 +477,7 @@ describe('App Service Tests', () => {
 
       const budgetType = new BudgetType();
       const paymentDetails = new PaymentDetails();
-      paymentDetails.category = ExpenseCategory.Cloathing;
+      paymentDetails.category = ExpenseCategory.Clothing;
       paymentDetails.type = {
         id: 3,
         name: 'Expense',
@@ -524,7 +524,7 @@ describe('App Service Tests', () => {
       const fakePayment: CreatePaymentDTO = {
         value: '20',
         type: PaymentType.Expense,
-        category: ExpenseCategory.Cloathing,
+        category: ExpenseCategory.Clothing,
       };
 
       const fakeInfo = new CreateBudgetDTO();
@@ -545,7 +545,7 @@ describe('App Service Tests', () => {
 
       const budgetType = new BudgetType();
       const paymentDetails = new PaymentDetails();
-      paymentDetails.category = ExpenseCategory.Cloathing;
+      paymentDetails.category = ExpenseCategory.Clothing;
       paymentDetails.type = {
         id: 3,
         name: 'Expense',
@@ -607,7 +607,7 @@ describe('App Service Tests', () => {
 
       const budgetType = new BudgetType();
       const paymentDetails = new PaymentDetails();
-      paymentDetails.category = ExpenseCategory.Cloathing;
+      paymentDetails.category = ExpenseCategory.Clothing;
       paymentDetails.type = {
         id: 3,
         name: 'Expense',
@@ -648,7 +648,7 @@ describe('App Service Tests', () => {
       const fakePayment: CreatePaymentDTO = {
         value: '20',
         type: PaymentType.Expense,
-        category: ExpenseCategory.Cloathing,
+        category: ExpenseCategory.Clothing,
       };
 
       const fakeInfo = new CreateBudgetDTO();
@@ -669,7 +669,7 @@ describe('App Service Tests', () => {
 
       const budgetType = new BudgetType();
       const paymentDetails = new PaymentDetails();
-      paymentDetails.category = ExpenseCategory.Cloathing;
+      paymentDetails.category = ExpenseCategory.Clothing;
       paymentDetails.type = {
         id: 3,
         name: 'Expense',
@@ -717,7 +717,7 @@ describe('App Service Tests', () => {
       const fakePayment: CreatePaymentDTO = {
         value: '20',
         type: PaymentType.Expense,
-        category: ExpenseCategory.Cloathing,
+        category: ExpenseCategory.Clothing,
       };
 
       const fakeInfo = new CreateBudgetDTO();
@@ -738,7 +738,7 @@ describe('App Service Tests', () => {
 
       const budgetType = new BudgetType();
       const paymentDetails = new PaymentDetails();
-      paymentDetails.category = ExpenseCategory.Cloathing;
+      paymentDetails.category = ExpenseCategory.Clothing;
       paymentDetails.type = {
         id: 3,
         name: 'Expense',
@@ -789,7 +789,7 @@ describe('App Service Tests', () => {
       const fakePayment: CreatePaymentDTO = {
         value: '20',
         type: PaymentType.Expense,
-        category: ExpenseCategory.Cloathing,
+        category: ExpenseCategory.Clothing,
       };
 
       const fakeInfo = new CreateBudgetDTO();
@@ -810,7 +810,7 @@ describe('App Service Tests', () => {
 
       const budgetType = new BudgetType();
       const paymentDetails = new PaymentDetails();
-      paymentDetails.category = ExpenseCategory.Cloathing;
+      paymentDetails.category = ExpenseCategory.Clothing;
       paymentDetails.type = {
         id: 3,
         name: 'Expense',

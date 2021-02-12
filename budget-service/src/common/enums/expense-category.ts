@@ -5,7 +5,7 @@ export enum ExpenseCategory {
   Party = 'Party',
   Entertainment = 'Entertainment',
   Transportation = 'Transportation',
-  Cloathing = 'Cloathing',
+  Clothing = 'Clothing',
   Vehicle = 'Vehicle',
   Medical = 'Medical',
   Social = 'Social',
