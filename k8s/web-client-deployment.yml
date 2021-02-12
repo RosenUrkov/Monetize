@@ -17,6 +17,3 @@ spec:
           image: rosenurkov/monetize-web-client
           ports:
             - containerPort: 3000
-          env:
-            - name: REACT_APP_BASE_URL
-              value: "/api/"

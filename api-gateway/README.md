@@ -11,6 +11,7 @@ The API Gateway service for the **Monetize** application.
 
 - **Start without containers**: The service is dependent on environment variables (_.env_ file) and the database connection is dependent on _typeorm_ and an _ormconfig.json_ file (for the migrations and seeding). All of the configurations can be found inside the global _ConfigurationModule_.
 
+  - Start a local MySql server with a database `monetize-auth`
   - Create a `ormconfig.json` file. Example:
 
   ```
@@ -32,5 +33,28 @@ The API Gateway service for the **Monetize** application.
 
   - Run the migrations: `npm run typerorm -- migration:run`
   - Seed the database: `npm run seed`
+  - Create a `.env` file
+
+  ```
+  PORT=4000
+  TYPEORM_CONNECTION=mysql
+  TYPEORM_HOST=localhost
+  TYPEORM_PORT=3306
+  TYPEORM_USERNAME=root
+  TYPEORM_PASSWORD=root
+  TYPEORM_DATABASE=monetize-auth
+  TYPEORM_ENTITIES=src/entities/*.entity.ts
+  TYPEORM_MIGRATIONS=src/config/database/migrations/*.ts
+  TYPEORM_MIGRATIONS_DIR=src/configdatabase/migrations
+  JWT_SECRET=s3cr3t
+  JWT_EXPIRE_TIME=3600
+  BALANCE_SERVICE_HOST=localhost
+  BALANCE_SERVICE_PORT=4001
+  BUDGET_SERVICE_HOST=localhost
+  BUDGET_SERVICE_PORT=4002
+  STATISTICS_SERVICE_HOST=localhost
+  STATISTICS_SERVICE_PORT=4003
+  ```
+
   - `npm install`
   - `npm start` or `npm run start:dev`

@@ -11,5 +11,15 @@ The Statistics service for the **Monetize** application.
 
 - **Start without containers**: The service is dependent on environment variables (_.env_ file). All of the configurations can be found inside the global _ConfigurationModule_. This service relies upon the _Balance and Budget_ services.
 
+  - Start a local Redis server
+  - Create a `.env` file
+
+  ```
+  REDIS_HOST=localhost
+  REDIS_PORT=6379
+  STATISTICS_SERVICE_HOST=localhost
+  STATISTICS_SERVICE_PORT=4003
+  ```
+
   - `npm install`
   - `npm start` or `npm run start:dev`

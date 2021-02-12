@@ -9,7 +9,7 @@ The web client for the **Monetize** application.
 
 ## Starting the project
 
-The client is configured to target the _API Gateway_.
+- **Start without containers**: In the _httpProvider_ you need to change the base url to _http://localhost:4000/_ to target the local server (this is better done with env variables).
 
 - `npm install`
 - `npm start`

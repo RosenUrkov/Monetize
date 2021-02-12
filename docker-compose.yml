@@ -54,7 +54,6 @@ services:
       - ./web-client:/app
     environment:
       - CHOKIDAR_USEPOLLING=true
-      - REACT_APP_BASE_URL=/api/
 
   api-gateway:
     depends_on:

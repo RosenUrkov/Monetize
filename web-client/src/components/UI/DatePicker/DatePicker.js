@@ -33,7 +33,7 @@ const DatePicker = (props) => {
   };
 
   return (
-    <div>
+    <div style={showSideControls && { minWidth: "345px" }}>
       {showSideControls && (
         <IconButton onClick={handlePrevDay}>
           <ChevronLeftIcon />

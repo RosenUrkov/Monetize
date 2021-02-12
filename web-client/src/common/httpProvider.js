@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "/api/";
+const url = "/api/"; // http://localhost:4000/ for local development
 const httpProvider = axios.create({ baseURL: url });
 
 httpProvider.interceptors.request.use(
