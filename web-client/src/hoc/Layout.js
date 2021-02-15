@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -106,6 +106,17 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
+  },
+  container: {
+    "@media (min-width:1400px)": {
+      zoom: 1.5,
+    },
+    "@media (min-width:1600px)": {
+      zoom: 2,
+    },
+    "@media (min-width:2000px)": {
+      zoom: 2.5,
+    },
   },
 }));
 
@@ -222,7 +233,7 @@ const Layout = (props) => {
 
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        {props.children}
+        <div className={classes.container}>{props.children}</div>
       </main>
     </div>
   );

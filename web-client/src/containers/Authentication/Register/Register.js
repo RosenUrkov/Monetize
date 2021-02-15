@@ -18,17 +18,6 @@ import withToasts from "../../../hoc/withToasts";
 import { registerFormElements } from "../../../constants/registerFormElements";
 
 const useStyles = makeStyles((theme) => ({
-  container: {
-    "@media (min-width:1400px)": {
-      zoom: 1.5,
-    },
-    "@media (min-width:1600px)": {
-      zoom: 2,
-    },
-    "@media (min-width:2000px)": {
-      zoom: 2.5,
-    },
-  },
   paper: {
     marginTop: theme.spacing(8),
     display: "flex",
