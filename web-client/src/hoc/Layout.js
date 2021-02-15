@@ -109,12 +109,15 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     "@media (min-width:1400px)": {
+      paddingTop: 30,
       zoom: 1.5,
     },
     "@media (min-width:1600px)": {
+      paddingTop: 45,
       zoom: 2,
     },
     "@media (min-width:2000px)": {
+      paddingTop: 60,
       zoom: 2.5,
     },
   },
