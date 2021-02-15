@@ -26,6 +26,15 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
   },
   appBar: {
+    "@media (min-width:1400px)": {
+      zoom: 1.5,
+    },
+    "@media (min-width:1600px)": {
+      zoom: 2,
+    },
+    "@media (min-width:2000px)": {
+      zoom: 2.5,
+    },
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
@@ -47,6 +56,15 @@ const useStyles = makeStyles((theme) => ({
     display: "none",
   },
   drawer: {
+    "@media (min-width:1400px)": {
+      zoom: 1.5,
+    },
+    "@media (min-width:1600px)": {
+      zoom: 2,
+    },
+    "@media (min-width:2000px)": {
+      zoom: 2.5,
+    },
     width: drawerWidth,
     flexShrink: 0,
     whiteSpace: "nowrap",
