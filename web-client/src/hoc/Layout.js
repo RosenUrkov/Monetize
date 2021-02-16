@@ -27,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
   },
   appBar: {
     "@media (min-width:1600px)": {
+      zoom: 1.25,
+    },
+    "@media (min-width:2000px)": {
       zoom: 1.5,
     },
     zIndex: theme.zIndex.drawer + 1,
@@ -51,6 +54,9 @@ const useStyles = makeStyles((theme) => ({
   },
   drawer: {
     "@media (min-width:1600px)": {
+      zoom: 1.25,
+    },
+    "@media (min-width:2000px)": {
       zoom: 1.5,
     },
     width: drawerWidth,
@@ -97,6 +103,10 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     "@media (min-width:1600px)": {
+      paddingTop: 20,
+      zoom: 1.25,
+    },
+    "@media (min-width:2000px)": {
       paddingTop: 30,
       zoom: 1.5,
     },
