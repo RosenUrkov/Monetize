@@ -26,14 +26,8 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
   },
   appBar: {
-    "@media (min-width:1400px)": {
-      zoom: 1.5,
-    },
     "@media (min-width:1600px)": {
-      zoom: 2,
-    },
-    "@media (min-width:2000px)": {
-      zoom: 2.5,
+      zoom: 1.5,
     },
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(["width", "margin"], {
@@ -56,14 +50,8 @@ const useStyles = makeStyles((theme) => ({
     display: "none",
   },
   drawer: {
-    "@media (min-width:1400px)": {
-      zoom: 1.5,
-    },
     "@media (min-width:1600px)": {
-      zoom: 2,
-    },
-    "@media (min-width:2000px)": {
-      zoom: 2.5,
+      zoom: 1.5,
     },
     width: drawerWidth,
     flexShrink: 0,
@@ -108,17 +96,9 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
   },
   container: {
-    "@media (min-width:1400px)": {
+    "@media (min-width:1600px)": {
       paddingTop: 30,
       zoom: 1.5,
-    },
-    "@media (min-width:1600px)": {
-      paddingTop: 45,
-      zoom: 2,
-    },
-    "@media (min-width:2000px)": {
-      paddingTop: 60,
-      zoom: 2.5,
     },
   },
 }));
