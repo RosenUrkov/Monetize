@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     "@media (min-width:1600px)": {
       zoom: 1.25,
     },
-    "@media (min-width:2000px)": {
+    "@media (min-width:2200px)": {
       zoom: 1.5,
     },
     zIndex: theme.zIndex.drawer + 1,
@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     "@media (min-width:1600px)": {
       zoom: 1.25,
     },
-    "@media (min-width:2000px)": {
+    "@media (min-width:2200px)": {
       zoom: 1.5,
     },
     width: drawerWidth,
@@ -106,8 +106,8 @@ const useStyles = makeStyles((theme) => ({
       paddingTop: 20,
       zoom: 1.25,
     },
-    "@media (min-width:2000px)": {
-      paddingTop: 30,
+    "@media (min-width:2200px)": {
+      paddingTop: 35,
       zoom: 1.5,
     },
   },
